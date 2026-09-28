@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; background:#080f16; }
+  a { color:#5fd0e8; } a:hover { color:#9ae6f5; }
+  input::placeholder { color:#5f7885; }
+</style>
+<script src="./config.js"></script>
+</helmet>
+
+<div style="min-height:100vh;background:#080f16;color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+
+<sc-if value="{{ vLogin }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px">
+<div style="width:100%;max-width:460px;display:flex;flex-direction:column;gap:18px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#f0a726;font-weight:600">MISIÓN LÓGICA · PANEL DOCENTE</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:40px;line-height:1.05">Abrir la actividad</div>
+<sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid rgba(240,167,38,.6);background:rgba(240,167,38,.08);color:#f0c26b;padding:10px 14px;font-size:14px;line-height:1.4">Modo demostración: sin servidor. Cualquier clave entra y solo se ven las parejas de este navegador.</div>
+</sc-if>
+<input type="password" value="{{ clave }}" onChange="{{ setClave }}" onKeyDown="{{ enterLogin }}" placeholder="Clave docente" style="background:#0f1b26;border:2px solid rgba(240,167,38,.5);color:#e8f4f8;font-family:'IBM Plex Mono',monospace;font-size:20px;padding:14px;outline:none" />
+<button onClick="{{ ingresar }}" style="background:#f0a726;border:none;color:#1a1000;font-family:'Archivo Black',sans-serif;font-size:19px;padding:15px;cursor:pointer">{{ loginLabel }}</button>
+<sc-if value="{{ hayErr }}" hint-placeholder-val="{{ false }}"><div style="border-left:4px solid #ff7b72;padding:8px 14px;color:#ffb1aa;font-size:15px">{{ err }}</div></sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vPanel }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;border-bottom:1px solid rgba(232,244,248,.12);background:#0b1520">
+<div style="display:flex;align-items:center;gap:14px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:18px">MISIÓN LÓGICA</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#f0a726">PANEL DOCENTE</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button onClick="{{ t.onClick }}" style="background:{{ t.fondo }};border:1px solid {{ t.borde }};color:#e8f4f8;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;padding:8px 14px;cursor:pointer">{{ t.t }}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding:16px 24px 0">
+<sc-for list="{{ cursosBtn }}" as="c" hint-placeholder-count="3">
+<button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:10px;background:{{ c.fondo }};border:2px solid {{ c.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:700;padding:10px 16px;cursor:pointer">{{ c.t }}<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:{{ c.estColor }}">{{ c.est }}</span></button>
+</sc-for>
+</div>
+
+<sc-if value="{{ vControl }}" hint-placeholder-val="{{ false }}">
+<div style="padding:22px 24px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px;align-items:start">
+<div style="border:1px solid rgba(232,244,248,.14);padding:22px;display:flex;flex-direction:column;gap:14px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600">{{ ctl.titulo }}</div>
+<sc-if value="{{ ctl.cerrada }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:#9fb6c0">Paralelo</div><input value="{{ paralelo }}" onChange="{{ setParalelo }}" placeholder="A" style="background:#0f1b26;border:1px solid rgba(232,244,248,.2);color:#e8f4f8;font-size:17px;padding:11px;outline:none;min-width:0;text-transform:uppercase" /></div>
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;color:#9fb6c0">Minutos abierta</div><input value="{{ minutos }}" onChange="{{ setMinutos }}" inputMode="numeric" style="background:#0f1b26;border:1px solid rgba(232,244,248,.2);color:#e8f4f8;font-size:17px;padding:11px;outline:none;min-width:0" /></div>
+</div>
+<button onClick="{{ abrir }}" style="background:#7fe0a0;border:none;color:#062914;font-family:'Archivo Black',sans-serif;font-size:19px;padding:15px;cursor:pointer">Abrir la actividad de {{ ctl.curso }}</button>
+<div style="font-size:14px;color:#9fb6c0;line-height:1.45">Al abrir se genera un código nuevo de 4 números. Proyéctalo en la TEROS: sin él nadie puede entrar. Cada vez que abres, el código cambia.</div>
+</sc-if>
+<sc-if value="{{ ctl.abierta }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;border:3px solid #7fe0a0;padding:22px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#7fe0a0;font-weight:600">CÓDIGO DE LA CLASE</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:96px;line-height:1;letter-spacing:.12em;color:#fff">{{ ctl.codigo }}</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#9fb6c0">{{ ctl.curso }} · PARALELO {{ ctl.paralelo }} · CIERRA A LAS {{ ctl.hasta }}</div>
+</div>
+<button onClick="{{ cerrar }}" style="background:transparent;border:2px solid #ff7b72;color:#ff7b72;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:700;padding:13px;cursor:pointer">Cerrar la actividad</button>
+<div style="font-size:14px;color:#9fb6c0;line-height:1.45">Al cerrar, nadie nuevo puede entrar. Las parejas que están dentro tienen 15 minutos para enviar su nota.</div>
+</sc-if>
+<button onClick="{{ descargarNotas }}" style="background:transparent;border:2px solid #7fe0a0;color:#7fe0a0;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:700;padding:13px;cursor:pointer">Descargar notas de este curso (Excel)</button>
+<sc-if value="{{ hayErr }}" hint-placeholder-val="{{ false }}"><div style="border-left:4px solid #ff7b72;padding:8px 14px;color:#ffb1aa;font-size:15px">{{ err }}</div></sc-if>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+<sc-for list="{{ resumen }}" as="r" hint-placeholder-count="4">
+<div style="border:1px solid rgba(232,244,248,.14);padding:18px"><div style="font-family:'Archivo Black',sans-serif;font-size:40px;color:{{ r.color }}">{{ r.v }}</div><div style="font-size:14px;color:#9fb6c0">{{ r.t }}</div></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vVivo }}" hint-placeholder-val="{{ false }}">
+<div style="padding:22px 24px 40px;display:flex;flex-direction:column;gap:12px">
+<div style="font-size:14px;color:#9fb6c0">Se actualiza cada 5 segundos. En rojo: parejas con salidas registradas.</div>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-size:15px;min-width:760px">
+<thead><tr style="text-align:left;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#9fb6c0">
+<th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">PAREJA</th><th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">PAR.</th><th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">NIVEL</th><th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">PUNTOS</th><th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">NOTA</th><th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">SALIDAS</th><th style="padding:10px;border-bottom:1px solid rgba(232,244,248,.2)">ESTADO</th>
+</tr></thead>
+<tbody>
+<sc-for list="{{ filas }}" as="f" hint-placeholder-count="4">
+<tr style="background:{{ f.fondo }}">
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08);font-weight:700">{{ f.pareja }}</td>
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08)">{{ f.paralelo }}</td>
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08);font-family:'IBM Plex Mono',monospace">{{ f.nivel }}</td>
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08);font-family:'IBM Plex Mono',monospace">{{ f.puntos }}</td>
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08);font-family:'IBM Plex Mono',monospace;font-weight:600">{{ f.nota }}</td>
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08);font-family:'IBM Plex Mono',monospace;font-weight:600;color:{{ f.salColor }}">{{ f.salidas }}</td>
+<td style="padding:10px;border-bottom:1px solid rgba(232,244,248,.08);font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:{{ f.estColor }}">{{ f.estado }}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<sc-if value="{{ sinFilas }}" hint-placeholder-val="{{ false }}"><div style="padding:30px;text-align:center;color:#9fb6c0;border:1px dashed rgba(232,244,248,.2)">Todavía no entró ninguna pareja.</div></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ vRanking }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;padding:26px 40px 40px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:56px;line-height:1">Ranking {{ rk.curso }}</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:18px;color:#9fb6c0">{{ rk.linea }}</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px">
+<sc-for list="{{ podio }}" as="p" hint-placeholder-count="3">
+<div style="border:3px solid {{ p.color }};background:{{ p.fondo }};padding:24px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:64px;line-height:1;color:{{ p.color }}">{{ p.pos }}</div>
+<div style="font-size:26px;font-weight:700;line-height:1.2">{{ p.pareja }}</div>
+<div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:20px;color:#c9dbe2"><span>{{ p.puntos }} pts</span><span style="font-weight:600;color:{{ p.color }}">{{ p.estado }}</span></div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ resto }}" as="p" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:60px minmax(0,1fr) auto auto;gap:18px;align-items:center;border:1px solid rgba(232,244,248,.12);padding:12px 18px;font-size:22px">
+<div style="font-family:'Archivo Black',sans-serif;color:#9fb6c0">{{ p.pos }}</div>
+<div style="font-weight:700">{{ p.pareja }}</div>
+<div style="font-family:'IBM Plex Mono',monospace">{{ p.puntos }} pts</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:{{ p.color }}">{{ p.estado }}</div>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ sinFilas }}" hint-placeholder-val="{{ false }}"><div style="padding:40px;text-align:center;color:#9fb6c0;font-size:22px;border:1px dashed rgba(232,244,248,.2)">El ranking aparece cuando entren las parejas.</div></sc-if>
+</div>
+</sc-if>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CURSOS = [['8vo', '8vo EGB'], ['9no', '9no EGB'], ['10mo', '10mo EGB'], ['3BGU', '3ro BGU']];
+
+class Component extends DCLogic {
+  state = { clave: '', ok: false, err: '', cargando: false, tab: 'control', curso: '8vo', paralelo: '', minutos: '80', ses: {}, filas: [] };
+
+  componentDidMount() {
+    try { const c = sessionStorage.getItem('mision_docente_clave'); if (c) this.setState({ clave: c }, () => this.ingresar()); } catch (e) {}
+    this.tick = setInterval(() => { if (this.state.ok) this.refrescar(); }, 5000);
+  }
+  componentWillUnmount() { clearInterval(this.tick); }
+  demo() { const c = window.MISION_CONFIG || {}; return !c.scriptUrl; }
+
+  async api(accion, datos) {
+    if (this.demo()) return this.demoApi(accion, datos || {});
+    const r = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion, clave: this.state.clave }, datos || {})) });
+    return r.json();
+  }
+  demoApi(accion, d) {
+    const leer = k => { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch (e) { return {}; } };
+    const ses = leer('mision_demo_ses');
+    if (accion === 'sesiones') { const o = {}; CURSOS.forEach(([k]) => { o[k] = ses[k] || { abierta: true, codigo: '1234', id: 'DEMO-' + k, paralelo: '', hasta: Date.now() + 3600000 }; }); return { ok: true, sesiones: o }; }
+    if (accion === 'abrir') { ses[d.curso] = { abierta: true, codigo: String(1000 + Math.floor(Math.random() * 9000)), id: 'DEMO-' + d.curso + '-' + Date.now().toString(36), paralelo: d.paralelo, hasta: Date.now() + d.minutos * 60000 }; localStorage.setItem('mision_demo_ses', JSON.stringify(ses)); return { ok: true }; }
+    if (accion === 'cerrar') { if (ses[d.curso]) ses[d.curso].abierta = false; else ses[d.curso] = { abierta: false, id: 'DEMO-' + d.curso }; localStorage.setItem('mision_demo_ses', JSON.stringify(ses)); return { ok: true }; }
+    if (accion === 'notas') { const f = leer('mision_demo_filas'); return { ok: true, filas: Object.values(f).filter(r => r.curso === d.curso && (r.estado === 'terminado' || r.estado === 'cerrado')).map(r => Object.assign({ fecha: new Date(r.actualizado || Date.now()).toISOString() }, r)) }; }
+    if (accion === 'envivo') { const x = ses[d.curso] || { id: 'DEMO-' + d.curso }; const f = leer('mision_demo_filas'); return { ok: true, filas: Object.values(f).filter(r => r.sesionId === x.id) }; }
+    return { ok: false };
+  }
+  async ingresar() {
+    if (!this.state.clave) return this.setState({ err: 'Escribe la clave docente.' });
+    this.setState({ cargando: true, err: '' });
+    try {
+      const r = await this.api('sesiones');
+      if (!r.ok) return this.setState({ cargando: false, err: r.error === 'clave' ? 'Clave incorrecta.' : 'Error del servidor: ' + (r.error || '') });
+      try { sessionStorage.setItem('mision_docente_clave', this.state.clave); } catch (e) {}
+      this.setState({ ok: true, cargando: false, ses: r.sesiones || {} }, () => this.refrescar());
+    } catch (e) { this.setState({ cargando: false, err: 'No hay conexión con el servidor. Revisa la URL en config.js.' }); }
+  }
+  async refrescar() {
+    try {
+      const [a, b] = await Promise.all([this.api('sesiones'), this.api('envivo', { curso: this.state.curso })]);
+      this.setState({ ses: a.ok ? a.sesiones : this.state.ses, filas: b.ok ? b.filas : this.state.filas });
+    } catch (e) {}
+  }
+  async abrir() {
+    const s = this.state, min = parseInt(s.minutos, 10);
+    if (!s.paralelo.trim()) return this.setState({ err: 'Escribe el paralelo.' });
+    if (!(min > 0 && min <= 240)) return this.setState({ err: 'Los minutos deben estar entre 1 y 240.' });
+    this.setState({ err: '' });
+    const r = await this.api('abrir', { curso: s.curso, paralelo: s.paralelo.trim().toUpperCase(), minutos: min }).catch(() => ({ ok: false }));
+    if (!r.ok) this.setState({ err: 'No se pudo abrir. Revisa la conexión.' });
+    this.refrescar();
+  }
+  async descargarNotas() {
+    const s = this.state; let r;
+    try { r = await this.api('notas', { curso: s.curso }); } catch (e) { return this.setState({ err: 'No se pudieron traer las notas. Revisa la conexión.' }); }
+    if (!r || !r.ok) return this.setState({ err: 'El servidor no devolvió las notas. ¿Actualizaste el código de Apps Script (acción «notas»)?' });
+    if (!r.filas.length) return this.setState({ err: 'Todavía no hay notas entregadas de este curso.' });
+    const q = t => '"' + String(t == null ? '' : t).replace(/"/g, '""') + '"';
+    const rows = [['Fecha', 'Curso', 'Paralelo', 'Integrante 1', 'Integrante 2', 'Nota', 'Puntos', 'Salidas', 'Estado', 'Minutos', 'Insignias', 'Detalle'].map(q).join(';')];
+    r.filas.forEach(f => rows.push([new Date(f.fecha).toLocaleString('es-EC'), f.curso, f.paralelo, f.a, f.b, String(f.nota).replace('.', ','), f.puntos, f.salidas, f.estado, f.duracionMin, f.insignias, f.detalle].map(q).join(';')));
+    const b = new Blob(['\ufeff' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8' }), a = document.createElement('a');
+    a.href = URL.createObjectURL(b); a.download = 'notas-' + s.curso + '-' + new Date().toISOString().slice(0, 10) + '.csv'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    this.setState({ err: '' });
+  }
+  async cerrar() { await this.api('cerrar', { curso: this.state.curso }).catch(() => {}); this.refrescar(); }
+
+  renderVals() {
+    const s = this.state, x = s.ses[s.curso];
+    const abierta = !!(x && x.abierta && (!x.hasta || x.hasta > Date.now()));
+    const hhmm = t => { const d = new Date(t); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+    const nombre = (CURSOS.find(c => c[0] === s.curso) || [])[1];
+    const filas = (s.filas || []).slice().sort((a, b) => (b.puntos + (b.bonus || 0)) - (a.puntos + (a.bonus || 0)));
+    const est = f => f.estado === 'terminado' ? ['TERMINÓ', '#7fe0a0'] : f.estado === 'cerrado' ? ['CERRADO', '#ff7b72'] : f.estado === 'bloqueado' ? ['FUERA', '#ff7b72'] : ['NIVEL ' + f.nivel, '#5fd0e8'];
+    const ranking = filas.map((f, i) => { const e = est(f); return { pos: i + 1, pareja: f.pareja, puntos: f.puntos + (f.bonus || 0), estado: e[0], color: e[1] }; });
+    const medalla = ['#f0a726', '#dce9ee', '#c58cf0'];
+    const term = filas.filter(f => f.estado === 'terminado' || f.estado === 'cerrado');
+    const prom = term.length ? (term.reduce((a, f) => a + Number(f.nota || 0), 0) / term.length).toFixed(2).replace('.', ',') : '—';
+    return {
+      demo: this.demo(), vLogin: !s.ok, vPanel: s.ok, vControl: s.tab === 'control', vVivo: s.tab === 'vivo', vRanking: s.tab === 'ranking',
+      clave: s.clave, err: s.err, hayErr: !!s.err, loginLabel: s.cargando ? 'Verificando…' : 'Entrar',
+      setClave: e => this.setState({ clave: e.target.value }), enterLogin: e => { if (e.key === 'Enter') this.ingresar(); }, ingresar: () => this.ingresar(),
+      tabs: [['control', 'CONTROL'], ['vivo', 'EN VIVO'], ['ranking', 'RANKING (TEROS)']].map(([k, t]) => ({ t, onClick: () => this.setState({ tab: k }), fondo: s.tab === k ? 'rgba(240,167,38,.16)' : 'transparent', borde: s.tab === k ? '#f0a726' : 'rgba(232,244,248,.2)' })),
+      cursosBtn: CURSOS.map(([k, t]) => { const y = s.ses[k], ab = !!(y && y.abierta && (!y.hasta || y.hasta > Date.now())); return { t, est: ab ? 'ABIERTA' : 'CERRADA', estColor: ab ? '#7fe0a0' : '#8aa3ae', onClick: () => this.setState({ curso: k, filas: [] }, () => this.refrescar()), borde: s.curso === k ? '#f0a726' : 'rgba(232,244,248,.16)', fondo: s.curso === k ? 'rgba(240,167,38,.1)' : '#0b1520' }; }),
+      paralelo: s.paralelo, minutos: s.minutos,
+      setParalelo: e => this.setState({ paralelo: e.target.value.slice(0, 3) }), setMinutos: e => this.setState({ minutos: e.target.value.replace(/\D/g, '').slice(0, 3) }),
+      abrir: () => this.abrir(), cerrar: () => this.cerrar(), descargarNotas: () => this.descargarNotas(),
+      ctl: { titulo: nombre.toUpperCase() + (abierta ? ' · ABIERTA' : ' · CERRADA'), curso: nombre, cerrada: !abierta, abierta, codigo: x && x.codigo, paralelo: (x && x.paralelo) || '—', hasta: x && x.hasta ? hhmm(x.hasta) : '' },
+      resumen: [
+        { t: 'parejas dentro', v: filas.length, color: '#5fd0e8' }, { t: 'terminaron', v: term.length, color: '#7fe0a0' },
+        { t: 'con salidas', v: filas.filter(f => f.salidas > 0).length, color: '#ff7b72' }, { t: 'nota promedio', v: prom, color: '#f0a726' }
+      ],
+      filas: filas.map(f => { const e = est(f); return { pareja: f.pareja, paralelo: f.paralelo || '', nivel: f.nivel + '/' + (f.niveles || 5), puntos: f.puntos + (f.bonus || 0), nota: f.estado === 'terminado' || f.estado === 'cerrado' ? String(Number(f.nota).toFixed(2)).replace('.', ',') : '—', salidas: f.salidas + '/3', salColor: f.salidas ? '#ff7b72' : '#c9dbe2', estado: e[0], estColor: e[1], fondo: f.salidas ? 'rgba(255,123,114,.07)' : 'transparent' }; }),
+      sinFilas: filas.length === 0,
+      rk: { curso: nombre, linea: filas.length + ' parejas · ' + term.length + ' terminaron' },
+      podio: ranking.slice(0, 3).map((p, i) => Object.assign({}, p, { color: medalla[i], fondo: i === 0 ? 'rgba(240,167,38,.08)' : '#0b1520' })),
+      resto: ranking.slice(3)
+    };
+  }
+}
+</script>
+</body>
+</html>

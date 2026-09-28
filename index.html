@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin:0; background:#080f16; }
+  a { color:#5fd0e8; } a:hover { color:#9ae6f5; }
+  input::placeholder { color:#5f7885; }
+  @keyframes pulso { 0%,100% { opacity:1 } 50% { opacity:.55 } }
+</style>
+<script src="./config.js"></script>
+<script src="./banco-ejercicios.js"></script>
+</helmet>
+
+<div style="min-height:100vh;background:#080f16;color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;user-select:none;-webkit-user-select:none;display:flex;flex-direction:column">
+
+<sc-if value="{{ enJuego }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 24px;border-bottom:1px solid rgba(232,244,248,.12);background:#0b1520">
+<div style="display:flex;align-items:center;gap:14px;min-width:0">
+<div style="font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:.02em;white-space:nowrap">MISIÓN LÓGICA</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#9fb6c0;white-space:nowrap">{{ hud.curso }}</div>
+<div style="font-size:14px;color:#c9dbe2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ hud.pareja }}</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">
+<div style="border:1px solid rgba(95,208,232,.5);color:#5fd0e8;padding:6px 10px;white-space:nowrap">{{ hud.puntos }} PTS</div>
+<div style="border:1px solid rgba(240,167,38,.5);color:#f0a726;padding:6px 10px;white-space:nowrap">RACHA {{ hud.racha }}</div>
+<div style="border:1px solid rgba(197,140,240,.5);color:#c58cf0;padding:6px 10px;white-space:nowrap">50/50 ×{{ hud.c50 }} · PISTA ×{{ hud.pista }} · +TIEMPO ×{{ hud.tiempo }}</div>
+<div style="border:1px solid {{ hud.salBorde }};color:{{ hud.salColor }};padding:6px 10px;white-space:nowrap">SALIDAS {{ hud.salidas }}/3</div>
+<div style="border:1px solid rgba(232,244,248,.2);color:#c9dbe2;padding:6px 10px;white-space:nowrap">{{ hud.reloj }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vCargando }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;color:#9fb6c0">Cargando ejercicios…</div>
+</sc-if>
+
+<sc-if value="{{ vLogin }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px">
+<div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:22px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#5fd0e8;font-weight:600">ROBÓTICA · U. E. P. LA PROVIDENCIA</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:52px;line-height:1">Misión Lógica</div>
+<div style="font-size:17px;color:#9fb6c0;line-height:1.45">Actividad en parejas. Escriban sus datos y el código que el docente muestra en la pantalla.</div>
+</div>
+<sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid rgba(240,167,38,.6);background:rgba(240,167,38,.08);color:#f0c26b;padding:10px 14px;font-size:14px;line-height:1.4">Modo demostración: no hay servidor configurado. Código de prueba <b>1234</b>.</div>
+</sc-if>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">CURSO</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+<sc-for list="{{ cursosBtn }}" as="c" hint-placeholder-count="3">
+<button onClick="{{ c.onClick }}" style="background:{{ c.fondo }};border:2px solid {{ c.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:700;padding:12px 8px;cursor:pointer">{{ c.t }}</button>
+</sc-for>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 110px;gap:10px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">INTEGRANTE 1</div>
+<input value="{{ f.a }}" onChange="{{ setA }}" placeholder="Nombre y apellido" style="background:#0f1b26;border:1px solid rgba(232,244,248,.2);color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:16px;padding:12px;outline:none;min-width:0" />
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">INTEGRANTE 2</div>
+<input value="{{ f.b }}" onChange="{{ setB }}" placeholder="Nombre y apellido" style="background:#0f1b26;border:1px solid rgba(232,244,248,.2);color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:16px;padding:12px;outline:none;min-width:0" />
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">PARALELO</div>
+<input value="{{ f.paralelo }}" onChange="{{ setParalelo }}" placeholder="A" maxLength="3" style="background:#0f1b26;border:1px solid rgba(232,244,248,.2);color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:16px;padding:12px;outline:none;min-width:0;text-transform:uppercase" />
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">CÓDIGO DE LA CLASE</div>
+<input value="{{ f.codigo }}" onChange="{{ setCodigo }}" onKeyDown="{{ enterLogin }}" placeholder="0000" inputMode="numeric" maxLength="4" style="background:#0f1b26;border:2px solid rgba(95,208,232,.5);color:#5fd0e8;font-family:'IBM Plex Mono',monospace;font-size:34px;font-weight:600;letter-spacing:.5em;padding:12px 18px;outline:none;min-width:0" />
+</div>
+<button onClick="{{ entrar }}" style="background:#5fd0e8;border:none;color:#062029;font-family:'Archivo Black',sans-serif;font-size:20px;letter-spacing:.04em;padding:16px;cursor:pointer;opacity:{{ loginOpac }}">{{ loginLabel }}</button>
+<sc-if value="{{ hayMsg }}" hint-placeholder-val="{{ false }}">
+<div style="border-left:4px solid #ff7b72;padding:8px 14px;color:#ffb1aa;font-size:15px;line-height:1.4">{{ msg }}</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vReglas }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;justify-content:center;padding:40px 20px">
+<div style="width:100%;max-width:980px;display:flex;flex-direction:column;gap:26px">
+<div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#5fd0e8;font-weight:600">{{ reglas.curso }} · {{ reglas.niveles }} NIVELES + RETO</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:44px;line-height:1.05;margin-top:8px">Antes de empezar</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+<div style="border:1px solid rgba(95,208,232,.35);background:rgba(95,208,232,.06);padding:20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#5fd0e8;font-weight:600">CÓMO SE AVANZA</div>
+<div style="font-size:16px;line-height:1.5;color:#c9dbe2">Cada nivel empieza con un <b style="color:#e8f4f8">ejemplo resuelto</b>. Después vienen los ejercicios, cada vez más difíciles. Si fallan, tienen <b style="color:#e8f4f8">un segundo intento</b> que vale la mitad.</div>
+</div>
+<div style="border:1px solid rgba(197,140,240,.35);background:rgba(197,140,240,.06);padding:20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#c58cf0;font-weight:600">COMODINES</div>
+<div style="font-size:16px;line-height:1.5;color:#c9dbe2"><b style="color:#e8f4f8">50/50</b> quita dos opciones · <b style="color:#e8f4f8">Pista</b> (×2) · <b style="color:#e8f4f8">+Tiempo</b> suma 30 s en el reto. Los que no usen valen <b style="color:#e8f4f8">+3 puntos</b> cada uno al final.</div>
+</div>
+<div style="border:1px solid rgba(240,167,38,.35);background:rgba(240,167,38,.06);padding:20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#f0a726;font-weight:600">PUNTOS EXTRA</div>
+<div style="font-size:16px;line-height:1.5;color:#c9dbe2"><b style="color:#e8f4f8">Racha:</b> cada 3 aciertos seguidos al primer intento, +3. <b style="color:#e8f4f8">Tiempo:</b> terminar un nivel dentro del tiempo objetivo, +4. <b style="color:#e8f4f8">Reto:</b> los segundos que sobren suman.</div>
+</div>
+<div style="border:2px solid #ff7b72;background:rgba(255,123,114,.07);padding:20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#ff7b72;font-weight:600">SISTEMA CERRADO</div>
+<div style="font-size:16px;line-height:1.5;color:#ffd3cf">La actividad se abre en pantalla completa. Salir de ella (otra pestaña, otra ventana, tecla Esc) <b style="color:#fff">se registra</b> y cuesta un comodín. A la <b style="color:#fff">tercera salida</b> el intento se cierra con la nota que tengan.</div>
+</div>
+</div>
+<button onClick="{{ empezar }}" style="background:#7fe0a0;border:none;color:#062914;font-family:'Archivo Black',sans-serif;font-size:22px;letter-spacing:.03em;padding:18px;cursor:pointer">Empezar en pantalla completa</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vMapa }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;justify-content:center;padding:34px 20px">
+<div style="width:100%;max-width:980px;display:flex;flex-direction:column;gap:22px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:40px;line-height:1.05">Mapa de la misión</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ mapa }}" as="m" hint-placeholder-count="5">
+<button onClick="{{ m.onClick }}" style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:18px;text-align:left;background:{{ m.fondo }};border:2px solid {{ m.borde }};color:#e8f4f8;padding:16px 20px;cursor:{{ m.cursor }};opacity:{{ m.opac }};font-family:'IBM Plex Sans',sans-serif">
+<div style="font-family:'Archivo Black',sans-serif;font-size:34px;color:{{ m.color }};text-align:center">{{ m.num }}</div>
+<div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+<div style="font-size:21px;font-weight:700">{{ m.nombre }}</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:{{ m.color }}">{{ m.tag }}</div>
+</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:{{ m.color }};white-space:nowrap">{{ m.estado }}</div>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vTrabajo }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;justify-content:center;padding:26px 20px 40px">
+<div style="width:100%;max-width:1240px;display:flex;flex-direction:column;gap:18px">
+
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.16em;color:{{ cab.color }};font-weight:600">{{ cab.linea }}</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:32px;line-height:1.08">{{ cab.titulo }}</div>
+</div>
+<sc-if value="{{ cab.esReto }}" hint-placeholder-val="{{ false }}">
+<div style="font-family:'Archivo Black',sans-serif;font-size:40px;color:{{ cab.retoColor }}">{{ cab.retoSeg }}</div>
+</sc-if>
+</div>
+<sc-if value="{{ cab.esReto }}" hint-placeholder-val="{{ false }}">
+<div style="height:8px;background:rgba(232,244,248,.1)"><div style="height:8px;width:{{ cab.retoPct }};background:{{ cab.retoColor }}"></div></div>
+</sc-if>
+
+<div style="display:grid;grid-template-columns:{{ cols }};gap:20px;align-items:start">
+
+<sc-if value="{{ hayDiag }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid rgba(232,244,248,.12);background:#0b1520;padding:22px 14px;display:flex;flex-direction:column;align-items:center">
+<sc-for list="{{ diag }}" as="n" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;align-items:center;width:100%">
+<sc-if value="{{ n.flecha }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;height:26px">
+<div style="width:2px;flex:1;background:#6d8896"></div>
+<div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid #6d8896"></div>
+<sc-if value="{{ n.etSi }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:10px;top:3px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:#7fe0a0">SÍ</div></sc-if>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;width:100%">
+<div></div>
+<div onClick="{{ n.onClick }}" style="cursor:{{ n.cursor }}">
+<sc-if value="{{ n.isO }}" hint-placeholder-val="{{ false }}"><div style="border:2px solid {{ n.borde }};border-radius:999px;padding:8px 26px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:{{ n.color }};white-space:nowrap">{{ n.txt }}</div></sc-if>
+<sc-if value="{{ n.isR }}" hint-placeholder-val="{{ false }}"><div style="border:2px solid {{ n.borde }};background:{{ n.fondo }};padding:10px 16px;min-width:150px;max-width:210px;text-align:center;font-size:14px;line-height:1.25;color:{{ n.color }}">{{ n.txt }}</div></sc-if>
+<sc-if value="{{ n.isP }}" hint-placeholder-val="{{ false }}"><div style="border:2px solid {{ n.borde }};background:{{ n.fondo }};transform:skewX(-14deg);padding:10px 20px;min-width:150px;max-width:210px;text-align:center"><div style="transform:skewX(14deg);font-size:14px;line-height:1.25;color:{{ n.color }}">{{ n.txt }}</div></div></sc-if>
+<sc-if value="{{ n.isD }}" hint-placeholder-val="{{ false }}"><div style="width:196px;height:92px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:{{ n.borde }};padding:2px;box-sizing:border-box"><div style="width:100%;height:100%;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:{{ n.fondoD }};display:flex;align-items:center;justify-content:center;text-align:center;padding:0 34px;box-sizing:border-box;font-size:13px;line-height:1.2;color:{{ n.color }}">{{ n.txt }}</div></div></sc-if>
+<sc-if value="{{ n.isL }}" hint-placeholder-val="{{ false }}"><div style="border:2px dashed #c58cf0;border-radius:999px;padding:6px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#c58cf0;white-space:nowrap">↺ {{ n.txt }}</div></sc-if>
+</div>
+<div style="display:flex;align-items:center;min-width:0">
+<sc-if value="{{ n.hasNo }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;min-width:0">
+<div style="position:relative;display:flex;align-items:center;width:34px;flex:none">
+<div style="height:2px;flex:1;background:#6d8896"></div>
+<div style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:8px solid #6d8896"></div>
+<div style="position:absolute;left:4px;top:-18px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:#ff9b93">NO</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+<div onClick="{{ n.noClick }}" style="cursor:{{ n.noCursor }}">
+<sc-if value="{{ n.noR }}" hint-placeholder-val="{{ false }}"><div style="border:2px solid {{ n.noBorde }};background:{{ n.noFondo }};padding:8px 10px;max-width:170px;text-align:center;font-size:13px;line-height:1.2;color:{{ n.noColor }}">{{ n.noTxt }}</div></sc-if>
+<sc-if value="{{ n.noP }}" hint-placeholder-val="{{ false }}"><div style="border:2px solid {{ n.noBorde }};background:{{ n.noFondo }};transform:skewX(-14deg);padding:8px 14px;max-width:170px;text-align:center"><div style="transform:skewX(14deg);font-size:13px;line-height:1.2;color:{{ n.noColor }}">{{ n.noTxt }}</div></div></sc-if>
+</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8aa3ae">{{ n.noNota }}</div>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+
+<sc-if value="{{ vEjemplo }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="border-left:4px solid #5fd0e8;padding:4px 0 4px 16px;font-size:19px;line-height:1.45;color:#dce9ee">{{ ejemplo.problema }}</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ ejemplo.pasos }}" as="p" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start;border:1px solid {{ p.borde }};background:{{ p.fondo }};padding:14px 16px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:22px;color:#5fd0e8">{{ p.num }}</div>
+<div style="font-size:17px;line-height:1.45;color:#e8f4f8">{{ p.t }}</div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<sc-if value="{{ ejemplo.hayMas }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ ejemplo.siguiente }}" style="background:transparent;border:2px solid #5fd0e8;color:#5fd0e8;font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:700;padding:13px 22px;cursor:pointer;white-space:nowrap">Siguiente paso →</button>
+</sc-if>
+<button onClick="{{ ejemplo.practicar }}" style="background:{{ ejemplo.btnFondo }};border:2px solid #7fe0a0;color:{{ ejemplo.btnColor }};font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:700;padding:13px 22px;cursor:pointer;white-space:nowrap">{{ ejemplo.btnTxt }}</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vEjercicio }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:21px;line-height:1.4;font-weight:600;color:#e8f4f8;text-wrap:pretty">{{ ej.enunciado }}</div>
+
+<sc-if value="{{ ej.esFigura }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="border:2px solid rgba(232,244,248,.25);background:#0f1b26;padding:18px 22px;font-size:24px;font-weight:700;text-align:center">{{ ej.destacado }}</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+<sc-for list="{{ ej.figuras }}" as="g" hint-placeholder-count="4">
+<button onClick="{{ g.onClick }}" style="display:flex;flex-direction:column;align-items:center;gap:10px;background:{{ g.fondo }};border:2px solid {{ g.borde }};color:#e8f4f8;padding:16px 10px;cursor:pointer;opacity:{{ g.opac }};font-family:'IBM Plex Sans',sans-serif">
+<div style="height:42px;display:flex;align-items:center">
+<sc-if value="{{ g.isO }}" hint-placeholder-val="{{ false }}"><div style="width:84px;height:32px;border:2px solid #5fd0e8;border-radius:999px"></div></sc-if>
+<sc-if value="{{ g.isR }}" hint-placeholder-val="{{ false }}"><div style="width:80px;height:34px;border:2px solid #dce9ee"></div></sc-if>
+<sc-if value="{{ g.isP }}" hint-placeholder-val="{{ false }}"><div style="width:74px;height:34px;border:2px solid #c58cf0;transform:skewX(-18deg)"></div></sc-if>
+<sc-if value="{{ g.isD }}" hint-placeholder-val="{{ false }}"><div style="width:84px;height:42px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:#f0a726;padding:2px;box-sizing:border-box"><div style="width:100%;height:100%;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:#0f1b26"></div></div></sc-if>
+</div>
+<div style="font-size:16px;font-weight:700">{{ g.nombre }}</div>
+<div style="font-size:13px;color:#9fb6c0">{{ g.sub }}</div>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ej.esMc }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+<sc-for list="{{ ej.opciones }}" as="o" hint-placeholder-count="4">
+<button onClick="{{ o.onClick }}" style="display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;text-align:left;background:{{ o.fondo }};border:2px solid {{ o.borde }};color:#e8f4f8;padding:14px 16px;cursor:pointer;opacity:{{ o.opac }};font-family:'IBM Plex Sans',sans-serif;font-size:17px;line-height:1.3">
+<div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:16px;color:{{ o.letraColor }}">{{ o.letra }}</div>
+<div>{{ o.t }}</div>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ ej.esOrden }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ ej.items }}" as="it" hint-placeholder-count="5">
+<button onClick="{{ it.onClick }}" style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;text-align:left;background:{{ it.fondo }};border:2px solid {{ it.borde }};color:#e8f4f8;padding:12px 16px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-size:17px">
+<div style="width:34px;height:34px;border:2px solid {{ it.borde }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:16px;color:#5fd0e8">{{ it.num }}</div>
+<div>{{ it.t }}</div>
+</button>
+</sc-for>
+<button onClick="{{ ej.reiniciarOrden }}" style="align-self:flex-start;background:transparent;border:1px solid rgba(232,244,248,.25);color:#9fb6c0;font-family:'IBM Plex Sans',sans-serif;font-size:14px;padding:8px 14px;cursor:pointer">Borrar el orden</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ ej.esCompletar }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="font-size:14px;color:#9fb6c0;line-height:1.4">1. Toca un texto. 2. Toca la figura del diagrama donde va. Toca una figura llena para vaciarla.</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ ej.banco }}" as="b" hint-placeholder-count="4">
+<button onClick="{{ b.onClick }}" style="background:{{ b.fondo }};border:2px solid {{ b.borde }};color:#e8f4f8;padding:11px 14px;cursor:pointer;opacity:{{ b.opac }};font-family:'IBM Plex Sans',sans-serif;font-size:15px">{{ b.t }}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ej.esNum }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<input value="{{ ej.num }}" onChange="{{ ej.setNum }}" onKeyDown="{{ ej.enterNum }}" inputMode="decimal" placeholder="Tu respuesta" style="background:#0f1b26;border:2px solid rgba(95,208,232,.55);color:#5fd0e8;font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:600;padding:12px 18px;outline:none;width:260px;max-width:100%" />
+<div style="font-family:'IBM Plex Mono',monospace;font-size:20px;color:#9fb6c0">{{ ej.unidad }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ ej.pistaOn }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid rgba(240,167,38,.55);background:rgba(240,167,38,.08);padding:12px 16px;font-size:16px;line-height:1.4;color:#f5cf87"><b>Pista:</b> {{ ej.pista }}</div>
+</sc-if>
+
+<sc-if value="{{ ej.sinFb }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<button onClick="{{ ej.c50 }}" style="background:transparent;border:2px solid #c58cf0;color:#c58cf0;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;opacity:{{ ej.c50Opac }}">50/50</button>
+<button onClick="{{ ej.pedirPista }}" style="background:transparent;border:2px solid #f0a726;color:#f0a726;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;opacity:{{ ej.pistaOpac }}">{{ ej.pistaLabel }}</button>
+<sc-if value="{{ cab.esReto }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ ej.masTiempo }}" style="background:transparent;border:2px solid #5fd0e8;color:#5fd0e8;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;opacity:{{ ej.tiempoOpac }}">+30 S</button>
+</sc-if>
+</div>
+<button onClick="{{ ej.comprobar }}" style="background:#5fd0e8;border:none;color:#062029;font-family:'Archivo Black',sans-serif;font-size:19px;padding:14px 30px;cursor:pointer;opacity:{{ ej.compOpac }}">Comprobar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ ej.hayFb }}" hint-placeholder-val="{{ false }}">
+<div style="border:2px solid {{ ej.fbColor }};background:{{ ej.fbFondo }};padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:26px;color:{{ ej.fbColor }}">{{ ej.fbTitulo }}</div>
+<div style="font-size:17px;line-height:1.45;color:#e8f4f8">{{ ej.fbTexto }}</div>
+<sc-if value="{{ ej.fbHayExp }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:16px;line-height:1.45;color:#c9dbe2">{{ ej.fbExp }}</div>
+</sc-if>
+<button onClick="{{ ej.fbAccion }}" style="align-self:flex-end;background:{{ ej.fbColor }};border:none;color:#081018;font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:700;padding:12px 24px;cursor:pointer">{{ ej.fbBoton }}</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vResumen }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px">
+<div style="width:100%;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#7fe0a0;font-weight:600">NIVEL COMPLETADO</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:42px;line-height:1.05">{{ res.nombre }}</div>
+<div style="font-size:56px;letter-spacing:.12em;color:#f0a726">{{ res.estrellas }}</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%">
+<div style="border:1px solid rgba(232,244,248,.18);padding:14px"><div style="font-family:'Archivo Black',sans-serif;font-size:28px">{{ res.correctas }}</div><div style="font-size:13px;color:#9fb6c0">correctas</div></div>
+<div style="border:1px solid rgba(232,244,248,.18);padding:14px"><div style="font-family:'Archivo Black',sans-serif;font-size:28px">{{ res.puntos }}</div><div style="font-size:13px;color:#9fb6c0">puntos del nivel</div></div>
+<div style="border:1px solid rgba(232,244,248,.18);padding:14px"><div style="font-family:'Archivo Black',sans-serif;font-size:28px">{{ res.tiempo }}</div><div style="font-size:13px;color:#9fb6c0">{{ res.tiempoTxt }}</div></div>
+</div>
+<button onClick="{{ continuar }}" style="background:#7fe0a0;border:none;color:#062914;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px 34px;cursor:pointer">{{ res.boton }}</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vFinal }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;justify-content:center;padding:40px 20px">
+<div style="width:100%;max-width:980px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:{{ fin.color }};font-weight:600">{{ fin.linea }}</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:40px;line-height:1.05">{{ fin.pareja }}</div>
+<div style="font-size:17px;color:#9fb6c0">{{ fin.mensaje }}</div>
+</div>
+<div style="border:3px solid {{ fin.color }};padding:18px 30px;text-align:center">
+<div style="font-family:'Archivo Black',sans-serif;font-size:76px;line-height:1;color:{{ fin.color }}">{{ fin.nota }}</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#9fb6c0;margin-top:4px">NOTA / 10</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+<div style="border:1px solid rgba(232,244,248,.15);padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600">CÓMO SE CALCULÓ</div>
+<sc-for list="{{ fin.desglose }}" as="d" hint-placeholder-count="5">
+<div style="display:flex;justify-content:space-between;gap:10px;font-size:16px;border-bottom:1px solid rgba(232,244,248,.08);padding-bottom:6px"><span style="color:#c9dbe2">{{ d.t }}</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">{{ d.v }}</span></div>
+</sc-for>
+</div>
+<div style="border:1px solid rgba(232,244,248,.15);padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600">INSIGNIAS</div>
+<sc-for list="{{ fin.insignias }}" as="b" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:center;opacity:{{ b.opac }}">
+<div style="width:34px;height:34px;border:2px solid {{ b.color }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:15px;color:{{ b.color }};transform:rotate(45deg)"><span style="transform:rotate(-45deg)">{{ b.ini }}</span></div>
+<div><div style="font-size:16px;font-weight:700">{{ b.nombre }}</div><div style="font-size:13px;color:#9fb6c0">{{ b.desc }}</div></div>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="border:2px solid {{ fin.envioColor }};padding:14px 18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+<div style="font-size:16px;color:#e8f4f8">{{ fin.envioTxt }}</div>
+<div style="display:flex;gap:8px">
+<sc-if value="{{ fin.puedeReenviar }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ fin.reenviar }}" style="background:#f0a726;border:none;color:#1a1000;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:700;padding:10px 18px;cursor:pointer">Reintentar envío</button>
+</sc-if>
+<sc-if value="{{ fin.puedeSalir }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ fin.salir }}" style="background:transparent;border:1px solid rgba(232,244,248,.3);color:#c9dbe2;font-family:'IBM Plex Sans',sans-serif;font-size:15px;padding:10px 18px;cursor:pointer">Cerrar sesión</button>
+</sc-if>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vBloq }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:50;background:rgba(40,6,6,.96);display:flex;align-items:center;justify-content:center;padding:30px">
+<div style="max-width:620px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:15px;letter-spacing:.2em;color:#ff7b72;font-weight:600;animation:pulso 1.4s infinite">SALIDA {{ hud.salidas }} DE 3 · REGISTRADA</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:46px;line-height:1.05;color:#fff">Salieron de la actividad</div>
+<div style="font-size:19px;line-height:1.45;color:#ffd3cf">{{ bloqMsg }} El docente puede ver esta salida. A la tercera, el intento se cierra.</div>
+<button onClick="{{ volver }}" style="background:#fff;border:none;color:#2a0606;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px 30px;cursor:pointer">Volver a la actividad</button>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;vigilancia&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sistema cerrado&quot;}}">
+const FIGS = [
+  { k: 'o', nombre: 'Óvalo', sub: 'inicio o fin' },
+  { k: 'r', nombre: 'Rectángulo', sub: 'una acción' },
+  { k: 'p', nombre: 'Paralelogramo', sub: 'dato que entra o sale' },
+  { k: 'd', nombre: 'Rombo', sub: 'pregunta SÍ / NO' }
+];
+const JUEGO = ['mapa', 'ejemplo', 'ejercicio', 'resumen'];
+const KEY = 'mision_logica_v1';
+const COLOR_K = { o: '#5fd0e8', r: '#dce9ee', p: '#c58cf0', d: '#f0a726', l: '#c58cf0' };
+
+class Component extends DCLogic {
+  state = this.base();
+
+  base() {
+    return {
+      fase: 'login', f: { curso: '8vo', paralelo: '', a: '', b: '', codigo: '' }, msg: '', cargando: false,
+      ses: null, nv: 0, ej: 0, paso: 0, r: this.rVacia(), intento: 1, fb: null,
+      pts: 0, bon: { racha: 0, tiempo: 0, reto: 0, com: 0, pen: 0 }, racha: 0, mejor: 0, det: [],
+      com: { c50: 1, pista: 2, tiempo: 1 }, usoCom: 0, oculto: [], pistaOn: false,
+      salidas: 0, bloq: false, bloqMsg: '', bloqT: 0, tNivel: 0, tEj: 0, extra: 0, t0: 0, tFin: 0,
+      ahora: Date.now(), envio: '', cerrado: false, res: null
+    };
+  }
+  rVacia() { return { sel: null, orden: [], slots: {}, bsel: null, num: '', desc: [] }; }
+
+  componentDidMount() {
+    try {
+      const g = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (g && g.ses && g.fase !== 'login') {
+        this.setState(Object.assign({}, g, { ahora: Date.now(), bloq: false }), () => {
+          if (JUEGO.includes(g.fase) && !g.cerrado) { this._ult = 0; this.salida('recarga'); }
+        });
+      }
+    } catch (e) {}
+    this.h = {
+      vis: () => { if (document.hidden) this.salida('pestaña'); },
+      blur: () => this.salida('ventana'),
+      fs: () => { if (document.fullscreenElement) this._fs = true; else if (this._fs) { this._fs = false; this.salida('pantalla completa'); } },
+      bloquear: e => { if (!this.enJuego()) return; const t = e.target && e.target.tagName; if (e.type === 'selectstart' && t === 'INPUT') return; e.preventDefault(); },
+      tecla: e => {
+        if (!this.enJuego()) return;
+        const k = (e.key || '').toLowerCase();
+        if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a', 'p', 's', 'u', 'f', 'r', 'j', 'i', 'g', 'h', 'o', 'n', 't', 'w'].includes(k)) e.preventDefault();
+        if (['f12', 'f5', 'f3', 'printscreen', 'contextmenu'].includes(k)) e.preventDefault();
+      },
+      salir: e => { if (this.enJuego()) { e.preventDefault(); e.returnValue = ''; } }
+    };
+    document.addEventListener('visibilitychange', this.h.vis);
+    window.addEventListener('blur', this.h.blur);
+    document.addEventListener('fullscreenchange', this.h.fs);
+    ['copy', 'cut', 'paste', 'contextmenu', 'dragstart', 'selectstart', 'drop'].forEach(ev => document.addEventListener(ev, this.h.bloquear));
+    document.addEventListener('keydown', this.h.tecla, true);
+    window.addEventListener('beforeunload', this.h.salir);
+    this.tick = setInterval(() => {
+      if (!window.MISION_BANCO) { this.forceUpdate(); return; }
+      const s = this.state;
+      if (!s.ses || s.fase === 'login') return;
+      this.setState({ ahora: Date.now() }, () => {
+        const n = this.nivelAct();
+        if (n && n.reto && this.state.fase === 'ejercicio' && !this.state.fb && !this.state.bloq && this.retoRest() <= 0) this.comprobar(true);
+      });
+    }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.tick);
+    document.removeEventListener('visibilitychange', this.h.vis);
+    window.removeEventListener('blur', this.h.blur);
+    document.removeEventListener('fullscreenchange', this.h.fs);
+    ['copy', 'cut', 'paste', 'contextmenu', 'dragstart', 'selectstart', 'drop'].forEach(ev => document.removeEventListener(ev, this.h.bloquear));
+    document.removeEventListener('keydown', this.h.tecla, true);
+    window.removeEventListener('beforeunload', this.h.salir);
+  }
+  componentDidUpdate() {
+    try { if (this.state.ses) localStorage.setItem(KEY, JSON.stringify(Object.assign({}, this.state, { msg: '', cargando: false }))); } catch (e) {}
+  }
+
+  enJuego() { const s = this.state; return !!s.ses && JUEGO.includes(s.fase) && !s.cerrado; }
+  vigilando() { return this.props.vigilancia !== false && this.enJuego() && !this.state.bloq; }
+  demo() { const c = window.MISION_CONFIG || {}; return !c.scriptUrl; }
+
+  plan() {
+    const s = this.state; if (!s.ses || !window.MISION_BANCO) return null;
+    const k = s.ses.curso + '|' + s.ses.seed;
+    if (this._pk !== k) { this._plan = window.MISION_BANCO.construir(s.ses.curso, s.ses.seed); this._pk = k; }
+    return this._plan;
+  }
+  nivelAct() { const p = this.plan(); return p ? p.niveles[this.state.nv] : null; }
+  ejAct() { const n = this.nivelAct(); return n ? n.ejercicios[this.state.ej] : null; }
+  maxBase() { const p = this.plan(); return p ? p.niveles.reduce((a, n) => a + n.ejercicios.reduce((b, e) => b + e.pts, 0), 0) : 1; }
+  bonTotal(s) { s = s || this.state; const b = s.bon; return b.racha + b.tiempo + b.reto + b.com + b.pen; }
+  nota(s) { s = s || this.state; return Math.max(0, Math.min(10, Math.round(1000 * (s.pts + this.bonTotal(s)) / this.maxBase()) / 100)); }
+  retoRest() { const s = this.state, n = this.nivelAct(); if (!n || !n.reto) return 0; return Math.ceil(n.segundos + s.extra - (s.ahora - s.tEj) / 1000); }
+  hash(t) { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+  norm(t) { return String(t || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+
+  async api(accion, datos) {
+    if (this.demo()) return this.demoApi(accion, datos);
+    const res = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion }, datos)) });
+    return res.json();
+  }
+  demoApi(accion, d) {
+    const leer = k => { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch (e) { return {}; } };
+    const ses = leer('mision_demo_ses'), filas = leer('mision_demo_filas');
+    if (accion === 'estado') {
+      const x = ses[d.curso] || { abierta: true, codigo: '1234', id: 'DEMO-' + d.curso };
+      if (!x.abierta) return { ok: true, abierta: false };
+      if (String(d.codigo) !== String(x.codigo)) return { ok: true, abierta: true, valido: false };
+      const f = filas[x.id + '|' + this.norm(d.pareja)];
+      return { ok: true, abierta: true, valido: true, sesionId: x.id, yaEntregado: !!(f && f.estado !== 'jugando' && f.estado !== 'bloqueado') };
+    }
+    const k = d.sesionId + '|' + this.norm(d.pareja);
+    filas[k] = Object.assign({}, d, { actualizado: Date.now() });
+    localStorage.setItem('mision_demo_filas', JSON.stringify(filas));
+    return { ok: true };
+  }
+  payload(estado, s) {
+    s = s || this.state; const p = this.plan();
+    const porNivel = p ? p.niveles.map((n, i) => { const d = s.det.filter(x => x.nv === i); return 'N' + (i + 1) + ' ' + d.reduce((a, x) => a + x.obt, 0) + '/' + n.ejercicios.reduce((a, e) => a + e.pts, 0); }).join(' · ') : '';
+    return {
+      sesionId: s.ses.id, curso: s.ses.curso, paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.a + ' / ' + s.ses.b,
+      nivel: Math.min(s.nv + 1, p ? p.niveles.length : 1), niveles: p ? p.niveles.length : 0, puntos: s.pts, bonus: this.bonTotal(s), nota: this.nota(s),
+      salidas: s.salidas, estado, duracionMin: Math.round(((s.tFin || Date.now()) - (s.t0 || Date.now())) / 6000) / 10,
+      insignias: this.insignias(s).filter(b => b.ok).map(b => b.nombre).join(', '), detalle: porNivel
+    };
+  }
+  ping(estado) { const s = this.state; if (!s.ses) return; this.api('progreso', this.payload(estado)).catch(() => {}); }
+
+  salida(motivo) {
+    if (!this.vigilando()) return;
+    const now = Date.now(); if (now - (this._ult || 0) < 2000) return; this._ult = now;
+    const s = this.state, salidas = s.salidas + 1;
+    if (salidas >= 3) { this.setState({ salidas, cerrado: true, bloq: false }, () => this.terminar('cerrado')); return; }
+    const com = Object.assign({}, s.com), bon = Object.assign({}, s.bon); let perdio;
+    if (com.pista > 0) { com.pista--; perdio = 'un comodín de pista'; }
+    else if (com.c50 > 0) { com.c50--; perdio = 'el comodín 50/50'; }
+    else if (com.tiempo > 0) { com.tiempo--; perdio = 'el comodín de tiempo'; }
+    else { bon.pen -= 5; perdio = '5 puntos'; }
+    this.setState({ salidas, com, bon, bloq: true, bloqT: now, bloqMsg: 'Perdieron ' + perdio + (motivo === 'recarga' ? ' (se recargó la página).' : '.') }, () => this.ping('bloqueado'));
+  }
+  pedirFS() { const el = document.documentElement; if (el.requestFullscreen) el.requestFullscreen().then(() => { this._fs = true; }).catch(() => {}); }
+  volver() {
+    const s = this.state, d = Date.now() - s.bloqT;
+    this.pedirFS(); this._ult = Date.now();
+    this.setState({ bloq: false, tNivel: s.tNivel + d, tEj: s.tEj + d, ahora: Date.now() }, () => this.ping('jugando'));
+  }
+
+  async entrar() {
+    const s = this.state, f = s.f; if (s.cargando) return;
+    const err = m => this.setState({ msg: m, cargando: false });
+    if (!f.a.trim() || !f.b.trim()) return err('Escriban los nombres de los dos integrantes.');
+    if (!f.paralelo.trim()) return err('Escriban el paralelo.');
+    if (!/^\d{4}$/.test(f.codigo)) return err('El código de la clase tiene 4 números.');
+    this.setState({ cargando: true, msg: '' });
+    let res;
+    try { res = await this.api('estado', { curso: f.curso, codigo: f.codigo, pareja: f.a.trim() + ' / ' + f.b.trim() }); }
+    catch (e) { return err('No hay conexión con el servidor. Avisen al docente.'); }
+    if (!res || !res.ok) return err('El servidor respondió con un error. Avisen al docente.');
+    if (!res.abierta) return err('La actividad de ' + f.curso + ' todavía no está abierta. Esperen a que el docente la habilite.');
+    if (!res.valido) return err('Código incorrecto. Revisen el código que está en la pantalla.');
+    if (res.yaEntregado) return err('Esta pareja ya entregó la actividad en esta clase.');
+    const a = f.a.trim(), b = f.b.trim();
+    const ses = { id: res.sesionId, curso: f.curso, paralelo: f.paralelo.trim().toUpperCase(), a, b, seed: this.hash(this.norm(a) + '|' + this.norm(b) + '|' + res.sesionId) };
+    const base = this.base();
+    this.setState(Object.assign(base, { f, ses, fase: 'reglas' }));
+  }
+  empezar() { this.pedirFS(); const now = Date.now(); this._ult = now; this.setState({ fase: 'mapa', t0: now, ahora: now }, () => this.ping('jugando')); }
+  abrirNivel(i) { if (i !== this.state.nv) return; this.setState({ fase: 'ejemplo', paso: 0, tNivel: Date.now() }); }
+  practicar() { this.setState(Object.assign({ fase: 'ejercicio', ej: 0 }, this.ejLimpio())); }
+  ejLimpio() { return { r: this.rVacia(), intento: 1, fb: null, oculto: [], pistaOn: false, tEj: Date.now(), extra: 0, ahora: Date.now() }; }
+
+  tieneResp() {
+    const e = this.ejAct(), r = this.state.r; if (!e) return false;
+    if (e.tipo === 'mc' || e.tipo === 'figura') return r.sel != null;
+    if (e.tipo === 'orden') return r.orden.length === e.items.length;
+    if (e.tipo === 'completar') return e.solucion.every((x, k) => r.slots[k] != null);
+    if (e.tipo === 'num') return String(r.num).trim() !== '' && !isNaN(parseFloat(String(r.num).replace(',', '.')));
+    return false;
+  }
+  esCorrecta(e, r) {
+    if (e.tipo === 'mc') return r.sel != null && e.opciones[r.sel].ok;
+    if (e.tipo === 'figura') return r.sel === e.correcta;
+    if (e.tipo === 'orden') return r.orden.length === e.items.length && r.orden.every((di, pos) => e.items[di].i === pos);
+    if (e.tipo === 'completar') return e.solucion.every((sol, k) => r.slots[k] != null && e.banco[r.slots[k]] === sol);
+    if (e.tipo === 'num') return Math.abs(parseFloat(String(r.num).replace(',', '.')) - e.respuesta) <= (e.tol || 0.001);
+    return false;
+  }
+  respTexto(e) {
+    if (e.tipo === 'mc') return e.opciones.find(o => o.ok).t;
+    if (e.tipo === 'figura') return FIGS.find(g => g.k === e.correcta).nombre.toLowerCase();
+    if (e.tipo === 'orden') return e.pasos.join(' → ');
+    if (e.tipo === 'completar') return e.solucion.join(' · ');
+    if (e.tipo === 'num') return (e.unidad === '$' ? '$' : '') + e.respuesta + (e.unidad && e.unidad !== '$' ? ' ' + e.unidad : '');
+    return '';
+  }
+  comprobar(porTiempo) {
+    const s = this.state, n = this.nivelAct(), e = this.ejAct();
+    if (!e || s.fb || s.bloq) return;
+    if (!porTiempo && !this.tieneResp()) return;
+    const reto = !!n.reto, ok = !porTiempo && this.esCorrecta(e, s.r);
+    const bon = Object.assign({}, s.bon); const det = s.det.slice();
+    if (ok) {
+      const obt = s.intento === 1 ? e.pts : Math.round(e.pts / 2);
+      const racha = s.intento === 1 ? s.racha + 1 : 0; let extra = '';
+      if (s.intento === 1 && racha % 3 === 0) { bon.racha += 3; extra += ' ¡Racha de ' + racha + '! +3.'; }
+      if (reto) { const b = Math.max(0, Math.floor(this.retoRest() / 5)); if (b) { bon.reto += b; extra += ' Tiempo sobrante: +' + b + '.'; } }
+      det.push({ nv: s.nv, ok: true, obt, pts: e.pts, primero: s.intento === 1 });
+      this.setState({ pts: s.pts + obt, bon, det, racha, mejor: Math.max(s.mejor, racha), fb: { ok: true, final: true, titulo: s.intento === 1 ? '¡Correcto!' : 'Correcto en el segundo intento', texto: '+' + obt + ' puntos.' + extra, exp: e.explicacion || '' } });
+    } else if (s.intento === 1 && !reto) {
+      const r = Object.assign({}, s.r); if (e.tipo === 'mc' || e.tipo === 'figura') r.desc = r.desc.concat([r.sel]);
+      this.setState({ r, racha: 0, fb: { ok: false, final: false, titulo: 'Todavía no', texto: 'Tienen un segundo intento. Si aciertan, vale la mitad de los puntos.', exp: '' } });
+    } else {
+      det.push({ nv: s.nv, ok: false, obt: 0, pts: e.pts, primero: false });
+      this.setState({ det, racha: 0, fb: { ok: false, final: true, titulo: porTiempo ? 'Se acabó el tiempo' : 'Incorrecto', texto: 'La respuesta era: ' + this.respTexto(e) + '.', exp: e.explicacion || '' } });
+    }
+  }
+  reintentar() {
+    const s = this.state, e = this.ejAct(), r = Object.assign({}, s.r);
+    if (e.tipo === 'mc' || e.tipo === 'figura') r.sel = null;
+    if (e.tipo === 'orden') r.orden = [];
+    this.setState({ fb: null, intento: 2, r });
+  }
+  siguiente() {
+    const s = this.state, n = this.nivelAct();
+    if (s.ej + 1 < n.ejercicios.length) this.setState(Object.assign({ ej: s.ej + 1 }, this.ejLimpio()));
+    else this.finNivel();
+  }
+  finNivel() {
+    const s = this.state, n = this.nivelAct(), now = Date.now();
+    const seg = Math.round((now - s.tNivel) / 1000), d = s.det.filter(x => x.nv === s.nv);
+    const bon = Object.assign({}, s.bon); let bt = 0;
+    if (!n.reto && seg <= n.objetivo) { bt = 4; bon.tiempo += 4; }
+    const obt = d.reduce((a, x) => a + x.obt, 0), max = n.ejercicios.reduce((a, e) => a + e.pts, 0), pct = obt / max;
+    const est = pct >= 0.9 ? 3 : pct >= 0.6 ? 2 : pct > 0 ? 1 : 0;
+    const mm = Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0');
+    const ultimo = s.nv + 1 >= this.plan().niveles.length;
+    this.setState({ bon, fase: 'resumen', res: { nombre: n.nombre, estrellas: '★'.repeat(est) + '☆'.repeat(3 - est), correctas: d.filter(x => x.ok).length + '/' + d.length, puntos: obt + '/' + max, tiempo: n.reto ? '+' + s.bon.reto : mm, tiempoTxt: n.reto ? 'bonus por tiempo' : (bt ? 'dentro del objetivo: +4' : 'objetivo ' + Math.round(n.objetivo / 60) + ' min'), boton: ultimo ? 'Ver mi nota' : 'Siguiente nivel', ultimo, est } }, () => this.ping('jugando'));
+  }
+  continuar() {
+    const s = this.state;
+    if (s.res && s.res.ultimo) { this.terminar('terminado'); return; }
+    const lv = (s.lvEst || []).concat([s.res ? s.res.est : 0]);
+    this.setState({ nv: s.nv + 1, fase: 'mapa', lvEst: lv });
+  }
+  terminar(estado) {
+    const s = this.state, bon = Object.assign({}, s.bon);
+    const lv = s.fase === 'resumen' && s.res ? (s.lvEst || []).concat([s.res.est]) : (s.lvEst || []);
+    if (estado === 'terminado') bon.com = 3 * (s.com.c50 + s.com.pista + s.com.tiempo);
+    this.setState({ bon, fase: 'final', tFin: Date.now(), cerrado: estado === 'cerrado', bloq: false, lvEst: lv, estadoFinal: estado }, () => {
+      if (document.fullscreenElement && document.exitFullscreen) { this._fs = false; document.exitFullscreen().catch(() => {}); }
+      this.entregar();
+    });
+  }
+  async entregar() {
+    const s = this.state; this.setState({ envio: 'enviando' });
+    try { const r = await this.api('entregar', this.payload(s.estadoFinal || 'terminado')); this.setState({ envio: r && r.ok ? 'ok' : 'error' }); }
+    catch (e) { this.setState({ envio: 'error' }); }
+  }
+  insignias(s) {
+    s = s || this.state; const p = this.plan(); const nRet = p ? p.niveles.length - 1 : 0;
+    const dr = s.det.filter(x => x.nv === nRet);
+    const perfecto = p ? p.niveles.some((n, i) => { const d = s.det.filter(x => x.nv === i); return d.length === n.ejercicios.length && d.length > 0 && d.every(x => x.primero); }) : false;
+    const completo = s.fase === 'final' && !s.cerrado;
+    return [
+      { nombre: 'Misión cumplida', desc: 'Terminaron todos los niveles', ok: completo, ini: 'M', color: '#7fe0a0' },
+      { nombre: 'Racha de fuego', desc: '5 aciertos seguidos al primer intento', ok: s.mejor >= 5, ini: 'R', color: '#f0a726' },
+      { nombre: 'Nivel perfecto', desc: 'Un nivel entero sin fallar', ok: perfecto, ini: 'P', color: '#5fd0e8' },
+      { nombre: 'Relámpago', desc: '80 % del reto contrarreloj', ok: dr.length > 0 && dr.filter(x => x.ok).length / dr.length >= 0.8, ini: 'L', color: '#c58cf0' },
+      { nombre: 'Sin ayuda', desc: 'No usaron ningún comodín', ok: s.usoCom === 0 && completo, ini: 'S', color: '#e8f4f8' },
+      { nombre: 'Manos limpias', desc: 'Cero salidas de la actividad', ok: s.salidas === 0 && completo, ini: 'C', color: '#7fe0a0' }
+    ];
+  }
+
+  elegir(i) { const s = this.state; if (s.fb || s.r.desc.includes(i) || s.oculto.includes(i)) return; this.setState({ r: Object.assign({}, s.r, { sel: i }) }); }
+  tocarOrden(di) {
+    const s = this.state; if (s.fb) return;
+    const o = s.r.orden.includes(di) ? s.r.orden.filter(x => x !== di) : s.r.orden.concat([di]);
+    this.setState({ r: Object.assign({}, s.r, { orden: o }) });
+  }
+  tocarChip(bi) { const s = this.state; if (s.fb) return; this.setState({ r: Object.assign({}, s.r, { bsel: s.r.bsel === bi ? null : bi }) }); }
+  tocarSlot(k) {
+    const s = this.state; if (s.fb || this.state.fase !== 'ejercicio') return;
+    const slots = Object.assign({}, s.r.slots);
+    if (s.r.bsel != null) { Object.keys(slots).forEach(x => { if (slots[x] === s.r.bsel) delete slots[x]; }); slots[k] = s.r.bsel; }
+    else if (slots[k] != null) delete slots[k];
+    this.setState({ r: Object.assign({}, s.r, { slots, bsel: null }) });
+  }
+  usar50() {
+    const s = this.state, e = this.ejAct(); if (!e || s.fb || s.com.c50 < 1 || s.oculto.length) return;
+    let malas = [];
+    if (e.tipo === 'mc' && e.opciones.length > 2) malas = e.opciones.map((o, i) => o.ok || s.r.desc.includes(i) ? -1 : i).filter(i => i >= 0);
+    if (e.tipo === 'figura') malas = FIGS.map(g => g.k).filter(k => k !== e.correcta && !s.r.desc.includes(k));
+    if (malas.length < 2) return;
+    const quitar = malas.slice(0, 2);
+    const r = Object.assign({}, s.r); if (quitar.includes(r.sel)) r.sel = null;
+    this.setState({ oculto: quitar, com: Object.assign({}, s.com, { c50: s.com.c50 - 1 }), usoCom: s.usoCom + 1, r });
+  }
+  usarPista() {
+    const s = this.state, e = this.ejAct(), n = this.nivelAct(); if (!e || !e.pista || s.pistaOn || s.fb) return;
+    if (n.tag === 'Guiado') { this.setState({ pistaOn: true }); return; }
+    if (s.com.pista < 1) return;
+    this.setState({ pistaOn: true, com: Object.assign({}, s.com, { pista: s.com.pista - 1 }), usoCom: s.usoCom + 1 });
+  }
+  usarTiempo() { const s = this.state; if (s.fb || s.com.tiempo < 1) return; this.setState({ extra: s.extra + 30, com: Object.assign({}, s.com, { tiempo: s.com.tiempo - 1 }), usoCom: s.usoCom + 1 }); }
+  salirSesion() {
+    if (this.state.envio !== 'ok' && !this.demo()) { if (!window.confirm('La nota todavía no se envió. ¿Cerrar igual?')) return; }
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    this._plan = null; this._pk = null;
+    this.setState(this.base());
+  }
+
+  diagVista(nodos, ver, conSlots) {
+    const s = this.state, e = this.ejAct(), lista = ver != null ? nodos.slice(0, ver) : nodos;
+    const celda = (n, nuevo) => {
+      const def = COLOR_K[n.k] || '#dce9ee';
+      if (n.s == null) return { txt: n.t, borde: nuevo ? '#ffffff' : def, color: '#e8f4f8', fondo: nuevo ? 'rgba(255,255,255,.08)' : 'transparent', fondoD: nuevo ? '#1d2a35' : '#0b1520', click: undefined, cursor: 'default' };
+      const bi = s.r.slots[n.s], lleno = bi != null;
+      let borde = lleno ? def : (s.r.bsel != null ? '#5fd0e8' : '#4d6674');
+      if (s.fb && lleno) borde = e.banco[bi] === e.solucion[n.s] ? '#7fe0a0' : '#ff7b72';
+      return { txt: lleno ? e.banco[bi] : 'toca para colocar', color: lleno ? '#e8f4f8' : '#7d97a3', borde, fondo: lleno ? 'rgba(95,208,232,.06)' : 'rgba(232,244,248,.03)', fondoD: '#0b1520', click: conSlots ? () => this.tocarSlot(n.s) : undefined, cursor: conSlots ? 'pointer' : 'default' };
+    };
+    return lista.map((n, i) => {
+      const prev = lista[i - 1], c = celda(n, ver != null && i === lista.length - 1);
+      const v = { flecha: i > 0, etSi: !!prev && prev.k === 'd', isO: n.k === 'o', isR: n.k === 'r', isP: n.k === 'p', isD: n.k === 'd', isL: n.k === 'l', txt: c.txt, borde: c.borde, color: c.color, fondo: c.fondo, fondoD: c.fondoD, onClick: c.click, cursor: c.cursor, hasNo: !!n.no };
+      if (n.no) { const cn = celda(n.no, false); Object.assign(v, { noR: n.no.k !== 'p', noP: n.no.k === 'p', noTxt: cn.txt, noBorde: cn.borde, noColor: cn.color, noFondo: cn.fondo, noClick: cn.click, noCursor: cn.cursor, noNota: n.nota || '' }); }
+      return v;
+    });
+  }
+
+  renderVals() {
+    const s = this.state, P = this.props;
+    const banco = !!window.MISION_BANCO;
+    const out = {
+      vCargando: !banco && s.fase !== 'login', vLogin: s.fase === 'login', vReglas: s.fase === 'reglas' && banco, vMapa: s.fase === 'mapa' && banco,
+      vEjemplo: s.fase === 'ejemplo' && banco, vEjercicio: s.fase === 'ejercicio' && banco, vResumen: s.fase === 'resumen', vFinal: s.fase === 'final' && banco, vBloq: s.bloq,
+      enJuego: !!s.ses && s.fase !== 'login' && s.fase !== 'reglas', demo: this.demo(), f: s.f, msg: s.msg, hayMsg: !!s.msg, bloqMsg: s.bloqMsg,
+      loginLabel: s.cargando ? 'Verificando…' : 'Entrar', loginOpac: s.cargando ? 0.6 : 1,
+      setA: e => this.setState({ f: Object.assign({}, s.f, { a: e.target.value.slice(0, 40) }) }),
+      setB: e => this.setState({ f: Object.assign({}, s.f, { b: e.target.value.slice(0, 40) }) }),
+      setParalelo: e => this.setState({ f: Object.assign({}, s.f, { paralelo: e.target.value.slice(0, 3) }) }),
+      setCodigo: e => this.setState({ f: Object.assign({}, s.f, { codigo: e.target.value.replace(/\D/g, '').slice(0, 4) }) }),
+      enterLogin: e => { if (e.key === 'Enter') this.entrar(); },
+      entrar: () => this.entrar(), empezar: () => this.empezar(), continuar: () => this.continuar(), volver: () => this.volver(),
+      cursosBtn: [['8vo', '8vo EGB'], ['9no', '9no EGB'], ['3BGU', '3ro BGU']].map(([k, t]) => ({ t, onClick: () => this.setState({ f: Object.assign({}, s.f, { curso: k }) }), borde: s.f.curso === k ? '#5fd0e8' : 'rgba(232,244,248,.18)', fondo: s.f.curso === k ? 'rgba(95,208,232,.14)' : '#0f1b26' }))
+    };
+    const p = this.plan();
+    const seg = s.t0 ? Math.max(0, Math.floor(((s.fase === 'final' ? s.tFin : s.ahora) - s.t0) / 1000)) : 0;
+    out.hud = {
+      curso: p ? p.nombre.toUpperCase() : '', pareja: s.ses ? s.ses.a + ' · ' + s.ses.b + (s.ses.paralelo ? ' · ' + s.ses.paralelo : '') : '',
+      puntos: s.pts + this.bonTotal(), racha: s.racha, c50: s.com.c50, pista: s.com.pista, tiempo: s.com.tiempo, salidas: s.salidas,
+      salBorde: s.salidas ? 'rgba(255,123,114,.7)' : 'rgba(232,244,248,.2)', salColor: s.salidas ? '#ff7b72' : '#c9dbe2',
+      reloj: Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0')
+    };
+    if (!p) return Object.assign(out, { mapa: [], diag: [], hayDiag: false, cols: 'minmax(0,1fr)', cab: {}, ej: {}, ejemplo: { pasos: [] }, reglas: {}, res: s.res || {}, fin: { desglose: [], insignias: [] } });
+
+    out.reglas = { curso: p.nombre.toUpperCase(), niveles: p.niveles.length - 1 };
+    const lvEst = s.lvEst || [];
+    out.mapa = p.niveles.map((n, i) => {
+      const hecho = i < s.nv || (s.fase === 'final'), actual = i === s.nv && s.fase !== 'final';
+      const color = n.reto ? '#ff7b72' : n.tag === 'Guiado' ? '#5fd0e8' : n.tag === 'Solo' ? '#7fe0a0' : '#f0a726';
+      const e = lvEst[i] || 0;
+      return { num: n.reto ? '★' : i + 1, nombre: n.nombre, tag: (n.reto ? 'RETO FINAL · ' + n.segundos + ' S POR PREGUNTA' : n.tag.toUpperCase() + ' · ' + n.ejercicios.length + ' EJERCICIOS'), color, estado: hecho ? '★'.repeat(e) + '☆'.repeat(3 - e) : actual ? 'ENTRAR →' : 'BLOQUEADO', onClick: () => this.abrirNivel(i), borde: actual ? color : 'rgba(232,244,248,.12)', fondo: actual ? 'rgba(95,208,232,.07)' : '#0b1520', opac: hecho || actual ? 1 : 0.45, cursor: actual ? 'pointer' : 'default' };
+    });
+
+    const n = this.nivelAct(), e = this.ejAct();
+    out.vTrabajo = (s.fase === 'ejemplo' || s.fase === 'ejercicio') && !!n;
+    out.diag = []; out.hayDiag = false;
+    if (n && s.fase === 'ejemplo') {
+      const ex = n.ejemplo, total = ex.pasos.length, paso = Math.min(s.paso, total - 1);
+      if (ex.nodos) { out.diag = this.diagVista(ex.nodos, ex.pasos[paso].ver != null ? ex.pasos[paso].ver : ex.nodos.length, false); out.hayDiag = true; }
+      out.cab = { linea: (n.reto ? 'RETO FINAL' : 'NIVEL ' + (s.nv + 1) + ' · ' + n.tag.toUpperCase()) + ' · EJEMPLO RESUELTO', titulo: ex.titulo, color: '#5fd0e8', esReto: false };
+      const hayMas = paso < total - 1;
+      out.ejemplo = {
+        problema: ex.problema, hayMas,
+        pasos: ex.pasos.slice(0, paso + 1).map((x, i) => ({ num: i + 1, t: x.t, borde: i === paso ? 'rgba(95,208,232,.6)' : 'rgba(232,244,248,.12)', fondo: i === paso ? 'rgba(95,208,232,.08)' : '#0b1520' })),
+        siguiente: () => this.setState({ paso: paso + 1 }),
+        practicar: () => this.practicar(), btnTxt: n.reto ? 'Empezar el reto' : (hayMas ? 'Saltar al ejercicio' : 'Ya entendí: a practicar'),
+        btnFondo: hayMas ? 'transparent' : '#7fe0a0', btnColor: hayMas ? '#7fe0a0' : '#062914'
+      };
+    } else out.ejemplo = { pasos: [] };
+
+    out.ej = {};
+    if (n && e && s.fase === 'ejercicio') {
+      const fb = s.fb, fin = fb && fb.final;
+      if (e.nodos) { out.diag = this.diagVista(e.nodos, null, e.tipo === 'completar'); out.hayDiag = true; }
+      const rest = n.reto ? Math.max(0, this.retoRest()) : 0, tot = n.reto ? n.segundos + s.extra : 1;
+      out.cab = { linea: (n.reto ? 'RETO FINAL' : 'NIVEL ' + (s.nv + 1) + ' · ' + n.tag.toUpperCase()) + ' · EJERCICIO ' + (s.ej + 1) + ' DE ' + n.ejercicios.length + (s.intento === 2 ? ' · SEGUNDO INTENTO' : ''), titulo: n.nombre, color: n.reto ? '#ff7b72' : '#5fd0e8', esReto: !!n.reto, retoSeg: rest + ' s', retoPct: Math.min(100, 100 * rest / tot) + '%', retoColor: rest <= 10 ? '#ff7b72' : '#f0a726' };
+      const colOp = (sel, desc, esOk) => {
+        if (fin && esOk) return ['#7fe0a0', 'rgba(127,224,160,.12)', 1];
+        if (fin && sel && !esOk) return ['#ff7b72', 'rgba(255,123,114,.1)', 1];
+        if (desc) return ['rgba(255,123,114,.5)', '#0b1520', 0.45];
+        if (sel) return ['#5fd0e8', 'rgba(95,208,232,.14)', 1];
+        return ['rgba(232,244,248,.18)', '#0f1b26', fin ? 0.55 : 1];
+      };
+      out.ej = {
+        enunciado: e.enunciado, esMc: e.tipo === 'mc', esFigura: e.tipo === 'figura', esOrden: e.tipo === 'orden', esCompletar: e.tipo === 'completar', esNum: e.tipo === 'num',
+        destacado: e.destacado || '', unidad: e.unidad || '', num: s.r.num, pista: e.pista || '', pistaOn: s.pistaOn,
+        opciones: e.tipo === 'mc' ? e.opciones.map((o, i) => ({ o, i })).filter(x => !s.oculto.includes(x.i)).map(({ o, i }) => { const c = colOp(s.r.sel === i, s.r.desc.includes(i), o.ok); return { t: o.t, letra: 'ABCD'[i], onClick: () => this.elegir(i), borde: c[0], fondo: c[1], opac: c[2], letraColor: c[0] === 'rgba(232,244,248,.18)' ? '#9fb6c0' : c[0] }; }) : [],
+        figuras: e.tipo === 'figura' ? FIGS.filter(g => !s.oculto.includes(g.k)).map(g => { const c = colOp(s.r.sel === g.k, s.r.desc.includes(g.k), g.k === e.correcta); return { nombre: g.nombre, sub: g.sub, isO: g.k === 'o', isR: g.k === 'r', isP: g.k === 'p', isD: g.k === 'd', onClick: () => this.elegir(g.k), borde: c[0], fondo: c[1], opac: c[2] }; }) : [],
+        items: e.tipo === 'orden' ? e.items.map((it, di) => { const pos = s.r.orden.indexOf(di); let borde = pos >= 0 ? '#5fd0e8' : 'rgba(232,244,248,.18)'; if (fb && pos >= 0) borde = it.i === pos ? '#7fe0a0' : '#ff7b72'; return { t: it.t, num: pos >= 0 ? pos + 1 : '', onClick: () => this.tocarOrden(di), borde, fondo: pos >= 0 ? 'rgba(95,208,232,.08)' : '#0f1b26' }; }) : [],
+        reiniciarOrden: () => { if (!s.fb) this.setState({ r: Object.assign({}, s.r, { orden: [] }) }); },
+        banco: e.tipo === 'completar' ? e.banco.map((t, bi) => { const usado = Object.values(s.r.slots).includes(bi), sel = s.r.bsel === bi; return { t, onClick: () => this.tocarChip(bi), borde: sel ? '#5fd0e8' : 'rgba(232,244,248,.22)', fondo: sel ? 'rgba(95,208,232,.18)' : '#0f1b26', opac: usado && !sel ? 0.35 : 1 }; }) : [],
+        setNum: ev => { if (!s.fb || !s.fb.final) this.setState({ r: Object.assign({}, s.r, { num: ev.target.value.replace(/[^0-9.,-]/g, '').slice(0, 10) }) }); },
+        enterNum: ev => { if (ev.key === 'Enter') this.comprobar(); },
+        sinFb: !fb, hayFb: !!fb,
+        c50: () => this.usar50(), pedirPista: () => this.usarPista(), masTiempo: () => this.usarTiempo(), comprobar: () => this.comprobar(),
+        c50Opac: s.com.c50 > 0 && !s.oculto.length && ((e.tipo === 'mc' && e.opciones.length > 2) || e.tipo === 'figura') ? 1 : 0.3,
+        pistaLabel: n.tag === 'Guiado' ? 'PISTA GRATIS' : 'PISTA', pistaOpac: e.pista && !s.pistaOn && (n.tag === 'Guiado' || s.com.pista > 0) ? 1 : 0.3,
+        tiempoOpac: s.com.tiempo > 0 ? 1 : 0.3, compOpac: this.tieneResp() ? 1 : 0.4,
+        fbColor: fb ? (fb.ok ? '#7fe0a0' : fb.final ? '#ff7b72' : '#f0a726') : '#7fe0a0', fbFondo: fb ? (fb.ok ? 'rgba(127,224,160,.08)' : fb.final ? 'rgba(255,123,114,.08)' : 'rgba(240,167,38,.08)') : 'transparent',
+        fbTitulo: fb ? fb.titulo : '', fbTexto: fb ? fb.texto : '', fbExp: fb ? fb.exp : '', fbHayExp: !!(fb && fb.exp),
+        fbBoton: fb ? (fb.final ? (s.ej + 1 < n.ejercicios.length ? 'Siguiente ejercicio →' : 'Terminar el nivel →') : 'Intentar de nuevo') : '',
+        fbAccion: () => { if (!s.fb) return; if (s.fb.final) this.siguiente(); else this.reintentar(); }
+      };
+    }
+    out.cols = out.hayDiag ? 'repeat(auto-fit,minmax(min(100%,440px),1fr))' : 'minmax(0,1fr)';
+    if (!out.cab) out.cab = {};
+    out.res = s.res || {};
+
+    const nota = this.nota(), cerr = s.cerrado || s.estadoFinal === 'cerrado', b = s.bon;
+    const color = cerr ? '#ff7b72' : nota >= 9 ? '#7fe0a0' : nota >= 7 ? '#5fd0e8' : '#f0a726';
+    out.fin = {
+      nota: nota.toFixed(2).replace('.', ','), color, pareja: s.ses ? s.ses.a + ' y ' + s.ses.b : '',
+      linea: cerr ? 'INTENTO CERRADO POR SALIDAS' : 'MISIÓN TERMINADA · ' + p.nombre.toUpperCase(),
+      mensaje: cerr ? 'Salieron tres veces de la actividad. Se registró la nota que tenían.' : nota >= 9 ? 'Excelente trabajo en equipo.' : nota >= 7 ? 'Buen trabajo. Revisen los ejercicios que fallaron.' : 'Hay temas para reforzar: pídanle al docente la revisión.',
+      desglose: [
+        { t: 'Ejercicios (' + s.det.filter(x => x.ok).length + '/' + s.det.length + ' correctos)', v: s.pts + ' / ' + this.maxBase() },
+        { t: 'Rachas', v: '+' + b.racha }, { t: 'Niveles a tiempo', v: '+' + b.tiempo }, { t: 'Reto contrarreloj', v: '+' + b.reto },
+        { t: 'Comodines sin usar', v: '+' + b.com }, { t: 'Penalización por salidas', v: String(b.pen) }, { t: 'Salidas registradas', v: s.salidas + ' / 3' }
+      ],
+      insignias: this.insignias().map(x => ({ nombre: x.nombre, desc: x.desc, ini: x.ini, color: x.ok ? x.color : '#4d6674', opac: x.ok ? 1 : 0.45 })),
+      envioTxt: this.demo() ? 'Modo demostración: la nota quedó guardada en este navegador.' : s.envio === 'ok' ? 'Nota enviada al docente ✓' : s.envio === 'enviando' ? 'Enviando la nota…' : 'No se pudo enviar la nota. No cierren esta ventana y avisen al docente.',
+      envioColor: this.demo() || s.envio === 'ok' ? 'rgba(127,224,160,.6)' : s.envio === 'enviando' ? 'rgba(95,208,232,.5)' : '#ff7b72',
+      puedeReenviar: !this.demo() && s.envio === 'error', puedeSalir: this.demo() || s.envio === 'ok' || s.envio === 'error',
+      reenviar: () => this.entregar(), salir: () => this.salirSesion()
+    };
+    return out;
+  }
+}
+</script>
+</body>
+</html>
