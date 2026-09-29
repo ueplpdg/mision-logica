@@ -11,6 +11,7 @@ La actividad solo se abre cuando el docente la habilita desde su panel con un c�
 |---|---|
 | `index.html` | La actividad de los estudiantes |
 | `escape.html` | **Escape del Laboratorio** (3ro BGU): juego 3D para dos jugadores en un teclado |
+| `escape-retos.js` | Retos nuevos del Escape (robot, matriz, regla oculta, rejilla, estimación, rutas). Debe estar junto a `escape.html` |
 | `docente.html` | Panel docente: abrir/cerrar, código de clase, seguimiento en vivo y ranking para la TEROS |
 | `banco-ejercicios.js` | Todos los ejercicios de los tres cursos (se pueden editar) |
 | `config.js` | Aquí va la URL del servidor. Vacía = modo demostración |
@@ -57,6 +58,19 @@ La actividad solo se abre cuando el docente la habilita desde su panel con un c�
 4. Pestaña **En vivo**: ves en qué nivel va cada pareja y quién salió de la actividad.
 5. Al final, pestaña **Ranking (TEROS)** para proyectar el podio.
 6. **Cerrar la actividad**. Las notas quedan en la pestaña «Notas» de tu hoja.
+
+## Escape del Laboratorio (8vo, 9no, 10mo y 3ro BGU)
+- **Cursos:** 8vo y 9no tienen 12 retos (6 de diagramas de flujo y 6 de lógica básica). 10mo y 3ro BGU tienen los 17. 3ro BGU empieza en nivel 2.
+- **Aulas de diagramas** (escalera al este del patio): 2.º piso (Arma el diagrama, Ordena los pasos, Completa la decisión) y 3.er piso (Sigue el diagrama, Encuentra el error, Del diagrama al aparato). Todos son proyectos DIY del colegio con Arduino.
+- **Cancha:** cada 2 retos resueltos ganan una ficha para un partido de fútbol o básquet 1 vs 1 de 60 s que recarga batería (+10 %, y +2 % por gol o canasta, hasta 25 %).
+- La salida se abre con **7 retos completados**.
+- Sube también **escape-flujo.js** junto a escape.html.
+
+### Anterior
+- 11 retos; la salida se abre con **6 completados** (3 rondas cada uno). Dos retos están en el patio: se sale por el anillo del fondo del laboratorio.
+- **Salir de un reto es gratis**: botón «Salir (se guarda)». Al volver, la ronda sigue donde quedó.
+- Cooperación real: cada jugador maneja una parte (J1 con W A S D, J2 con las flechas) y para enviar J1 pulsa **E** y J2 **ENTER** a la vez. En la rejilla y el interrogatorio cada uno tiene pistas propias (mantener **Q** o **P** para leerlas).
+- Nota = puntos ÷ (6 retos × máximo por reto) × 9,5 + batería × 0,5, con tope 10. Hacer más de 6 retos compensa rondas falladas.
 
 ## Cómo se califica
 - 4 niveles + reto contrarreloj. Cada nivel: ejemplo resuelto → ejercicios de dificultad creciente

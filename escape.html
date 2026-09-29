@@ -17,6 +17,8 @@
   @keyframes pulso { 0%,100% { opacity:1 } 50% { opacity:.5 } }
 </style>
 <script src="./config.js"></script>
+<script src="./escape-retos.js"></script>
+<script src="./escape-flujo.js"></script>
 </helmet>
 
 <div style="position:fixed;inset:0;background:#05090e;color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none">
@@ -39,7 +41,7 @@
 </div>
 <div style="background:rgba(5,9,14,.82);border-left:4px solid #7fe0a0;padding:9px 14px;font-size:14px;line-height:1.4;color:#dce9ee">{{ hud.objetivo }}</div>
 </div>
-<div style="display:flex;gap:6px;background:rgba(5,9,14,.82);border:1px solid rgba(232,244,248,.14);padding:8px 10px">
+<div style="display:flex;flex-wrap:wrap;gap:6px;max-width:min(680px,62vw);background:rgba(5,9,14,.82);border:1px solid rgba(232,244,248,.14);padding:8px 10px">
 <sc-for list="{{ hud.est }}" as="e" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;gap:6px;border:1px solid {{ e.borde }};padding:5px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:{{ e.color }};white-space:nowrap"><div style="width:9px;height:9px;background:{{ e.punto }};transform:rotate(45deg)"></div>{{ e.t }}</div>
 </sc-for>
@@ -65,6 +67,21 @@
 <div style="background:rgba(5,9,14,.82);border:1px solid #f0a726;color:#f0a726;padding:6px 10px">J2 · FLECHAS</div>
 </div>
 
+<sc-if value="{{ hayDep }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:50%;bottom:120px;transform:translateX(-50%);display:flex;flex-direction:column-reverse;align-items:center;gap:8px;pointer-events:none">
+<div style="display:flex;align-items:stretch;background:rgba(5,9,14,.92);border:2px solid #ffffff">
+<div style="background:#5fd0e8;color:#081018;font-family:'Archivo Black',sans-serif;font-size:34px;padding:6px 20px">{{ dep.a }}</div>
+<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4px 18px;gap:2px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#e8f4f8;font-weight:600">{{ dep.t }}</div><div style="font-family:'Archivo Black',sans-serif;font-size:22px;color:#ffd166">{{ dep.reloj }}</div></div>
+<div style="background:#f0a726;color:#081018;font-family:'Archivo Black',sans-serif;font-size:34px;padding:6px 20px">{{ dep.b }}</div>
+</div>
+<div style="background:rgba(5,9,14,.85);padding:6px 12px;font-size:14px;color:#dce9ee;max-width:520px;text-align:center">{{ dep.msg }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hayToast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:50%;bottom:120px;transform:translateX(-50%);background:rgba(5,9,14,.92);border:2px solid #7fe0a0;color:#7fe0a0;font-family:'Archivo Black',sans-serif;font-size:20px;padding:12px 22px;text-align:center;max-width:90vw">{{ toast }}</div>
+</sc-if>
+
 <sc-if value="{{ hayPrompt }}" hint-placeholder-val="{{ false }}">
 <div style="position:absolute;left:50%;bottom:64px;transform:translateX(-50%);min-width:320px;max-width:90vw;background:rgba(5,9,14,.9);border:2px solid {{ promptColor }};padding:12px 20px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none">
 <div style="font-size:17px;font-weight:700;text-align:center;color:#e8f4f8">{{ prompt }}</div>
@@ -77,9 +94,9 @@
 <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,9,14,.97) 0%,rgba(5,9,14,.9) 45%,rgba(5,9,14,.45) 100%);display:flex;align-items:flex-start;padding:40px 6vw;overflow:auto">
 <div style="width:100%;max-width:540px;margin:auto 0;display:flex;flex-direction:column;gap:20px">
 <div style="display:flex;flex-direction:column;gap:8px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#5fd0e8;font-weight:600">ROBÓTICA · U. E. P. LA PROVIDENCIA · 10MO EGB · 3RO BGU</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#5fd0e8;font-weight:600">ROBÓTICA · U. E. P. LA PROVIDENCIA · 8VO · 9NO · 10MO · 3RO BGU</div>
 <div style="font-family:'Archivo Black',sans-serif;font-size:54px;line-height:.98">Escape del<br />Laboratorio</div>
-<div style="font-size:17px;color:#9fb6c0;line-height:1.45">El campus inteligente se bloqueó. Dos jugadores, un teclado y cinco terminales que solo se reactivan pensando juntos.</div>
+<div style="font-size:17px;color:#9fb6c0;line-height:1.45">El campus inteligente se bloqueó. Dos jugadores, un teclado y retos que solo se resuelven pensando juntos.</div>
 </div>
 <sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
 <div style="border:1px solid rgba(240,167,38,.6);background:rgba(240,167,38,.08);color:#f0c26b;padding:10px 14px;font-size:14px;line-height:1.4">Modo demostración: no hay servidor configurado. Código de prueba <b>1234</b>.</div>
@@ -162,7 +179,12 @@
 <div style="border:1px solid rgba(232,244,248,.25);padding:6px 10px;color:#c9dbe2;white-space:nowrap">{{ pz.ronda }}</div>
 <div style="display:flex;align-items:center;gap:5px;border:1px solid rgba(232,244,248,.25);padding:6px 10px;color:#c9dbe2">NIVEL<sc-for list="{{ pz.dots }}" as="d" hint-placeholder-count="3"><div style="width:10px;height:10px;background:{{ d.c }};transform:rotate(45deg)"></div></sc-for></div>
 <div style="border:1px solid {{ pz.opColor }};color:{{ pz.opColor }};padding:6px 10px;white-space:nowrap">OPERA: {{ pz.operador }}</div>
+<button onClick="{{ pz.salir }}" style="background:transparent;border:2px solid rgba(232,244,248,.45);color:#e8f4f8;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer;white-space:nowrap" style-hover="background:rgba(232,244,248,.1)">{{ pz.salirTxt }}</button>
 </div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 22px;border-bottom:1px solid rgba(232,244,248,.08);background:rgba(232,244,248,.03)">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:#9fb6c0;font-weight:600;white-space:nowrap">CONTROLES EN EQUIPO</div>
+<div style="flex:1;min-width:240px;font-size:14px;line-height:1.4;color:#dce9ee">{{ pz.tec }}</div>
 </div>
 
 <div style="padding:22px">
@@ -241,7 +263,7 @@
 <div style="width:52px;height:58px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:{{ c.casco }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:22px;color:#081018">{{ c.ini }}</div>
 <div style="display:flex;flex-direction:column;gap:2px"><div style="font-family:'Archivo Black',sans-serif;font-size:19px">{{ c.nombre }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:{{ c.tipoColor }}">{{ c.tipo }}</div></div>
 </div>
-<div style="font-size:17px;line-height:1.4;color:#e8f4f8;min-height:48px">&ldquo;{{ c.frase }}&rdquo;</div>
+<div style="display:flex;flex-direction:column;gap:4px"><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:{{ c.quienColor }}">{{ c.quien }}</div><div style="font-size:17px;line-height:1.4;color:#e8f4f8;min-height:48px;filter:{{ c.blur }};transition:filter .15s">&ldquo;{{ c.frase }}&rdquo;</div></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
 <button onClick="{{ c.onL }}" style="background:{{ c.lFondo }};border:2px solid #7fe0a0;color:{{ c.lColor }};font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:700;padding:9px 4px;cursor:pointer">LEAL</button>
 <button onClick="{{ c.onS }}" style="background:{{ c.sFondo }};border:2px solid #ff7b72;color:{{ c.sColor }};font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:700;padding:9px 4px;cursor:pointer">SABOTEADOR</button>
@@ -335,6 +357,190 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ pz.esRobot }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:22px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-size:17px;color:#c9dbe2;line-height:1.45">Programen al robot para que llegue a la meta <b style="color:#ffd166">◎</b> sin chocar con los muros. {{ rb.txt }}</div>
+<div style="display:grid;grid-template-columns:{{ rb.cols }};gap:4px;width:100%;max-width:440px">
+<sc-for list="{{ rb.celdas }}" as="c" hint-placeholder-count="25"><div style="aspect-ratio:1;background:{{ c.fondo }};border:2px solid {{ c.borde }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:24px;color:{{ c.color }}">{{ c.t }}</div></sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">PROGRAMA PRINCIPAL · {{ rb.mainQuien }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ rb.main }}" as="b" hint-placeholder-count="6"><div style="width:54px;height:54px;border:3px solid {{ b.borde }};background:{{ b.fondo }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:22px;color:{{ b.color }}">{{ b.t }}</div></sc-for></div>
+</div>
+<sc-if value="{{ rb.hayFun }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">FUNCIÓN P · {{ rb.funQuien }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ rb.fun }}" as="b" hint-placeholder-count="4"><div style="width:54px;height:54px;border:3px solid {{ b.borde }};background:{{ b.fondo }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:22px;color:{{ b.color }}">{{ b.t }}</div></sc-for></div>
+</div>
+</sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ rb.paleta }}" as="p" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:6px;border:1px solid rgba(232,244,248,.18);padding:6px 10px;font-size:14px;color:#c9dbe2"><b style="font-family:'Archivo Black',sans-serif;color:#9ae66e;font-size:18px">{{ p.t }}</b>{{ p.n }}</div></sc-for></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pz.esRaven }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:22px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-size:17px;color:#c9dbe2;line-height:1.45">Cada fila sigue reglas de <b style="color:#e8f4f8">figura</b>, <b style="color:#e8f4f8">cantidad</b> y <b style="color:#e8f4f8">relleno</b>. Construyan la pieza que falta con las perillas.</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:440px">
+<sc-for list="{{ rv.celdas }}" as="c" hint-placeholder-count="9"><div style="aspect-ratio:1.25;background:{{ c.fondo }};border:2px {{ c.linea }} {{ c.borde }};display:flex;align-items:center;justify-content:center;font-size:26px;letter-spacing:.08em;color:{{ c.color }};text-align:center;padding:4px">{{ c.t }}</div></sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ rv.perillas }}" as="k" hint-placeholder-count="3">
+<div style="border:2px solid {{ k.borde }};background:#0f1b26;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px">
+<div style="display:flex;flex-direction:column;gap:3px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">{{ k.nombre }}</div><div style="font-family:'Archivo Black',sans-serif;font-size:22px;color:#e8f4f8">{{ k.v }}</div></div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:{{ k.borde }};white-space:nowrap">{{ k.teclas }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pz.esWcst }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:17px;color:#c9dbe2;line-height:1.45">Pongan cada tarjeta en una pila. Hay una regla secreta (color, forma o cantidad): la terminal solo dice si acertaron. <b style="color:#ffd166">Cada cierto tiempo la regla cambia sin avisar.</b></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">
+<sc-for list="{{ wc.pilas }}" as="p" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:6px;align-items:stretch">
+<div style="height:110px;background:#f4f1e8;border:4px solid {{ p.borde }};display:flex;align-items:center;justify-content:center;font-size:26px;letter-spacing:.06em;color:{{ p.color }};text-align:center;padding:6px">{{ p.t }}</div>
+<div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:{{ p.tc }}">{{ p.tecla }}</div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:18px">
+<div style="width:150px;height:120px;background:#f4f1e8;border:4px solid #ffd166;box-shadow:0 0 30px rgba(255,209,102,.35);display:flex;align-items:center;justify-content:center;font-size:30px;letter-spacing:.06em;color:{{ wc.carta.color }};text-align:center;padding:6px">{{ wc.carta.t }}</div>
+<div style="display:flex;flex-direction:column;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600">
+<div style="color:#ffd166">TARJETA {{ wc.n }} DE {{ wc.max }}</div>
+<div style="color:#c9dbe2">RACHA DE ACIERTOS: {{ wc.racha }}</div>
+<div style="color:#c9dbe2">REGLAS DESCUBIERTAS: {{ wc.hechas }}</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pz.esEinstein }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:17px;color:#c9dbe2;line-height:1.45">Cada estudiante hace un proyecto distinto{{ ei.extra }}. Las pistas están repartidas: cada jugador lee las suyas en voz alta. Toquen una casilla para marcar <b style="color:#ff7b72">✗</b> (no puede ser) o <b style="color:#7fe0a0">✓</b> (es).</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px">
+<div style="border:2px solid #5fd0e8;background:rgba(95,208,232,.05);padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#5fd0e8;font-weight:600">PISTAS DE J1 · MANTÉN Q</div>
+<sc-for list="{{ ei.p1 }}" as="q" hint-placeholder-count="2"><div style="font-size:16px;line-height:1.4;color:#e8f4f8;filter:{{ q.blur }};transition:filter .15s">{{ q.t }}</div></sc-for>
+</div>
+<div style="border:2px solid #f0a726;background:rgba(240,167,38,.05);padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#f0a726;font-weight:600">PISTAS DE J2 · MANTÉN P</div>
+<sc-for list="{{ ei.p2 }}" as="q" hint-placeholder-count="2"><div style="font-size:16px;line-height:1.4;color:#e8f4f8;filter:{{ q.blur }};transition:filter .15s">{{ q.t }}</div></sc-for>
+</div>
+</div>
+<div style="overflow-x:auto">
+<table style="border-collapse:collapse;font-family:'IBM Plex Sans',sans-serif;font-size:15px">
+<thead><tr>
+<th style="padding:6px 10px"></th>
+<sc-for list="{{ ei.cab }}" as="c" hint-placeholder-count="4"><th style="padding:6px 8px;color:{{ c.color }};font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;border-bottom:2px solid {{ c.color }};min-width:76px">{{ c.t }}</th></sc-for>
+</tr></thead>
+<tbody>
+<sc-for list="{{ ei.filas }}" as="f" hint-placeholder-count="3">
+<tr>
+<td style="padding:6px 12px;font-family:'Archivo Black',sans-serif;font-size:17px;color:#e8f4f8;white-space:nowrap">{{ f.nom }}</td>
+<sc-for list="{{ f.celdas }}" as="c" hint-placeholder-count="4"><td style="padding:3px"><button onClick="{{ c.onClick }}" style="width:100%;height:44px;background:{{ c.fondo }};border:2px solid {{ c.borde }};color:{{ c.color }};font-family:'Archivo Black',sans-serif;font-size:20px;cursor:pointer">{{ c.t }}</button></td></sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pz.esEstim }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:26px;line-height:1.25;color:#e8f4f8">{{ es.q }}</div>
+<div style="font-size:16px;color:#c9dbe2;line-height:1.45">No hace falta el número exacto: den un <b style="color:#66e0d2">rango</b> en el que estén seguros de que está la respuesta. Un rango angosto da más puntos, pero si la respuesta queda fuera, pierden lo apostado. Pueden calcular en una hoja.</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px">
+<div style="border:2px solid #5fd0e8;background:#0f1b26;padding:14px;display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#5fd0e8;font-weight:600">MÍNIMO · J1 (A D · W S)</div><div style="font-family:'Archivo Black',sans-serif;font-size:34px;color:#e8f4f8">{{ es.min }}</div></div>
+<div style="border:2px solid #f0a726;background:#0f1b26;padding:14px;display:flex;flex-direction:column;gap:6px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#f0a726;font-weight:600">MÁXIMO · J2 (← → · ↑ ↓)</div><div style="font-family:'Archivo Black',sans-serif;font-size:34px;color:#e8f4f8">{{ es.max }}</div></div>
+</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#9fb6c0">{{ es.pasoTxt }}</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">¿CUÁNTA BATERÍA APUESTAN? · SI ACIERTAN, GANAN LA MITAD</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ es.bets }}" as="b" hint-placeholder-count="4"><button onClick="{{ b.onClick }}" style="background:{{ b.fondo }};border:2px solid {{ b.borde }};color:#e8f4f8;font-family:'Archivo Black',sans-serif;font-size:18px;padding:10px 18px;cursor:pointer">{{ b.t }}</button></sc-for></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pz.esRutas }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="font-size:17px;color:#c9dbe2;line-height:1.45">El robot de reparto va del <b style="color:#5fd0e8">colegio</b> a la <b style="color:#f0a726">casa del cliente</b>. Cada calle muestra los minutos que tarda. {{ ru.txt }} J1 traza desde el colegio y J2 desde la casa: encuéntrense en una esquina.</div>
+<div style="background:#0f1b26;border:1px solid rgba(143,184,255,.3);padding:34px 40px">
+<div style="position:relative;width:100%;aspect-ratio:{{ ru.ratio }}">
+<sc-for list="{{ ru.calles }}" as="e" hint-placeholder-count="10"><div style="position:absolute;left:{{ e.l }};top:{{ e.t }};width:{{ e.w }};height:{{ e.h }};background:{{ e.color }};transform:{{ e.tr }};display:flex;align-items:center;justify-content:center"><div style="background:#0f1b26;border:1px solid {{ e.color }};color:{{ e.tc }};font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;padding:1px 6px;white-space:nowrap">{{ e.w8 }}</div></div></sc-for>
+<sc-for list="{{ ru.nodos }}" as="n" hint-placeholder-count="12"><div style="position:absolute;left:{{ n.l }};top:{{ n.t }};width:{{ n.s }};height:{{ n.s }};transform:translate(-50%,-50%);border-radius:50%;background:{{ n.fondo }};border:3px solid {{ n.borde }};display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:13px;color:#081018">{{ n.t2 }}</div></sc-for>
+</div>
+</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;color:#e8f4f8">{{ ru.costo }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ pz.esFlujo }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:22px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+<div style="font-size:17px;color:#c9dbe2;line-height:1.45">{{ fl.info }}</div>
+<sc-if value="{{ pz.esOrden }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:#0a141d;border:1px solid rgba(232,244,248,.12);padding:16px">
+<div style="border:2px solid #e8f4f8;border-radius:999px;padding:8px 30px;font-weight:700;color:#e8f4f8">Inicio</div>
+<sc-for list="{{ fl.orden }}" as="c" hint-placeholder-count="5">
+<div style="color:#9fb6c0;font-size:18px;line-height:1">↓</div>
+<button onClick="{{ c.onClick }}" style="width:100%;max-width:420px;display:flex;align-items:center;gap:12px;background:{{ c.fondo }};border:2px solid {{ c.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:600;padding:10px 14px;cursor:pointer;text-align:left"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9fb6c0">{{ c.n }}</span>{{ c.t }}</button>
+</sc-for>
+<div style="color:#9fb6c0;font-size:18px;line-height:1">↓</div>
+<div style="border:2px solid #e8f4f8;border-radius:999px;padding:8px 30px;font-weight:700;color:#e8f4f8">Fin</div>
+</div>
+</sc-if>
+<sc-if value="{{ fl.haySvg }}" hint-placeholder-val="{{ false }}"><div style="background:#0a141d;border:1px solid rgba(232,244,248,.12);padding:10px;overflow-x:auto">{{ fl.svg }}</div></sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+<sc-if value="{{ fl.hayLec }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ fl.lec }}" as="l" hint-placeholder-count="1">
+<div style="border:2px solid {{ l.color }};background:#0f1b26;padding:10px 14px;display:flex;flex-direction:column;gap:4px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:{{ l.color }};font-weight:600">{{ l.quien }}</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:19px;color:#e8f4f8;filter:{{ l.blur }};transition:filter .15s">{{ l.t }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-for list="{{ fl.grupos }}" as="g" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">{{ g.titulo }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:{{ g.color }}">{{ g.quien }}</div></div>
+<sc-if value="{{ g.hayOps }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ g.ops }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="background:{{ o.fondo }};border:2px solid {{ o.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;padding:8px 12px;cursor:pointer;text-align:left">{{ o.t }}</button></sc-for></div>
+</sc-if>
+<sc-if value="{{ g.hayVal }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;border:2px solid {{ g.color }};width:max-content"><button onClick="{{ g.menos }}" style="width:44px;height:46px;background:transparent;border:none;color:#e8f4f8;font-size:22px;cursor:pointer">−</button><div style="min-width:110px;text-align:center;font-family:'Archivo Black',sans-serif;font-size:22px;color:#e8f4f8">{{ g.val }}</div><button onClick="{{ g.mas }}" style="width:44px;height:46px;background:transparent;border:none;color:#e8f4f8;font-size:22px;cursor:pointer">+</button></div>
+</sc-if>
+</div>
+</sc-for>
+<sc-if value="{{ fl.hayDisp }}" hint-placeholder-val="{{ false }}">
+<div style="border:3px solid {{ fl.disp.color }};box-shadow:0 0 34px {{ fl.disp.glow }};background:#0a141d;padding:18px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0">ESTADO DEL APARATO</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:24px;color:{{ fl.disp.color }}">{{ fl.disp.t }}</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#c9dbe2">{{ fl.disp.sub }}</div>
+</div>
+</sc-if>
+<sc-if value="{{ fl.hayTabla }}" hint-placeholder-val="{{ false }}">
+<div style="overflow-x:auto">
+<table style="border-collapse:collapse;font-family:'IBM Plex Sans',sans-serif;font-size:14px;width:100%">
+<thead><tr><sc-for list="{{ fl.tabla.cab }}" as="c" hint-placeholder-count="3"><th style="padding:6px 10px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;border-bottom:1px solid rgba(232,244,248,.2)">{{ c.t }}</th></sc-for></tr></thead>
+<tbody><sc-for list="{{ fl.tabla.filas }}" as="f" hint-placeholder-count="3"><tr style="background:{{ f.fondo }}"><sc-for list="{{ f.celdas }}" as="c" hint-placeholder-count="3"><td style="padding:6px 10px;border-bottom:1px solid rgba(232,244,248,.07);color:{{ c.color }};font-weight:600">{{ c.t }}</td></sc-for></tr></sc-for></tbody>
+</table>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
 <sc-if value="{{ pz.hayFb }}" hint-placeholder-val="{{ false }}">
 <div style="border:2px solid {{ pz.fbColor }};background:{{ pz.fbFondo }};padding:14px 18px;margin-top:18px;display:flex;flex-direction:column;gap:6px">
 <div style="font-family:'Archivo Black',sans-serif;font-size:22px;color:{{ pz.fbColor }}">{{ pz.fbTitulo }}</div>
@@ -344,7 +550,13 @@
 
 <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:18px">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#9fb6c0">{{ pz.info }}</div>
-<div style="display:flex;gap:10px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+<sc-if value="{{ pz.hayLlave }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700">
+<div style="border:2px solid #5fd0e8;background:{{ pz.ll1f }};color:{{ pz.ll1c }};padding:10px 12px;white-space:nowrap">J1 · E</div>
+<div style="border:2px solid #f0a726;background:{{ pz.ll2f }};color:{{ pz.ll2c }};padding:10px 12px;white-space:nowrap">J2 · ENTER</div>
+</div>
+</sc-if>
 <sc-if value="{{ pz.hay2 }}" hint-placeholder-val="{{ false }}">
 <button onClick="{{ pz.accion2 }}" style="background:transparent;border:2px solid rgba(232,244,248,.3);color:#c9dbe2;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:700;padding:13px 20px;cursor:pointer">{{ pz.btn2 }}</button>
 </sc-if>
@@ -447,13 +659,51 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;vigilancia&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sistema cerrado&quot;}}">
 const KEY = 'escape_lab_v2';
 const EST = [
-  { id: 'reglas', nombre: 'Cerradura de reglas', corto: 'REGLAS', hab: 'RAZONAMIENTO INDUCTIVO', color: '#5fd0e8', glow: 'rgba(95,208,232,.25)', x: -7.9, z: -3.4, lado: 1 },
-  { id: 'interrog', nombre: 'Sala de interrogatorio', corto: 'INTERROGATORIO', hab: 'DEDUCCIÓN LÓGICA', color: '#ff7b72', glow: 'rgba(255,123,114,.25)', x: 7.9, z: -3.4, lado: -1 },
-  { id: 'master', nombre: 'Terminal Mastermind', corto: 'CÓDIGO', hab: 'PROBAR HIPÓTESIS', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: -7.9, z: 2.4, lado: 1 },
-  { id: 'torre', nombre: 'Torre de energía', corto: 'TORRE', hab: 'PLANIFICACIÓN', color: '#f0a726', glow: 'rgba(240,167,38,.25)', x: 7.9, z: 2.4, lado: -1 },
-  { id: 'compuertas', nombre: 'Panel de compuertas', corto: 'COMPUERTAS', hab: 'LÓGICA DIGITAL', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: -7.9, z: -0.5, lado: 1 }
+  { id: 'reglas', nombre: 'Cerradura de reglas', corto: 'REGLAS', hab: 'RAZONAMIENTO INDUCTIVO', color: '#5fd0e8', glow: 'rgba(95,208,232,.25)', x: -7.9, z: -3.4, face: [1, 0] },
+  { id: 'interrog', nombre: 'Sala de interrogatorio', corto: 'INTERROGATORIO', hab: 'DEDUCCIÓN LÓGICA', color: '#ff7b72', glow: 'rgba(255,123,114,.25)', x: 7.9, z: -3.4, face: [-1, 0] },
+  { id: 'master', nombre: 'Terminal Mastermind', corto: 'CÓDIGO', hab: 'PROBAR HIPÓTESIS', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: -7.9, z: 2.4, face: [1, 0] },
+  { id: 'torre', nombre: 'Torre de energía', corto: 'TORRE', hab: 'PLANIFICACIÓN', color: '#f0a726', glow: 'rgba(240,167,38,.25)', x: 7.9, z: 2.4, face: [-1, 0] },
+  { id: 'compuertas', nombre: 'Panel de compuertas', corto: 'COMPUERTAS', hab: 'LÓGICA DIGITAL', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: -7.9, z: -0.5, face: [1, 0] },
+  { id: 'robot', nombre: 'Robot programable', corto: 'ROBOT', hab: 'PENSAMIENTO COMPUTACIONAL', color: '#9ae66e', glow: 'rgba(154,230,110,.25)', x: 7.9, z: -0.5, face: [-1, 0] },
+  { id: 'raven', nombre: 'Matriz de Raven', corto: 'MATRIZ', hab: 'RAZONAMIENTO ABSTRACTO', color: '#b8a4ff', glow: 'rgba(184,164,255,.25)', x: -5.5, z: 4.9, face: [0, -1] },
+  { id: 'wcst', nombre: 'La regla cambió', corto: 'REGLA OCULTA', hab: 'FLEXIBILIDAD MENTAL', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: 5.5, z: 4.9, face: [0, -1] },
+  { id: 'einstein', nombre: 'Rejilla de Einstein', corto: 'REJILLA', hab: 'DEDUCCIÓN CON PISTAS', color: '#ff9f6b', glow: 'rgba(255,159,107,.25)', x: 3.2, z: -4.9, face: [0, 1] },
+  { id: 'estim', nombre: 'Estimación con apuesta', corto: 'ESTIMACIÓN', hab: 'CALIBRAR LA CONFIANZA', color: '#66e0d2', glow: 'rgba(102,224,210,.25)', x: 9, z: -5.2, face: [0, 1], esc: 'patio' },
+  { id: 'armar', nombre: 'Arma el diagrama', corto: 'ARMAR', hab: 'DIAGRAMAS: ESTRUCTURA', color: '#7fd1ff', glow: 'rgba(127,209,255,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'aula1' },
+  { id: 'orden', nombre: 'Ordena los pasos', corto: 'ORDENAR', hab: 'ALGORITMOS: SECUENCIA', color: '#ffb86b', glow: 'rgba(255,184,107,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'aula1' },
+  { id: 'decision', nombre: 'Completa la decisión', corto: 'DECISIÓN', hab: 'DIAGRAMAS: CONDICIONES', color: '#ff6b9d', glow: 'rgba(255,107,157,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'aula1' },
+  { id: 'sigue', nombre: 'Sigue el diagrama', corto: 'SEGUIR', hab: 'DIAGRAMAS: SEGUIMIENTO', color: '#a0f0a0', glow: 'rgba(160,240,160,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'aula2' },
+  { id: 'error', nombre: 'Encuentra el error', corto: 'ERROR', hab: 'DIAGRAMAS: DEPURACIÓN', color: '#ff8a65', glow: 'rgba(255,138,101,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'aula2' },
+  { id: 'aparato', nombre: 'Del diagrama al aparato', corto: 'APARATO', hab: 'DIAGRAMAS → ARDUINO', color: '#c4f06b', glow: 'rgba(196,240,107,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'aula2' },
+  { id: 'rutas', nombre: 'Rutas de la ciudad', corto: 'RUTAS', hab: 'GRAFOS Y OPTIMIZACIÓN', color: '#8fb8ff', glow: 'rgba(143,184,255,.25)', x: -12, z: 6.2, face: [0, -1], esc: 'patio' }
 ];
-const CURSO_CFG = { '10mo': { nombre: '10mo EGB', inicio: 1 }, '3BGU': { nombre: '3ro BGU', inicio: 2 } };
+EST.forEach(e => { e.lado = e.face[0]; });
+const REQ = 7;
+const FL = () => window.ESC_FLUJO;
+const FLUJO = { armar: 1, orden: 1, decision: 1, sigue: 1, error: 1, aparato: 1 };
+const TOK = { F: '▲', L: '↺', R: '↻', P: 'P', S: '?' }, TOKN = { F: 'avanzar', L: 'izquierda', R: 'derecha', P: 'función', S: 'sensor' };
+const PISTA_TEC = {
+  reglas: 'J1 elige la operación del paso A (A · D) y J2 su número (↑ ↓). Desde el nivel 2, J1 también maneja el número de A (W · S) y J2 arma el paso B con las flechas. Para ejecutar: E + ENTER a la vez.',
+  interrog: 'J1 mantiene Q para leer las frases marcadas J1 y J2 mantiene P para las suyas: léanlas en voz alta. Pongan los cascos con el mouse y acusen con E + ENTER a la vez.',
+  master: 'J1 maneja los primeros lugares y J2 los últimos: ← → para moverse, ↑ ↓ para cambiar el color. Para probar: E + ENTER a la vez.',
+  torre: 'J1 elige la torre de origen con A · S · D. J2 elige la de destino con ← · ↓ · →.',
+  compuertas: 'J1 cambia la primera compuerta con A · D y J2 la segunda con ← · →. Para probar: E + ENTER a la vez.',
+  robot: 'Cada uno programa su parte: A · D (J1) o ← → (J2) eligen el espacio y W · S o ↑ ↓ cambian el bloque. Para ejecutar: E + ENTER a la vez.',
+  raven: 'J1 elige la figura (A · D) y la cantidad (W · S). J2 elige el relleno (← · →). Para probar: E + ENTER a la vez.',
+  wcst: 'J1 pone la tarjeta en las pilas 1 y 2 (A · D). J2 en las pilas 3 y 4 (← · →). Tienen que decidir juntos.',
+  einstein: 'J1 mantiene Q para leer sus pistas y J2 mantiene P para las suyas. Marquen la tabla con el mouse y prueben con E + ENTER a la vez.',
+  estim: 'J1 mueve el mínimo (A · D poco a poco, W · S de a mucho). J2 mueve el máximo con las flechas. Para enviar: E + ENTER a la vez.',
+  armar: 'J1 elige el casillero (W · S) y su figura (A · D). J2 elige el texto con ← →. Para comprobar: E + ENTER a la vez.',
+  orden: 'J1 mueve el cursor con W · S. J2 sube o baja la tarjeta marcada con ↑ ↓. Para comprobar: E + ENTER a la vez.',
+  decision: 'J1 arma la condición (A · D, y W · S para el número). J2 decide qué acción va en la rama Sí (← →). Para probar: E + ENTER a la vez.',
+  sigue: 'Las lecturas del sensor están ocultas: J2 mantiene P para verlas y se las dicta a J1, que elige la respuesta. En el nivel 3 se turnan. Para responder: E + ENTER a la vez.',
+  error: 'J1 recorre las figuras (W · S) y marca la sospechosa (A · D). J2 dice qué tipo de error es (← →). También pueden tocar la figura con el mouse. Para comprobar: E + ENTER a la vez.',
+  aparato: 'J1 elige la acción de la rama Sí y J2 la de la rama No (en el nivel 3, J1 usa también W · S). Para encender el aparato: E + ENTER a la vez.',
+  rutas: 'J1 sale del colegio con W A S D y J2 sale de la casa del cliente con las flechas. Encuéntrense en una esquina y envíen con E + ENTER a la vez.'
+};
+const SUB = { armar: 1, orden: 1, decision: 1, sigue: 1, error: 1, aparato: 1, reglas: 1, interrog: 1, master: 1, compuertas: 1, robot: 1, raven: 1, einstein: 1, estim: 1, rutas: 1 };
+const BASICO = ['armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
+const CURSO_CFG = { '8vo': { nombre: '8vo EGB', inicio: 1, retos: BASICO }, '9no': { nombre: '9no EGB', inicio: 1, retos: BASICO }, '10mo': { nombre: '10mo EGB', inicio: 1 }, '3BGU': { nombre: '3ro BGU', inicio: 2 } };
 function maxEst(inicio) { let t = inicio, s = 0; for (let i = 0; i < 3; i++) { s += BASE_T[t]; t = Math.min(3, t + 1); } return s; }
 const BASE_T = { 1: 5, 2: 8, 3: 12 };
 const GATES = { AND: (a, b) => a && b, OR: (a, b) => a || b, XOR: (a, b) => a !== b, NAND: (a, b) => !(a && b), NOR: (a, b) => !(a || b) };
@@ -482,6 +732,18 @@ const ESTR = {
   master: ['Usamos cada intento para descartar colores', 'Cambiamos una sola cosa por intento para ver el efecto', 'Primero buscamos los colores y después el orden', 'Probamos al azar'],
   torre: ['Apartamos la pila chica para liberar la celda grande', 'Pensamos hacia atrás desde el final', 'Seguimos un patrón que se repetía', 'Movimos hasta que salió']
 };
+ESTR.robot = ['Recorrimos el camino con el dedo antes de programar', 'Buscamos un patrón que se repetía para la función P', 'Programamos por partes y ejecutamos para corregir', 'Probamos bloques al azar'];
+ESTR.raven = ['Revisamos una propiedad a la vez', 'Comparamos filas y después columnas', 'Buscamos qué valor faltaba en la última fila', 'Probamos al azar'];
+ESTR.wcst = ['Cuando empezamos a fallar, cambiamos de criterio', 'Probamos color, forma y cantidad en orden', 'Contamos los aciertos seguidos para anticipar el cambio', 'Elegimos al azar'];
+ESTR.einstein = ['Marcamos primero las pistas seguras (✓)', 'Descartamos con ✗ y dedujimos lo que quedaba', 'Nos leímos las pistas en voz alta', 'Probamos al azar'];
+ESTR.estim = ['Contamos una parte y multiplicamos', 'Comparamos con algo que conocíamos', 'Hicimos el rango más ancho para no fallar', 'Adivinamos'];
+ESTR.rutas = ['Buscamos las calles más baratas primero', 'Calculamos varias rutas y comparamos', 'Evitamos las obras desde el principio', 'Fuimos probando'];
+ESTR.armar = ['Primero pusimos las figuras y después los textos', 'Buscamos dónde iba la pregunta (rombo)', 'Leímos el diagrama en voz alta de arriba abajo', 'Probamos al azar'];
+ESTR.orden = ['Buscamos el primer y el último paso', 'Preguntamos qué necesita cada paso antes', 'Lo imaginamos como si lo hiciéramos', 'Movimos al azar'];
+ESTR.decision = ['Probamos la condición con números de ejemplo', 'Revisamos qué pasa justo en el límite', 'Leímos la frase del enunciado con cuidado', 'Probamos al azar'];
+ESTR.sigue = ['Seguimos las flechas con el dedo', 'Comparamos la lectura con el número del rombo', 'Uno dictaba y el otro seguía', 'Adivinamos'];
+ESTR.error = ['Revisamos que cada figura sea la correcta', 'Leímos si las ramas Sí y No tenían sentido', 'Buscamos flechas que faltaban', 'Probamos al azar'];
+ESTR.aparato = ['Pensamos qué debía hacer el aparato en cada caso', 'Probamos con las lecturas de la tabla', 'Descartamos las acciones que no eran del aparato', 'Probamos al azar'];
 ESTR.compuertas = ['Probamos fila por fila de la tabla', 'Empezamos por la compuerta más cercana a la luz', 'Descartamos compuertas mirando una sola fila', 'Probamos al azar'];
 const K1 = { KeyW: 'w', KeyA: 'a', KeyS: 's', KeyD: 'd' };
 const K2 = { ArrowUp: 'up', ArrowLeft: 'left', ArrowDown: 'down', ArrowRight: 'right' };
@@ -556,7 +818,7 @@ class Component extends DCLogic {
       fase: 'login', f: { curso: '3BGU', paralelo: '', a: '', b: '', codigo: '' }, msg: '', cargando: false, ses: null,
       escena: 'patio', est: {}, pz: null, erId: null, erEstr: null, bat: 100, pts: 0, pen: 0,
       salidas: 0, bloq: false, bloqMsg: '', t0: 0, tFin: 0, ahora: Date.now(), envio: '', cerrado: false, estadoFinal: '',
-      sonido: true, fade: 0, kt: {}, prompt: '', promptPct: 0, promptColor: '#5fd0e8', c3d: true, err3d: ''
+      sonido: true, fade: 0, kt: {}, guard: {}, hold: {}, llave: {}, dep: null, depUsadas: 0, toast: null, prompt: '', promptPct: 0, promptColor: '#5fd0e8', c3d: true, err3d: ''
     };
   }
 
@@ -572,7 +834,7 @@ class Component extends DCLogic {
     } catch (e) {}
     this.keys = {};
     this.h = {
-      down: e => this.teclaAbajo(e), up: e => { this.keys[e.code] = false; },
+      down: e => this.teclaAbajo(e), up: e => { this.keys[e.code] = false; if ((e.code === 'KeyQ' || e.code === 'KeyP') && this.state.hold && this.state.hold[e.code]) this.setState({ hold: Object.assign({}, this.state.hold, { [e.code]: false }) }); },
       vis: () => { if (document.hidden) this.salida('pestaña'); },
       blur: () => { this.keys = {}; this.salida('ventana'); },
       fs: () => { if (document.fullscreenElement) this._fs = true; else if (this._fs) { this._fs = false; this.salida('pantalla completa'); } },
@@ -617,6 +879,11 @@ class Component extends DCLogic {
     }
     if ((s.fase === 'mundo' || s.fase === 'intro') && (K1[code] || K2[code] || code === 'Space')) { if (e.target && e.target.tagName !== 'INPUT') e.preventDefault(); }
     this.keys[code] = true;
+    if (s.fase === 'mundo' && s.dep && !s.bloq && (code === 'KeyE' || code === 'Enter')) { e.preventDefault(); if (!e.repeat) this.accionDep(code === 'KeyE' ? 0 : 1); }
+    if (s.fase === 'puzzle' && s.pz && !s.bloq) {
+      if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyE', 'KeyQ', 'KeyP', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Space'].includes(code)) { e.preventDefault(); if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); }
+      if (!e.repeat || /^(Arrow|KeyW|KeyS|KeyA|KeyD)/.test(code)) this.teclaPuzzle(code);
+    }
     if (s.fase === 'intro' && (K1[code] || K2[code])) { const kt = Object.assign({}, s.kt); kt[K1[code] || K2[code]] = true; this.setState({ kt }); this.snd('click'); }
   }
 
@@ -654,9 +921,12 @@ class Component extends DCLogic {
     const dl = g.dl = new T.DirectionalLight(0xffffff, 1.25); dl.position.set(18, 32, 14); dl.castShadow = true;
     dl.shadow.mapSize.set(2048, 2048); Object.assign(dl.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 1, far: 90 }); dl.shadow.bias = -0.0005;
     sc.add(dl); sc.add(dl.target);
-    g.patio = new T.Group(); g.lab = new T.Group(); sc.add(g.patio); sc.add(g.lab);
-    this.construirPatio(); this.construirLab(); this.construirJugadores();
-    this.posP = { patio: [[-2, 5], [2, 5]], lab: [[-0.9, 4.3], [0.9, 4.3]] };
+    g.patio = new T.Group(); g.lab = new T.Group(); g.aula1 = new T.Group(); g.aula2 = new T.Group(); [g.patio, g.lab, g.aula1, g.aula2].forEach(x => sc.add(x));
+    this.construirPatio(); this.construirLab(); this.coll.aula1 = []; this.coll.aula2 = []; this.construirAula('aula1', 'AULA DE DIAGRAMAS · 2.º PISO', true); this.construirAula('aula2', 'AULA DE DIAGRAMAS · 3.er PISO', false); this.construirExtrasPatio();
+    EST.filter(e => e.esc && e.esc !== 'lab').forEach(e => this.construirTerminal(e));
+    g.stats = { macetas: 13, columnas: 10, postes: 14, ventanas: 32, pcs: 8, escalones: 6, casas: this._casas || 120 };
+    this.construirJugadores();
+    this.posP = { patio: [[-2, 5], [2, 5]], lab: [[-0.9, 3.9], [0.9, 3.9]], aula1: [[-0.9, 3.9], [0.9, 3.9]], aula2: [[-0.9, 3.9], [0.9, 3.9]] };
     this.camPos = null; this.aplicarEscena(); this.resize();
     this.setState({ c3d: false });
     let last = performance.now();
@@ -752,7 +1022,7 @@ class Component extends DCLogic {
       const ang = h.int(0, 359) * Math.PI / 180, dist = 34 + h.int(0, 70), x = Math.cos(ang) * dist, z = Math.sin(ang) * dist * 0.85 - 4;
       if (Math.abs(x) < 30 && z > -22 && z < 18) continue;
       const w = 5 + h.int(0, 6), d = 5 + h.int(0, 6), alt = 3 + h.int(0, 3) * 3;
-      box(w, alt, d, M(h.pick(muros)), x, 0, z);
+      box(w, alt, d, M(h.pick(muros)), x, 0, z); this._casas = (this._casas || 0) + 1;
       const tt = new T.Mesh(new T.ConeGeometry(Math.max(w, d) * 0.72, 1.8, 4), M(h.pick(techos))); tt.rotation.y = Math.PI / 4; tt.position.set(x, alt + 0.9, z); P.add(tt);
     }
     [[-150, -140, 40], [-40, -170, 55], [70, -160, 48], [160, -110, 42], [-170, -30, 38]].forEach(([x, z, hh]) => { const m = new T.Mesh(new T.ConeGeometry(hh * 1.6, hh, 7), M('#6b7a4c')); m.position.set(x, hh / 2 - 2, z); P.add(m); });
@@ -787,21 +1057,11 @@ class Component extends DCLogic {
     });
     // terminales
     this.g.term = {};
-    EST.forEach(e => {
-      const col = new T.Color(e.color);
-      box(0.8, 1.3, 1.0, M('#1a2630'), e.x, 0, e.z); C(e.x - 0.55, e.x + 0.55, e.z - 0.65, e.z + 0.65);
-      const pm = new T.MeshBasicMaterial({ color: col.clone().multiplyScalar(0.35) });
-      const pant = new T.Mesh(new T.PlaneGeometry(0.8, 0.6), pm); pant.position.set(e.x + e.lado * 0.41, 1.0, e.z); pant.rotation.y = e.lado * Math.PI / 2; L.add(pant);
-      const toro = new T.Mesh(new T.TorusGeometry(0.42, 0.045, 8, 32), new T.MeshBasicMaterial({ color: col })); toro.position.set(e.x, 2.0, e.z); L.add(toro);
-      const luz = new T.PointLight(col, 1.4, 6, 1.6); luz.position.set(e.x + e.lado * 0.6, 1.8, e.z); L.add(luz);
-      const et = new T.Mesh(new T.PlaneGeometry(2.4, 0.42), new T.MeshBasicMaterial({ map: this.cartel(e.corto, 512, 90, '#0a141d', e.color, 46), transparent: true })); et.position.set(e.x + e.lado * 0.2, 2.75, e.z); et.rotation.x = -0.5; L.add(et);
-      const pp = [[e.x + e.lado * 1.45, e.z - 0.8], [e.x + e.lado * 1.45, e.z + 0.8]];
-      const placas = pp.map(([px, pz]) => { const m = new T.Mesh(new T.CylinderGeometry(0.46, 0.46, 0.06, 28), new T.MeshBasicMaterial({ color: col.clone().multiplyScalar(0.45) })); m.position.set(px, 0.03, pz); L.add(m); return m; });
-      this.g.term[e.id] = { pant, pm, toro, luz, placas, pp, col };
-    });
+    EST.filter(e => !e.esc).forEach(e => this.construirTerminal(e));
+    { const ar = new T.Mesh(new T.RingGeometry(0.75, 0.95, 40), new T.MeshBasicMaterial({ color: '#66e0d2', transparent: true, opacity: 0.85, side: T.DoubleSide })); ar.rotation.x = -Math.PI / 2; ar.position.set(0, 0.03, 5.2); L.add(ar); const ep = new T.Mesh(new T.PlaneGeometry(1.8, 0.36), new T.MeshBasicMaterial({ map: this.cartel('PATIO', 360, 72, '#0a141d', '#66e0d2', 40), transparent: true })); ep.position.set(0, 2.3, 6.0); L.add(ep); }
     // puerta de salida
     box(2.4, 2.7, 0.12, M('#141d25'), 0, 0, -5.96);
-    this.g.luces = EST.map((e, i) => { const m = new T.Mesh(new T.SphereGeometry(0.11, 12, 8), new T.MeshBasicMaterial({ color: '#39444c' })); m.position.set((i - (EST.length - 1) / 2) * 0.42, 2.95, -5.9); L.add(m); return m; });
+    this.g.luces = [...Array(REQ)].map((e, i) => { const m = new T.Mesh(new T.SphereGeometry(0.11, 12, 8), new T.MeshBasicMaterial({ color: '#39444c' })); m.position.set((i - (REQ - 1) / 2) * 0.42, 2.95, -5.9); L.add(m); return m; });
     this.g.marcoSalida = new T.MeshBasicMaterial({ color: '#39444c' });
     [[-1.2, 0, 0.12, 2.8], [1.2, 0, 0.12, 2.8], [0, 2.7, 2.52, 0.12]].forEach(([dx, y, w, h]) => box(w, h, 0.14, this.g.marcoSalida, dx, y, -5.92));
     const sal = new T.Mesh(new T.PlaneGeometry(2.4, 0.4), new T.MeshBasicMaterial({ map: this.cartel('SALIDA', 400, 70, '#141d25', '#7fe0a0', 44) })); sal.position.set(0, 3.35, -5.95); L.add(sal);
@@ -832,11 +1092,12 @@ class Component extends DCLogic {
   aplicarEscena() {
     const g = this.g; if (!g || !g.patio) return;
     const e = this.state.escena, T = g.T;
-    g.patio.visible = e === 'patio'; g.lab.visible = e === 'lab';
-    g.sc.background = new T.Color(e === 'patio' ? '#a9cbe6' : '#0b1117');
+    ['patio', 'lab', 'aula1', 'aula2'].forEach(k => { if (g[k]) g[k].visible = e === k; });
+    EST.forEach(x => { const tm = g.term[x.id]; if (!tm) return; const a = this.activo(x.id); tm.meshes.forEach(m => { m.visible = a; }); for (let i = 0; i < 4; i++) tm.cr[i] = a ? tm.cb[i] : 9999; });
+    g.sc.background = new T.Color(e === 'patio' ? '#a9cbe6' : e === 'lab' ? '#0b1117' : '#12171d');
     g.sc.fog = e === 'patio' ? new T.Fog('#a9cbe6', 70, 180) : null;
     g.dl.intensity = e === 'patio' ? 1.25 : 0.7;
-    const p = this.posP[e]; g.jug.forEach((j, i) => { j.x = p[i][0]; j.z = p[i][1]; j.gr.rotation.y = Math.PI; });
+    const p = this._spawn || (e === 'patio' && this._vuelta ? [[-10, -5.4], [-6, -5.4]] : this.posP[e]); this._vuelta = false; this._spawn = null; g.jug.forEach((j, i) => { j.x = p[i][0]; j.z = p[i][1]; j.gr.rotation.y = Math.PI; });
     this.camPos = null; this.hold = null; this.etiquetas();
   }
   bloqueado(x, z, esc) {
@@ -867,6 +1128,7 @@ class Component extends DCLogic {
       }
       j.gr.position.set(j.x, len > 0 ? Math.abs(Math.sin(j.fase)) * 0.08 : 0, j.z);
     });
+    if (s.dep && esc === 'patio') this.pasoDep(dt);
     const [a, b] = g.jug, mx = (a.x + b.x) / 2, mz = (a.z + b.z) / 2, sep = Math.hypot(a.x - b.x, a.z - b.z);
     const off = esc === 'patio' ? [0, 15 + sep * 0.5, 9.5 + sep * 0.3] : [0, 16.5, 10.5];
     const tgt = esc === 'patio' ? [mx, 0, mz] : [Math.max(-3, Math.min(3, mx)) * 0.35, 0, Math.max(-2, Math.min(2, mz)) * 0.3 - 0.2];
@@ -877,41 +1139,60 @@ class Component extends DCLogic {
     if (g.gradas) { const zmax = Math.max(a.z, b.z), obj = esc === 'patio' && zmax > 1.5 ? 0.18 : 1; g.gradas.forEach(m => (Array.isArray(m.material) ? m.material : [m.material]).forEach(mt => { const o = obj * (mt.userData.op0 || 1); mt.opacity += (o - mt.opacity) * Math.min(1, dt * 6); mt.depthWrite = mt.opacity > 0.9; })); }
     if (g.haz) { g.haz.material.opacity = 0.12 + Math.sin(t * 3) * 0.05; g.aroPuerta.scale.setScalar(1 + Math.sin(t * 3) * 0.08); }
     EST.forEach(e => { const tm = g.term[e.id], hecho = this.hecha(e.id); tm.toro.rotation.x = t * (hecho ? 0.3 : 1.4); tm.toro.rotation.y = t * 0.9; tm.toro.position.y = 2 + Math.sin(t * 2 + e.x) * 0.08; });
+    EST.forEach(e => { const tm = g.term[e.id]; if (!tm) return; if (this.hecha(e.id) && !tm.beam) { tm.beam = this.rayo(tm, e); tm.burst = 0; } if (tm.burst != null && tm.burst < 1.4) { tm.burst += dt; const k = tm.burst / 1.4; tm.anillo.visible = true; tm.anillo.scale.setScalar(1 + k * 6); tm.anillo.material.opacity = 0.9 * (1 - k); } else tm.anillo.visible = false; if (tm.beam) tm.beam.material.opacity = 0.35 + Math.sin(t * 4 + e.x) * 0.15; });
     if (g.monitores) g.monitores.forEach((m, i) => { m.material.color.setHSL(0.55, 0.6, 0.16 + 0.05 * Math.sin(t * 2 + i)); });
     this.interacciones(dt);
     g.r.render(g.sc, g.cam);
   }
   hecha(id) { const e = this.state.est[id]; return !!(e && e.rondas && e.rondas.length >= 3); }
-  nHechas() { return EST.filter(e => this.hecha(e.id)).length; }
+  activo(id) { const r = this.cfg().retos; return !r || r.includes(id); }
+  activos() { return EST.filter(e => this.activo(e.id)); }
+  nHechas() { return this.activos().filter(e => this.hecha(e.id)).length; }
   enPlacas(pp) { const j = this.g.jug; const on = pp.map(([px, pz]) => j.map(p => Math.hypot(p.x - px, p.z - pz) < 0.62)); const ambos = (on[0][0] && on[1][1]) || (on[0][1] && on[1][0]); return { ambos, alguno: on.some(o => o[0] || o[1]), on }; }
   interacciones(dt) {
     const s = this.state, g = this.g; let pr = '', pct = 0, col = '#5fd0e8', accion = null, id = null;
-    if (s.fase !== 'mundo' || s.bloq || this.transicion) { this.setPrompt('', 0, col); return; }
-    if (s.escena === 'patio') {
-      const d = g.jug.map(p => Math.hypot(p.x + 8, p.z + 8.6));
-      if (d[0] < 2.2 && d[1] < 2.2) { id = 'puerta'; pr = 'Abriendo el laboratorio'; accion = () => this.entrarLab(); }
-      else if (d[0] < 2.2 || d[1] < 2.2) { pr = 'La puerta necesita a los dos jugadores dentro del anillo'; col = '#f0a726'; }
-    } else {
-      EST.forEach(e => {
-        const tm = g.term[e.id], ep = this.enPlacas(tm.pp), hecho = this.hecha(e.id);
-        tm.placas.forEach((pl, k) => { const oc = ep.on[k][0] || ep.on[k][1]; pl.material.color.copy(tm.col).multiplyScalar(hecho ? 0.25 : oc ? 1 : 0.45); });
-        tm.pm.color.copy(hecho ? new g.T.Color('#7fe0a0') : tm.col).multiplyScalar(hecho ? 0.9 : 0.5 + Math.sin(performance.now() / 300) * 0.15);
-        tm.luz.color.set(hecho ? '#7fe0a0' : e.color);
-        if (id) return;
-        if (ep.alguno && hecho) { pr = e.nombre + ' ya está reactivada'; col = '#7fe0a0'; }
-        else if (ep.ambos) { id = e.id; pr = 'Sincronizando ' + e.nombre; col = e.color; accion = () => this.abrirPuzzle(e.id); }
-        else if (ep.alguno) { pr = e.nombre + ' · falta el otro jugador en la segunda placa'; col = e.color; }
-      });
-      const n = this.nHechas(), lista = n === EST.length;
-      g.luces.forEach((l, i) => l.material.color.set(this.hecha(EST[i].id) ? EST[i].color : '#39444c'));
+    if (s.fase !== 'mundo' || s.bloq || this.transicion || s.dep) { this.setPrompt('', 0, col); return; }
+    const esc = s.escena, n = this.nHechas(), lista = n >= REQ;
+    EST.forEach(e => {
+      const tm = g.term[e.id]; if (!tm || tm.esc !== esc || !this.activo(e.id)) return;
+      const ep = this.enPlacas(tm.pp), hecho = this.hecha(e.id), gd = !!(s.guard && s.guard[e.id]);
+      tm.placas.forEach((pl, k) => { const oc = ep.on[k][0] || ep.on[k][1]; pl.material.color.copy(tm.col).multiplyScalar(hecho ? 0.25 : oc ? 1 : 0.45); });
+      tm.pm.color.copy(hecho ? new g.T.Color('#7fe0a0') : tm.col).multiplyScalar(hecho ? 0.9 : 0.5 + Math.sin(performance.now() / 300) * 0.15);
+      tm.luz.color.set(hecho ? '#7fe0a0' : e.color);
+      if (id) return;
+      if (ep.alguno && hecho) { pr = e.nombre + ' ya está resuelto'; col = '#7fe0a0'; }
+      else if (ep.ambos) { id = e.id; pr = (gd ? 'Retomando ' : 'Sincronizando ') + e.nombre; col = e.color; accion = () => this.abrirPuzzle(e.id); }
+      else if (ep.alguno) { pr = e.nombre + ' · falta el otro jugador en la segunda placa'; col = e.color; }
+    });
+    const dd = (x, z) => g.jug.map(q => Math.hypot(q.x - x, q.z - z));
+    const portal = (x, z, r, key, txt, c, fn, bloqTxt) => {
+      if (id) return; const d = dd(x, z);
+      if (d[0] < r && d[1] < r) { if (bloqTxt) { pr = bloqTxt; col = '#f0a726'; return; } id = key; pr = txt; col = c; accion = fn; }
+      else if (d[0] < r || d[1] < r) { pr = txt + ' · los dos dentro del anillo'; col = c; }
+    };
+    const fichas = this.fichas();
+    if (esc === 'patio') {
+      portal(-8, -8.6, 2.2, 'puerta', 'Abriendo el laboratorio', '#5fd0e8', () => this.entrarLab());
+      portal(17.8, -8.4, 1.25, 'escalera', 'Subiendo a las aulas de diagramas', '#7fd1ff', () => this.irA('aula1'));
+      const bq = fichas > 0 ? null : 'Cancha cerrada: cada 2 retos resueltos ganan un partido de 60 s';
+      portal(-5, -3.5, 1.2, 'futbol', 'Partido de fútbol (' + fichas + ' fichas)', '#ffffff', () => this.iniciarDep('futbol'), bq);
+      portal(5, -3.5, 1.2, 'basket', 'Partido de básquet (' + fichas + ' fichas)', '#ff9f43', () => this.iniciarDep('basket'), bq);
+    } else if (esc === 'lab') {
+      g.luces.forEach((l, i) => l.material.color.set(i < n ? '#7fe0a0' : '#39444c'));
       g.marcoSalida.color.set(lista ? '#7fe0a0' : '#39444c');
       const ep = this.enPlacas(g.salPP);
       g.salPlacas.forEach((pl, k) => pl.material.color.set(lista ? ((ep.on[k][0] || ep.on[k][1]) ? '#7fe0a0' : '#2f6b4d') : '#2a3a33'));
       if (!id && ep.alguno) {
-        if (!lista) { pr = 'Salida bloqueada: faltan ' + (EST.length - n) + ' terminales'; col = '#ff7b72'; }
+        if (!lista) { pr = 'Salida bloqueada: faltan ' + (REQ - n) + ' retos'; col = '#ff7b72'; }
         else if (ep.ambos) { id = 'salida'; pr = 'Abriendo la salida'; col = '#7fe0a0'; accion = () => this.terminar('terminado'); }
         else { pr = 'Los dos sobre las placas de la salida'; col = '#7fe0a0'; }
       }
+      portal(0, 5.2, 0.95, 'patio', 'Saliendo al patio', '#66e0d2', () => this.irA('patio', [[-10, -5.4], [-6, -5.4]]));
+    } else if (esc === 'aula1') {
+      portal(0, 5.2, 0.95, 'bajar', 'Bajando al patio', '#66e0d2', () => this.irA('patio', [[16.9, -7.2], [18.7, -7.2]]));
+      portal(7.0, 4.6, 0.95, 'subir', 'Subiendo al 3.er piso', '#7fd1ff', () => this.irA('aula2'));
+    } else if (esc === 'aula2') {
+      portal(0, 5.2, 0.95, 'bajar', 'Bajando al 2.º piso', '#7fd1ff', () => this.irA('aula1', [[6.2, 3.7], [7.8, 3.7]]));
     }
     if (id) {
       if (!this.hold || this.hold.id !== id) this.hold = { id, t: 0 };
@@ -922,6 +1203,127 @@ class Component extends DCLogic {
     this.setPrompt(pr, pct, col);
   }
   setPrompt(p, pct, col) { const q = Math.round(pct * 10) / 10; if (p !== this.state.prompt || q !== this.state.promptPct || col !== this.state.promptColor) this.setState({ prompt: p, promptPct: q, promptColor: col }); }
+  irA(esc, spawn) {
+    this.transicion = true; this.setState({ fade: 1 });
+    setTimeout(() => { this._spawn = spawn || null; this.setState({ escena: esc }, () => { this.aplicarEscena(); this.setState({ fade: 0 }); this.transicion = false; }); }, 380);
+  }
+  anilloTxt(G, x, z, txt, color) {
+    const T = this.g.T, ar = new T.Mesh(new T.RingGeometry(0.75, 0.95, 40), new T.MeshBasicMaterial({ color, transparent: true, opacity: 0.85, side: T.DoubleSide }));
+    ar.rotation.x = -Math.PI / 2; ar.position.set(x, 0.03, z); G.add(ar);
+    const ep = new T.Sprite(new T.SpriteMaterial({ map: this.cartel(txt, 420, 72, 'rgba(10,20,29,.85)', color, 36), transparent: true })); ep.scale.set(2.4, 0.42, 1); ep.position.set(x, 2.1, z); G.add(ep);
+  }
+  construirAula(key, titulo, subir) {
+    const T = this.g.T, G = this.g[key], M = (c, o) => this.M(c, o), box = (w, hh, d, m, x, y, z) => this.box(w, hh, d, m, x, y, z, G), C = (a, b, c, d) => this.coll[key].push([a, b, c, d]);
+    const piso = new T.Mesh(new T.PlaneGeometry(18, 12), new T.MeshLambertMaterial({ map: this.tex(256, 256, (c, w, hh) => { c.fillStyle = '#b08a5e'; c.fillRect(0, 0, w, hh); c.strokeStyle = '#8f6d47'; c.lineWidth = 3; for (let y = 0; y < hh; y += 32) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); } }, 4) }));
+    piso.rotation.x = -Math.PI / 2; piso.receiveShadow = true; G.add(piso);
+    const suelo = new T.Mesh(new T.PlaneGeometry(80, 80), M('#0b1117')); suelo.rotation.x = -Math.PI / 2; suelo.position.y = -0.05; G.add(suelo);
+    const pared = M('#e8e2d2');
+    box(18.6, 3.2, 0.3, pared, 0, 0, -6.15); box(0.3, 3.2, 12.6, pared, -9.15, 0, 0); box(0.3, 3.2, 12.6, pared, 9.15, 0, 0);
+    box(8, 0.9, 0.3, pared, -5, 0, 6.15); box(8, 0.9, 0.3, pared, 5, 0, 6.15); box(18.6, 0.25, 0.32, M('#2f8fc0'), 0, 3.2, -6.15);
+    box(7, 1.7, 0.06, M('#f7f9fa'), 0, 0.9, -5.98);
+    const pz = new T.Mesh(new T.PlaneGeometry(6.6, 1.5), new T.MeshBasicMaterial({ map: this.tex(640, 150, (c, w, hh) => {
+      c.fillStyle = '#f7f9fa'; c.fillRect(0, 0, w, hh); c.strokeStyle = '#1f6fb0'; c.fillStyle = '#1f6fb0'; c.lineWidth = 4;
+      c.strokeRect(40, 18, 120, 36); c.beginPath(); c.moveTo(100, 54); c.lineTo(100, 72); c.stroke();
+      c.beginPath(); c.moveTo(100, 72); c.lineTo(150, 100); c.lineTo(100, 128); c.lineTo(50, 100); c.closePath(); c.stroke();
+      c.beginPath(); c.moveTo(150, 100); c.lineTo(220, 100); c.stroke(); c.strokeRect(220, 82, 110, 36);
+      let fs = 30; do { c.font = '900 ' + fs + 'px "Archivo Black", Arial Black, sans-serif'; fs--; } while (c.measureText(titulo).width > w - 380 && fs > 12); c.fillText(titulo, 360, 88);
+    }) })); pz.position.set(0, 1.75, -5.94); G.add(pz);
+    for (const z of [-2.2, 0.6]) for (const x of [-3.6, 0, 3.6]) { box(2.2, 0.08, 0.9, M('#d9cbb0'), x, 0.72, z); box(2.0, 0.72, 0.06, M('#6d777c'), x, 0, z + 0.3); box(0.5, 0.45, 0.5, M('#2f8fc0'), x - 0.5, 0, z + 0.85); box(0.5, 0.45, 0.5, M('#2f8fc0'), x + 0.5, 0, z + 0.85); C(x - 1.15, x + 1.15, z - 0.5, z + 0.5); }
+    const lz = new T.PointLight('#fff4dc', 1.2, 30, 1.3); lz.position.set(0, 3, 0); G.add(lz);
+    this.anilloTxt(G, 0, 5.2, subir ? 'BAJAR AL PATIO' : 'BAJAR AL 2.º PISO', '#66e0d2');
+    if (subir) this.anilloTxt(G, 7.0, 4.6, 'SUBIR AL 3.er PISO', '#7fd1ff');
+  }
+  construirExtrasPatio() {
+    const T = this.g.T, G = this.g.patio, M = c => this.M(c), C = (a, b, c, d) => this.coll.patio.push([a, b, c, d]);
+    this.anilloTxt(G, 17.8, -8.4, 'AULAS · ESCALERA', '#7fd1ff');
+    this.anilloTxt(G, -5, -3.5, 'FÚTBOL 1 VS 1', '#ffffff');
+    this.anilloTxt(G, 5, -3.5, 'BÁSQUET 1 VS 1', '#ff9f43');
+    [-9.0, 8.4].forEach(z => { [-1.6, 1.6].forEach(x => { this.box(0.12, 1.4, 0.12, M('#f4f4f4'), x, 0, z, G); C(x - 0.1, x + 0.1, z - 0.1, z + 0.1); }); this.box(3.32, 0.12, 0.12, M('#f4f4f4'), 0, 1.4, z, G);
+      const red = new T.Mesh(new T.PlaneGeometry(3.2, 1.4), new T.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.25, side: T.DoubleSide })); red.position.set(0, 0.7, z + (z < 0 ? -0.35 : 0.35)); G.add(red); });
+    const b = new T.Mesh(new T.SphereGeometry(0.25, 20, 14), new T.MeshLambertMaterial({ color: '#ffffff' })); b.castShadow = true; b.visible = false; G.add(b); this.g.balon = b;
+  }
+  fichas() { return Math.max(0, Math.floor(this.nHechas() / 2) - (this.state.depUsadas || 0)); }
+  iniciarDep(tipo) {
+    const g = this.g, fut = tipo === 'futbol';
+    const pos = fut ? [[0, 3], [0, -6]] : [[-4, -0.3], [4, -0.3]];
+    g.jug.forEach((j, i) => { j.x = pos[i][0]; j.z = pos[i][1]; });
+    this.bola = { x: 0, z: fut ? -1.5 : -0.3, y: 0.25, vx: 0, vz: 0, hold: -1, fly: null, cd: [0, 0] };
+    g.balon.material.color.set(fut ? '#ffffff' : '#e8742c'); g.balon.visible = true; this._depFin = false;
+    this.snd('open'); this.keys = {};
+    this.setState({ dep: { tipo, fin: Date.now() + 60000, a: 0, b: 0, msg: fut ? 'J1 ataca hacia el edificio, J2 hacia las gradas. Patea con E / ENTER.' : 'Toca el balón para tomarlo. Lanza con E / ENTER. Roba acercándote y pulsando tu tecla.' }, depUsadas: (this.state.depUsadas || 0) + 1 });
+  }
+  terminarDep() {
+    const d = this.state.dep; if (!d) return; const tot = d.a + d.b, gana = Math.min(25, 10 + tot * 2);
+    if (this.g.balon) this.g.balon.visible = false; this.bola = null;
+    const st = this.bateria(gana); delete st._aviso; this.snd('win');
+    this.setState(Object.assign(st, { dep: null, toast: { t: (d.tipo === 'futbol' ? 'FÚTBOL' : 'BÁSQUET') + ' · ' + d.a + ' – ' + d.b + ' · +' + gana + ' % de batería para el equipo', hasta: Date.now() + 6000 } }));
+  }
+  golDep(quien, pts) {
+    const d = this.state.dep; if (!d) return; this.snd('ok');
+    const nd = Object.assign({}, d, quien ? { b: d.b + pts } : { a: d.a + pts }); this.setState({ dep: nd });
+    const fut = d.tipo === 'futbol'; Object.assign(this.bola, { x: 0, z: fut ? -1.5 : -0.3, y: 0.25, vx: 0, vz: 0, hold: -1, fly: null });
+  }
+  accionDep(i) {
+    const b = this.bola, s = this.state, j = this.g.jug[i], o = this.g.jug[1 - i]; if (!b || !s.dep) return;
+    const now = performance.now() / 1000; if (now - b.cd[i] < 0.35) return; b.cd[i] = now;
+    const fx = Math.sin(j.gr.rotation.y), fz = Math.cos(j.gr.rotation.y);
+    if (s.dep.tipo === 'futbol') { if (Math.hypot(b.x - j.x, b.z - j.z) < 1.2) { b.vx = fx * 15; b.vz = fz * 15; this.snd('click'); } return; }
+    if (b.hold === i) {
+      const hx = i === 0 ? 16.75 : -16.75, hz = -0.3, dist = Math.hypot(hx - j.x, hz - j.z), pr = Math.max(0.15, Math.min(0.9, 1.05 - dist / 13));
+      b.fly = { sx: b.x, sz: b.z, tx: hx, tz: hz, u: 0, dur: 0.7 + dist * 0.04, ok: Math.random() < pr, pts: dist > 8 ? 3 : 2, who: i }; b.hold = -1; this.snd('click'); return;
+    }
+    if (b.hold === 1 - i && Math.hypot(j.x - o.x, j.z - o.z) < 1.3 && Math.random() < 0.45) { b.hold = i; this.snd('click'); }
+  }
+  pasoDep(dt) {
+    const b = this.bola, s = this.state, g = this.g; if (!b || !s.dep) return;
+    if (Date.now() >= s.dep.fin) { if (!this._depFin) { this._depFin = true; this.terminarDep(); } return; }
+    if (s.dep.tipo === 'futbol') {
+      g.jug.forEach(j => { const dx = b.x - j.x, dz = b.z - j.z, d = Math.hypot(dx, dz); if (d < 0.7 && d > 0.001) { const sp = Math.max(4.5, Math.hypot(b.vx, b.vz)); b.vx = dx / d * sp; b.vz = dz / d * sp; b.x = j.x + dx / d * 0.7; b.z = j.z + dz / d * 0.7; } });
+      b.x += b.vx * dt; b.z += b.vz * dt; const fr = Math.max(0, 1 - 1.3 * dt); b.vx *= fr; b.vz *= fr;
+      if (Math.abs(b.x) < 1.6 && b.z < -9.0) { this.golDep(0, 1); return; }
+      if (Math.abs(b.x) < 1.6 && b.z > 8.4) { this.golDep(1, 1); return; }
+      if (b.x < -19 || b.x > 19) { b.vx = -b.vx; b.x = Math.max(-19, Math.min(19, b.x)); }
+      if ((b.z < -9.0 || b.z > 8.4) && Math.abs(b.x) >= 1.6) { b.vz = -b.vz; b.z = Math.max(-9.0, Math.min(8.4, b.z)); }
+      b.y = 0.25;
+    } else {
+      if (b.fly) {
+        const f = b.fly; f.u += dt / f.dur; const u = Math.min(1, f.u);
+        b.x = f.sx + (f.tx - f.sx) * u; b.z = f.sz + (f.tz - f.sz) * u; b.y = 1.3 + (3.05 - 1.3) * u + Math.sin(u * Math.PI) * 2.6;
+        if (u >= 1) { if (f.ok) { this.golDep(f.who, f.pts); return; } b.fly = null; b.vx = (Math.random() - 0.5) * 6 - Math.sign(f.tx) * 3; b.vz = (Math.random() - 0.5) * 6; b.y = 0.25; }
+      } else if (b.hold >= 0) { const j = g.jug[b.hold]; b.x = j.x + Math.sin(j.gr.rotation.y) * 0.55; b.z = j.z + Math.cos(j.gr.rotation.y) * 0.55; b.y = 0.9 + Math.abs(Math.sin(performance.now() / 150)) * 0.35; }
+      else {
+        b.x += b.vx * dt; b.z += b.vz * dt; const fr = Math.max(0, 1 - 1.6 * dt); b.vx *= fr; b.vz *= fr; b.y = 0.25;
+        b.x = Math.max(-18.5, Math.min(18.5, b.x)); b.z = Math.max(-9, Math.min(8.4, b.z));
+        g.jug.forEach((j, i) => { if (b.hold < 0 && Math.hypot(b.x - j.x, b.z - j.z) < 0.75) b.hold = i; });
+      }
+    }
+    g.balon.position.set(b.x, b.y, b.z);
+  }
+  salirPatio() {
+    this.transicion = true; this.setState({ fade: 1 });
+    setTimeout(() => { this._vuelta = true; this.setState({ escena: 'patio' }, () => { this.aplicarEscena(); this.setState({ fade: 0 }); this.transicion = false; }); }, 380);
+  }
+  construirTerminal(e) {
+    const T = this.g.T, esc = e.esc || 'lab', G = this.g[esc], n0 = G.children.length;
+    const fx = e.face[0], fz = e.face[1], qx = -fz, qz = fx, col = new T.Color(e.color);
+    const bw = fx ? 0.8 : 1.0, bd = fx ? 1.0 : 0.8;
+    this.box(bw, 1.3, bd, this.M(esc === 'patio' ? '#22323d' : '#1a2630'), e.x, 0, e.z, G);
+    const cb = [e.x - bw / 2 - 0.15, e.x + bw / 2 + 0.15, e.z - bd / 2 - 0.15, e.z + bd / 2 + 0.15], cr = cb.slice(); this.coll[esc].push(cr);
+    const pm = new T.MeshBasicMaterial({ color: col.clone().multiplyScalar(0.35) });
+    const pant = new T.Mesh(new T.PlaneGeometry(0.8, 0.6), pm); pant.position.set(e.x + fx * (bw / 2 + 0.01), 1.0, e.z + fz * (bd / 2 + 0.01)); pant.rotation.y = Math.atan2(fx, fz); G.add(pant);
+    const toro = new T.Mesh(new T.TorusGeometry(0.42, 0.045, 8, 32), new T.MeshBasicMaterial({ color: col })); toro.position.set(e.x, 2.0, e.z); G.add(toro);
+    const luz = new T.PointLight(col, esc === 'patio' ? 0.8 : 1.4, 6, 1.6); luz.position.set(e.x + fx * 0.6, 1.8, e.z + fz * 0.6); G.add(luz);
+    const et = new T.Mesh(new T.PlaneGeometry(2.6, 0.42), new T.MeshBasicMaterial({ map: this.cartel(e.corto, 560, 90, '#0a141d', e.color, 44), transparent: true })); et.position.set(e.x, 2.75, e.z); et.rotation.x = -0.5; G.add(et);
+    const pp = [[e.x + fx * 1.45 - qx * 0.8, e.z + fz * 1.45 - qz * 0.8], [e.x + fx * 1.45 + qx * 0.8, e.z + fz * 1.45 + qz * 0.8]];
+    const placas = pp.map(([a, b]) => { const m = new T.Mesh(new T.CylinderGeometry(0.46, 0.46, 0.06, 28), new T.MeshBasicMaterial({ color: col.clone().multiplyScalar(0.45) })); m.position.set(a, 0.03, b); G.add(m); return m; });
+    const anillo = new T.Mesh(new T.RingGeometry(0.5, 0.62, 40), new T.MeshBasicMaterial({ color: col, transparent: true, opacity: 0, side: T.DoubleSide, depthWrite: false })); anillo.rotation.x = -Math.PI / 2; anillo.position.set(e.x, 0.06, e.z); anillo.visible = false; G.add(anillo);
+    this.g.term[e.id] = { pant, pm, toro, luz, placas, pp, col, esc, anillo, G, cb, cr, meshes: G.children.slice(n0) };
+  }
+  rayo(tm, e) {
+    const T = this.g.T, a = new T.Vector3(e.x, 2.1, e.z), b = tm.esc === 'lab' ? new T.Vector3(0, 2.95, -5.9) : new T.Vector3(e.x, 30, e.z);
+    const m = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, a.distanceTo(b), 8, 1, true), new T.MeshBasicMaterial({ color: tm.col, transparent: true, opacity: 0.5, blending: T.AdditiveBlending, depthWrite: false }));
+    m.position.copy(a).add(b).multiplyScalar(0.5); m.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), b.clone().sub(a).normalize()); tm.G.add(m); return m;
+  }
   entrarLab() {
     this.transicion = true; this.setState({ fade: 1 });
     setTimeout(() => { this.setState({ escena: 'lab' }, () => { this.aplicarEscena(); this.setState({ fade: 0 }); this.transicion = false; this.ping('jugando'); }); }, 380);
@@ -932,13 +1334,30 @@ class Component extends DCLogic {
   datos(pz) {
     if (!pz) return null;
     const k = pz.est + '|' + pz.ronda + '|' + pz.tier;
-    if (this._dk !== k) { const h = this.hnd(pz.est, pz.ronda, pz.tier); this._d = pz.est === 'reglas' ? genReglas(pz.tier, h) : pz.est === 'interrog' ? (genInterrog(pz.tier, h) || genInterrog(Math.max(1, pz.tier - 1), h) || genInterrog(1, Hh(rng(7)))) : pz.est === 'compuertas' ? genCompuertas(pz.tier, h) : pz.est === 'master' ? genMaster(pz.tier, h) : genTorre(pz.tier, h); this._dk = k; }
+    if (this._dk !== k) {
+      const hh = this.hnd(pz.est, pz.ronda, pz.tier), t = pz.tier, X = window.ESC_RETOS;
+      const f = { reglas: () => genReglas(t, hh), interrog: () => genInterrog(t, hh) || genInterrog(Math.max(1, t - 1), hh) || genInterrog(1, Hh(rng(7))), compuertas: () => genCompuertas(t, hh), master: () => genMaster(t, hh), torre: () => genTorre(t, hh),
+        robot: () => X && X.genRobot(t, hh), raven: () => X && X.genRaven(t, hh), wcst: () => X && X.genWcst(t, hh), einstein: () => X && X.genEinstein(t, hh), estim: () => X && X.genEstim(t, hh, this.g && this.g.stats), rutas: () => X && X.genRutas(t, hh), armar: () => FL() && FL().genArmar(t, hh), orden: () => FL() && FL().genOrden(t, hh), decision: () => FL() && FL().genDecision(t, hh), sigue: () => FL() && FL().genSigue(t, hh), error: () => FL() && FL().genError(t, hh), aparato: () => FL() && FL().genAparato(t, hh) }[pz.est];
+      this._d = f ? f() : null; this._dk = this._d ? k : null;
+    }
     return this._d;
   }
   uiInicial(id, tier) {
     if (id === 'reglas') return { aOp: '+', aVal: 1, bOn: false, bOp: '+', bVal: 1, modo: 'luego', creceOn: false, creceVal: 1, salida: null, intentos: 0 };
     if (id === 'interrog') return { asg: [], intentos: 0, malas: [] };
     if (id === 'master') return { guess: Array(MM[tier].L).fill(null), hist: [] };
+    if (id === 'robot') { const c = window.ESC_RETOS ? window.ESC_RETOS.ROBOT_CFG[tier] : { main: 7, fun: 0 }; return { main: Array(c.main).fill(null), fun: Array(c.fun).fill(null), c1: 0, c2: c.fun ? 0 : Math.ceil(c.main / 2), run: null, intentos: 0 }; }
+    if (id === 'raven') return { fig: 0, num: 1, fill: 0, intentos: 0 };
+    if (id === 'wcst') return { idx: 0, streak: 0, n: 0, err: 0, persev: 0, last: null, cambio: 0 };
+    if (id === 'einstein') return { m: {}, intentos: 0 };
+    if (id === 'estim') return { min: 0, max: 0, bet: 20 };
+    if (id === 'rutas') return { p1: [], p2: [], intentos: 0 };
+    if (id === 'armar') return { sel: null, asg: {}, malas: [], intentos: 0 };
+    if (id === 'orden') return { ord: [], cur: 0, intentos: 0, bien: null };
+    if (id === 'decision') return { c: null, swap: false, op: '<', k: null, res: null, intentos: 0 };
+    if (id === 'sigue') return { resp: [], anim: null };
+    if (id === 'error') return { cur: 0, marks: {}, intentos: 0 };
+    if (id === 'aparato') return { asg: {}, c: null, run: null, res: null, intentos: 0 };
     if (id === 'compuertas') return { g: Array(tier === 1 ? 1 : 2).fill(null), res: null, intentos: 0 };
     return { st: null, sel: null, moves: 0, err: 0 };
   }
@@ -956,8 +1375,9 @@ class Component extends DCLogic {
   abrirPuzzle(id) {
     const s = this.state, e = s.est[id] || { rondas: [], tier: 1 };
     const ronda = e.rondas.length, tier = e.tier || this.cfg().inicio;
+    const gd = s.guard && s.guard[id]; if (gd && gd.ronda === ronda) { this.keys = {}; this.setState({ fase: 'puzzle', pz: gd, hold: {}, llave: {}, est: Object.assign({}, s.est, { [id]: e }) }); return; }
     const pz = { est: id, ronda, tier, ui: this.uiInicial(id, tier), estado: 'jugando', fb: null };
-    if (id === 'torre') pz.ui.st = this.datos(pz).start.slice();
+    Object.assign(pz.ui, this.prepUi(pz));
     this.keys = {};
     this.setState({ fase: 'puzzle', pz, est: Object.assign({}, s.est, { [id]: e }) });
   }
@@ -972,20 +1392,28 @@ class Component extends DCLogic {
     this.snd('err');
     this.setState(Object.assign(st, { pz: Object.assign({}, this.state.pz, extraPz || {}, { fb: { tipo: 'err', titulo: 'Todavía no', txt: txt + (delta ? ' (' + delta + ' % de batería)' : '') + aviso } }) }));
   }
-  resolver(ok, eff, txt) {
+  resolver(ok, eff, txt, bd) {
     const s = this.state, pz = s.pz, pts = ok ? Math.round(BASE[pz.tier] * eff * 10) / 10 : 0;
-    const st = this.bateria(ok ? 4 : -5); const aviso = st._aviso; delete st._aviso;
+    const st = this.bateria(bd != null ? bd : (ok ? 4 : -5)); const aviso = st._aviso; delete st._aviso;
     this.snd(ok ? 'ok' : 'err');
     this.setState(Object.assign(st, { pts: s.pts + pts, pz: Object.assign({}, pz, { estado: ok ? 'ok' : 'fail', pts, fb: { tipo: ok ? 'ok' : 'fail', titulo: ok ? (eff === 1 ? '¡Perfecto!' : '¡Resuelto!') : 'Ronda perdida', txt: (ok ? '+' + pts + ' puntos. ' : '') + txt + aviso } }) }));
   }
-  siguiente() {
+  prepUi(pz) { const d = this.datos(pz); if (!d) return {}; if (pz.est === 'torre') return { st: d.start.slice() }; if (pz.est === 'estim') return { min: d.min0, max: d.max0 }; if (pz.est === 'rutas') return { p1: [d.ini], p2: [d.fin] }; if (pz.est === 'orden') return { ord: d.ord.slice() }; if (pz.est === 'decision' && d.libre) return { op: '<', k: d.p.v.min + Math.round((d.p.v.max - d.p.v.min) / 2 / d.p.v.paso) * d.p.v.paso }; if (pz.est === 'armar') return { sel: d.slots[0] }; return {}; }
+  salirReto() {
+    const s = this.state, pz = s.pz; if (!pz) return; clearInterval(this._robT);
+    if (pz.estado !== 'jugando') { this.siguiente(true); return; }
+    const gd = Object.assign({}, pz, { fb: null, ui: Object.assign({}, pz.ui, pz.ui.run ? { run: null } : {}) });
+    this.keys = {}; this.setState({ guard: Object.assign({}, s.guard, { [pz.est]: gd }), fase: 'mundo', pz: null, hold: {}, llave: {} }, () => this.ping('jugando'));
+  }
+  siguiente(volver) {
     const s = this.state, pz = s.pz, e = s.est[pz.est], ok = pz.estado === 'ok';
     const rondas = e.rondas.concat([{ tier: pz.tier, ok, pts: pz.pts || 0 }]);
     const tier = ok ? Math.min(3, pz.tier + 1) : Math.max(1, pz.tier - 1);
     const est = Object.assign({}, s.est, { [pz.est]: Object.assign({}, e, { rondas, tier }) });
     if (rondas.length >= 3) { this.setState({ est, fase: 'estres', erId: pz.est, erEstr: null, pz: null }, () => this.ping('jugando')); return; }
+    if (volver) { this.keys = {}; this.setState({ est, pz: null, fase: 'mundo', guard: Object.assign({}, s.guard, { [pz.est]: null }) }, () => this.ping('jugando')); return; }
     const npz = { est: pz.est, ronda: rondas.length, tier, ui: this.uiInicial(pz.est, tier), estado: 'jugando', fb: null };
-    this.setState({ est, pz: npz }, () => { if (pz.est === 'torre') this.setUi({ st: this.datos(npz).start.slice() }); this.ping('jugando'); });
+    Object.assign(npz.ui, this.prepUi(npz)); this.setState({ est, pz: npz, guard: Object.assign({}, s.guard, { [pz.est]: null }) }, () => this.ping('jugando'));
   }
   eff(n, a, b) { return n <= a ? 1 : n <= b ? 0.75 : 0.5; }
   probarReglas() {
@@ -1040,6 +1468,249 @@ class Component extends DCLogic {
     this.setState({ pz: Object.assign({}, pz, { ui, fb: null }) });
   }
 
+  teclaPuzzle(code) {
+    const s = this.state, pz = s.pz; if (!pz) return;
+    if (code === 'KeyQ' || code === 'KeyP') { if (!s.hold[code]) this.setState({ hold: Object.assign({}, s.hold, { [code]: true }) }); return; }
+    const fin = pz.estado !== 'jugando';
+    if (code === 'KeyE' || code === 'Enter') {
+      if (fin) { if (code === 'Enter') this.siguiente(); return; }
+      if (!SUB[pz.est]) return;
+      const now = Date.now(), ll = Object.assign({}, s.llave, { [code]: now });
+      if (ll.KeyE && ll.Enter && Math.abs(ll.KeyE - ll.Enter) < 1500) { this.setState({ llave: {} }); if (this._accion) this._accion(); }
+      else this.setState({ llave: ll });
+      return;
+    }
+    if (fin || s.pz.ui.run) return;
+    const d = this.datos(pz); if (!d) return;
+    const j1 = { KeyW: 'u', KeyS: 'd', KeyA: 'l', KeyD: 'r' }[code], j2 = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r' }[code];
+    const k = j1 || j2, P = j1 ? 1 : 2, u = pz.ui; if (!k) return;
+    if (u.anim) return;
+    if (pz.est === 'orden') {
+      if (k !== 'u' && k !== 'd') return; const dv0 = k === 'd' ? 1 : -1, n = u.ord.length;
+      if (P === 1) { this.setUi({ cur: Math.max(0, Math.min(n - 1, u.cur + dv0)) }); this.snd('click'); return; }
+      const j = u.cur + dv0; if (j < 0 || j >= n) return; const o = u.ord.slice(); [o[u.cur], o[j]] = [o[j], o[u.cur]]; this.setUi({ ord: o, cur: j, bien: null }); this.snd('click'); return;
+    }
+    if (FLUJO[pz.est]) { const eje = k === 'l' || k === 'r' ? 'h' : 'v', dvx = k === 'r' || k === 'd' ? 1 : -1, gr = this.flCtl(pz, d, u).find(x => x.quien === P && x.eje === eje); if (gr) { if (gr.step) gr.step(dvx); else { const L = gr.ops.length, c = gr.cur < 0 ? (dvx > 0 ? 0 : L - 1) : (gr.cur + dvx + L) % L; gr.set(c); } this.snd('click'); } return; }
+    const cyc = (arr, cur, dir) => arr[(arr.indexOf(cur) + (dir > 0 ? 1 : arr.length - 1) + arr.length) % arr.length];
+    const dv = k === 'u' || k === 'r' ? 1 : -1, t = pz.tier;
+    const clk = () => this.snd('click');
+    if (pz.est === 'reglas') {
+      const lim = (op, v) => op === '×' ? Math.max(2, Math.min(5, v)) : Math.max(1, Math.min(9, v)), OPS = ['+', '−', '×'];
+      if (t === 1) { if (P === 1 && (k === 'l' || k === 'r')) { const o = cyc(OPS, u.aOp, dv); this.setUi({ aOp: o, aVal: lim(o, u.aVal) }); clk(); } if (P === 2 && (k === 'u' || k === 'd')) { this.setUi({ aVal: lim(u.aOp, u.aVal + dv) }); clk(); } return; }
+      if (P === 1) { if (k === 'l' || k === 'r') { const o = cyc(OPS, u.aOp, dv); this.setUi({ aOp: o, aVal: lim(o, u.aVal) }); } else this.setUi({ aVal: lim(u.aOp, u.aVal + dv) }); }
+      else { if (k === 'l' || k === 'r') { const o = cyc(OPS, u.bOp, dv); this.setUi({ bOp: o, bVal: lim(o, u.bVal), bOn: true }); } else this.setUi({ bVal: lim(u.bOp, u.bVal + dv), bOn: true }); }
+      clk(); return;
+    }
+    if (pz.est === 'master') {
+      const Lg = d.L, h1 = Math.ceil(Lg / 2), lo = P === 1 ? 0 : h1, hi = P === 1 ? h1 - 1 : Lg - 1, ck = P === 1 ? 'c1' : 'c2';
+      let c = u[ck] == null ? lo : Math.max(lo, Math.min(hi, u[ck]));
+      if (k === 'l' || k === 'r') { c = Math.max(lo, Math.min(hi, c + dv)); this.setUi({ [ck]: c }); clk(); return; }
+      const g2 = u.guess.slice(), cur = g2[c]; g2[c] = cur == null ? (dv > 0 ? 0 : d.K - 1) : (cur + dv + d.K) % d.K; this.setUi({ guess: g2, [ck]: c }); clk(); return;
+    }
+    if (pz.est === 'torre') {
+      const i = { l: 0, d: 1, r: 2 }[k]; if (i == null) return;
+      if (P === 1) { const pegs = pegsDe(u.st, d.n); if (pegs[i].length) { this.setUi({ sel: u.sel === i ? null : i }); clk(); } return; }
+      if (u.sel == null) { this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'Primero J1', txt: 'J1 elige con A · S · D la torre de donde sale la celda. Después J2 elige el destino.' } }) }); return; }
+      this.tocarTorre(i); return;
+    }
+    if (pz.est === 'compuertas') {
+      const i = P === 1 ? 0 : d.slots === 2 ? 1 : -1; if (i < 0 || (k !== 'l' && k !== 'r')) return;
+      const o = d.opts, g2 = u.g.slice(); g2[i] = g2[i] == null ? o[0] : cyc(o, g2[i], dv); this.setUi({ g: g2, res: null }); clk(); return;
+    }
+    if (pz.est === 'robot') {
+      const c = d.cfg, hayF = c.fun > 0, arrK = hayF && P === 2 ? 'fun' : 'main', arr = u[arrK].slice();
+      const h1 = Math.ceil(c.main / 2), lo = hayF ? 0 : P === 1 ? 0 : h1, hi = hayF ? arr.length - 1 : P === 1 ? h1 - 1 : c.main - 1, ck = P === 1 ? 'c1' : 'c2';
+      let cur = Math.max(lo, Math.min(hi, u[ck] == null ? lo : u[ck]));
+      if (k === 'l' || k === 'r') { this.setUi({ [ck]: Math.max(lo, Math.min(hi, cur + dv)) }); clk(); return; }
+      const opts = [null].concat(c.tokens.filter(x => arrK === 'main' || x !== 'P'));
+      arr[cur] = cyc(opts, arr[cur], dv); this.setUi({ [arrK]: arr, [ck]: cur }); clk(); return;
+    }
+    if (pz.est === 'raven') {
+      if (P === 1) { if (k === 'l' || k === 'r') this.setUi({ fig: (u.fig + dv + 4) % 4 }); else this.setUi({ num: Math.max(1, Math.min(3, u.num + dv)) }); }
+      else if (k === 'l' || k === 'r') this.setUi({ fill: (u.fill + dv + 3) % 3 });
+      clk(); return;
+    }
+    if (pz.est === 'wcst') { const i = P === 1 ? (k === 'l' ? 0 : k === 'r' ? 1 : -1) : (k === 'l' ? 2 : k === 'r' ? 3 : -1); if (i >= 0) this.clasificarWc(i); return; }
+    if (pz.est === 'estim') {
+      const st = (k === 'u' || k === 'd' ? 10 : 1) * d.paso;
+      if (P === 1) { const mn = Math.max(0, Math.min(u.max, u.min + dv * st)); this.setUi({ min: mn }); }
+      else { const mx = Math.max(u.min, u.max + dv * st); this.setUi({ max: mx }); }
+      clk(); return;
+    }
+    if (pz.est === 'rutas') {
+      const R = window.ESC_RETOS, pk = P === 1 ? 'p1' : 'p2', ok2 = P === 1 ? 'p2' : 'p1', path = u[pk].slice(), otro = u[ok2];
+      const n = path[path.length - 1], r = Math.floor(n / d.C), c = n % d.C;
+      const nr = r + (k === 'u' ? -1 : k === 'd' ? 1 : 0), nc = c + (k === 'l' ? -1 : k === 'r' ? 1 : 0);
+      if (nr < 0 || nc < 0 || nr >= d.F || nc >= d.C) return;
+      const nb = nr * d.C + nc, e = R.aristaEntre(d, n, nb);
+      if (!e) return;
+      if (path.length >= 2 && path[path.length - 2] === nb) { path.pop(); this.setUi({ [pk]: path }); clk(); return; }
+      if (otro[otro.length - 1] === n) return;
+      if (e.obra) { this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'Calle en obra', txt: 'Esa calle está cerrada. Busquen otro camino.' } }) }); return; }
+      if (path.includes(nb) || (otro.includes(nb) && otro[otro.length - 1] !== nb)) return;
+      path.push(nb); this.setUi({ [pk]: path }); clk(); return;
+    }
+  }
+  flCtl(pz, d, u) {
+    const F = FL(), t = pz.tier, G = [], upd = x => this.setUi(x);
+    const grp = (titulo, quien, eje, ops, cur, set, extra) => G.push(Object.assign({ titulo, quien, eje, ops, cur, set }, extra || {}));
+    if (pz.est === 'armar') {
+      const sl = d.slots, sel = u.sel || sl[0], a = u.asg[sel] || {};
+      grp('Casillero', 1, 'v', sl.map((x, i) => String(i + 1)), sl.indexOf(sel), i => upd({ sel: sl[i] }));
+      if (d.formas) grp('Figura del casillero ' + (sl.indexOf(sel) + 1), 1, 'h', F.FORMAS.map(f => f[1]), F.FORMAS.findIndex(f => f[0] === a.shape), i => upd({ asg: Object.assign({}, u.asg, { [sel]: Object.assign({}, a, { shape: F.FORMAS[i][0] }) }), malas: [] }));
+      grp('Texto del casillero ' + (sl.indexOf(sel) + 1), 2, 'h', d.bank, d.bank.indexOf(a.text), i => upd({ asg: Object.assign({}, u.asg, { [sel]: Object.assign({}, a, { text: d.bank[i] }) }), malas: [] }));
+    }
+    if (pz.est === 'sigue') d.lec.forEach((r, i) => { const q = d.lec.length === 1 ? 1 : i % 2 ? 2 : 1; grp(d.lec.length === 1 ? '¿Qué hace el sistema?' : 'Lectura ' + (i + 1) + ': ¿qué hace?', q, q === 1 && i === 2 ? 'v' : 'h', d.ops.map(o => d.d.n[o][1]), d.ops.indexOf(u.resp[i]), j => { const r2 = u.resp.slice(); r2[i] = d.ops[j]; upd({ resp: r2 }); }); });
+    if (pz.est === 'error') {
+      const ids = d.d.orden, cur = ids[u.cur] || ids[0], m = u.marks[cur];
+      grp('Figura a revisar', 1, 'v', ids.map(x => (d.opt.txt[x] || d.d.n[x][1]).slice(0, 22)), u.cur, i => upd({ cur: i }));
+      grp('¿Tiene un error?', 1, 'h', ['No', 'Sí'], m == null ? 0 : 1, i => { const mk = Object.assign({}, u.marks); if (i) mk[cur] = mk[cur] == null ? -1 : mk[cur]; else delete mk[cur]; upd({ marks: mk }); });
+      grp('Tipo de error', 2, 'h', F.TIPOS, m == null ? -1 : m, i => { if (m == null) return; upd({ marks: Object.assign({}, u.marks, { [cur]: i }) }); });
+    }
+    if (pz.est === 'decision') {
+      if (!d.libre) grp('Condición del rombo', 1, 'h', d.conds.map(c => c.t), u.c == null ? -1 : u.c, i => upd({ c: i, res: null }));
+      else {
+        const OPS = ['<', '>', '<=', '>='], v = d.p.v;
+        grp('Comparación', 1, 'h', ['<', '>', '≤', '≥'], OPS.indexOf(u.op), i => upd({ op: OPS[i], res: null }));
+        grp('Número límite', 1, 'v', null, -1, null, { val: u.k + ' ' + v.u, step: dv => upd({ k: Math.max(v.min, Math.min(v.max, u.k - dv * v.paso * (v.paso >= 10 ? 1 : 1))), res: null }) });
+      }
+      if (d.swap) grp('¿Qué va en la rama Sí?', 2, 'h', [d.p.si, d.p.no], u.swap ? 1 : 0, i => upd({ swap: !!i, res: null }));
+    }
+    if (pz.est === 'aparato') {
+      const nm = { si: 'Rama Sí', no: 'Rama No', n1: 'No de «' + (d.d.n.d1 ? d.d.n.d1[1] : '') + '»', s2: 'Sí de «' + (d.d.n.d2 ? d.d.n.d2[1] : '') + '»', n2: 'No de «' + (d.d.n.d2 ? d.d.n.d2[1] : '') + '»' };
+      const own = d.d.B ? { n1: [1, 'v'], s2: [1, 'h'], n2: [2, 'h'] } : { si: [1, 'h'], no: [2, 'h'] };
+      d.slots.forEach(sl => grp(nm[sl], own[sl][0], own[sl][1], d.pal, d.pal.indexOf(u.asg[sl]), i => upd({ asg: Object.assign({}, u.asg, { [sl]: d.pal[i] }), res: null })));
+      if (d.conds) grp('Condición del rombo', 2, 'v', d.conds.map(c => c.t), u.c == null ? -1 : u.c, i => upd({ c: i, res: null }));
+    }
+    return G;
+  }
+  animar(path, fin, ms) {
+    clearInterval(this._flT); this.setUi({ anim: { path, i: 0 } });
+    this._flT = setInterval(() => { const q = this.state.pz; if (!q || !q.ui.anim) { clearInterval(this._flT); return; } const i = q.ui.anim.i + 1; if (i < q.ui.anim.path.length) { this.setUi({ anim: Object.assign({}, q.ui.anim, { i }) }); return; } clearInterval(this._flT); fin(); }, ms || 420);
+  }
+  probarFlujo() {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz), F = FL(), info = t => this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'Falta completar', txt: t } }) });
+    if (pz.est === 'armar') {
+      if (d.slots.some(sl => !u.asg[sl] || !u.asg[sl].text || (d.formas && !u.asg[sl].shape))) return info('Cada casillero necesita ' + (d.formas ? 'figura y texto.' : 'un texto.'));
+      const malas = d.slots.filter(sl => u.asg[sl].text !== d.d.n[sl][1] || (d.formas && u.asg[sl].shape !== d.d.n[sl][0])), intentos = u.intentos + 1;
+      if (!malas.length) { this.setUi({ intentos, malas: [] }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), 'Diagrama completo: ' + d.p.nombre + '.'), 30); return; }
+      if (intentos >= 3) { this.setUi({ intentos, malas, asg: {} }); setTimeout(() => this.resolver(false, 0, 'Revisen el diagrama correcto que queda en pantalla.'), 30); return; }
+      return this.fbErr(malas.length + (malas.length === 1 ? ' casillero está mal' : ' casilleros están mal') + ' (en rojo). Les quedan ' + (3 - intentos) + ' intentos.', -6, { ui: Object.assign({}, u, { intentos, malas }) });
+    }
+    if (pz.est === 'orden') {
+      const bien = u.ord.filter((v, i) => v === i).length, intentos = u.intentos + 1, n = u.ord.length;
+      if (bien === n) { this.setUi({ intentos, bien }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), 'Algoritmo correcto: ' + d.titulo + '.'), 30); return; }
+      if (intentos >= 4) { this.setUi({ intentos, bien, ord: [...Array(n).keys()] }); setTimeout(() => this.resolver(false, 0, 'Así queda el orden correcto.'), 30); return; }
+      return this.fbErr(bien + ' de ' + n + ' pasos están en su lugar. Les quedan ' + (4 - intentos) + ' intentos.', -5, { ui: Object.assign({}, u, { intentos, bien }) });
+    }
+    if (pz.est === 'decision') {
+      if (!d.libre && u.c == null) return info('Elijan la condición del rombo.');
+      const p = d.p, c = d.libre ? { op: u.op, k: u.k } : d.conds[u.c];
+      const res = d.tests.map(v => { const esp = F.cmp(p.op, v, p.k) ? p.si : p.no, cu = c.otra ? false : F.cmp(c.op, v, c.k), hace = cu !== u.swap ? p.si : p.no; return { v, esp, hace, ok: esp === hace }; });
+      const malas = res.filter(r => !r.ok).length, intentos = u.intentos + 1;
+      if (!malas) { this.setUi({ res, intentos }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), 'Funciona en todas las pruebas, incluso justo en el límite.'), 30); return; }
+      if (intentos >= 3) { this.setUi({ res, intentos }); setTimeout(() => this.resolver(false, 0, 'Una respuesta correcta: ' + F.condTxt(p.v, p.op, p.k) + ' → Sí: ' + p.si + '.'), 30); return; }
+      return this.fbErr('Falla en ' + malas + ' de ' + res.length + ' pruebas (en rojo). Fíjense en el caso del límite. Les quedan ' + (3 - intentos) + ' intentos.', -6, { ui: Object.assign({}, u, { res, intentos }) });
+    }
+    if (pz.est === 'sigue') {
+      if (d.lec.some((_, i) => !u.resp[i])) return info('Respondan todas las lecturas.');
+      let path = ['ini', 'set']; d.lec.forEach(r => { path = path.concat(F.run(d.p, r).path); });
+      const ok = d.lec.every((_, i) => d.d.n[u.resp[i]][1] === d.d.n[d.sol[i]][1]);
+      this.setState({ pz: Object.assign({}, pz, { fb: null }) });
+      this.animar(path, () => this.resolver(ok, 1, ok ? 'Siguieron bien el flujo.' : 'La bola muestra el camino correcto: ' + d.sol.map(x => d.d.n[x][1]).join(' → ') + '.'), 380); return;
+    }
+    if (pz.est === 'error') {
+      const ks = Object.keys(u.marks); if (!ks.length) return info('Marquen al menos una figura con error.');
+      if (ks.some(k => u.marks[k] < 0)) return info('J2 tiene que elegir el tipo de cada error marcado.');
+      const sk = Object.keys(d.sol), nodos = sk.filter(k => u.marks[k] != null).length, tipos = sk.filter(k => u.marks[k] === d.sol[k]).length, extra = ks.filter(k => d.sol[k] == null).length, intentos = u.intentos + 1;
+      const txt = sk.map(k => (d.opt.txt[k] || d.d.n[k][1]) + ': ' + F.TIPOS[d.sol[k]].toLowerCase()).join(' · ');
+      if (tipos === sk.length && !extra) { this.setUi({ intentos }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), txt + '.'), 30); return; }
+      if (intentos >= 3) { this.setUi({ intentos, marks: Object.fromEntries(sk.map(k => [k, d.sol[k]])) }); setTimeout(() => this.resolver(false, 0, 'Los errores eran: ' + txt + '.'), 30); return; }
+      return this.fbErr('Encontraron ' + nodos + ' de ' + sk.length + (sk.length === 1 ? ' figura' : ' figuras') + ' con error' + (nodos > tipos ? ', pero el tipo no es el correcto' : '') + (extra ? ' y marcaron ' + extra + ' que está bien' : '') + '. Les quedan ' + (3 - intentos) + ' intentos.', -6, { ui: Object.assign({}, u, { intentos }) });
+    }
+    if (pz.est === 'aparato') {
+      if (d.slots.some(sl => !u.asg[sl]) || (d.conds && u.c == null)) return info('Elijan una acción para cada rama' + (d.conds ? ' y la condición.' : '.'));
+      const p = d.p, cond = d.conds ? d.conds[u.c] : null;
+      const res = d.lec.map(r => { const esp = d.d.n[F.run(p, r).act][1]; let act; if (d.d.B) act = F.run(p, r).act; else { const b = cond ? F.cmp(cond.op, r[0], cond.k) : (p.v.bool ? !!r[0] : F.cmp(p.op, r[0], p.k)); act = b ? 'si' : 'no'; } return { r, esp, hace: u.asg[act], ok: u.asg[act] === esp }; });
+      const intentos = u.intentos + 1, malas = res.filter(x => !x.ok).length;
+      this.setState({ pz: Object.assign({}, pz, { fb: null }) });
+      this.setUi({ res: [], intentos });
+      let i = 0; clearInterval(this._flT);
+      this._flT = setInterval(() => { const q = this.state.pz; if (!q || q.est !== 'aparato') { clearInterval(this._flT); return; } if (i < res.length) { this.setUi({ res: res.slice(0, i + 1), run: i }); this.snd(res[i].ok ? 'click' : 'err'); i++; return; } clearInterval(this._flT); this.setUi({ run: null });
+        if (!malas) this.resolver(true, this.eff(intentos, 1, 2), 'El aparato respondió bien a las ' + res.length + ' lecturas.');
+        else if (intentos >= 3) this.resolver(false, 0, 'El aparato falló en ' + malas + ' lecturas. Revisen qué debía pasar en cada fila.');
+        else this.fbErr('El aparato falló en ' + malas + ' de ' + res.length + ' lecturas (en rojo). Les quedan ' + (3 - intentos) + ' intentos.', -6);
+      }, 650); return;
+    }
+  }
+  probarRobot() {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz); if (u.run) return;
+    const main = u.main.filter(Boolean), fun = u.fun.filter(Boolean);
+    if (!main.length) { this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'Programa vacío', txt: 'Pongan al menos un bloque en el programa principal.' } }) }); return; }
+    if (main.includes('P') && !fun.length) { this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'Función vacía', txt: 'Usaron P, pero la función P no tiene bloques.' } }) }); return; }
+    const r = window.ESC_RETOS.robotSim(d, main, fun, 80), intentos = u.intentos + 1;
+    this.setUi({ run: { trail: r.trail, i: 0 }, intentos }); this.setState({ pz: Object.assign({}, this.state.pz, { fb: null }) });
+    clearInterval(this._robT);
+    this._robT = setInterval(() => {
+      const q = this.state.pz; if (!q || q.est !== 'robot' || !q.ui.run) { clearInterval(this._robT); return; }
+      const i = q.ui.run.i + 1;
+      if (i < q.ui.run.trail.length) { this.setUi({ run: Object.assign({}, q.ui.run, { i }) }); return; }
+      clearInterval(this._robT); this.finRobot(r.status, intentos, main.length + fun.length);
+    }, 240);
+  }
+  finRobot(st, intentos, nb) {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz);
+    if (st === 'goal') { this.resolver(true, this.eff(intentos, 1, 2), 'El robot llegó a la meta con ' + nb + ' bloques.'); return; }
+    const msg = st === 'crash' ? 'El robot chocó contra un muro.' : st === 'loop' ? 'El programa no termina nunca.' : 'El robot se quedó sin instrucciones antes de llegar.';
+    const ui = Object.assign({}, u, { run: null });
+    if (intentos >= 4) { const sol = d.ref.main.map(t => TOKN[t]).join(', ') + (d.ref.fun.length ? ' · P = ' + d.ref.fun.map(t => TOKN[t]).join(', ') : ''); this.setState({ pz: Object.assign({}, pz, { ui }) }, () => this.resolver(false, 0, msg + ' Una solución posible: ' + sol + '.')); return; }
+    this.fbErr(msg + ' Les quedan ' + (4 - intentos) + ' ejecuciones.', -5, { ui });
+  }
+  probarRaven() {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz), r = d.resp, intentos = u.intentos + 1;
+    const mal = (u.fig !== r.fig) + (u.num !== r.num) + (u.fill !== r.fill);
+    if (!mal) { this.setUi({ intentos }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), 'Las reglas: ' + d.desc + '.'), 30); return; }
+    if (intentos >= 3) { this.setUi({ intentos }); setTimeout(() => this.resolver(false, 0, 'Las reglas eran: ' + d.desc + '.'), 30); return; }
+    this.fbErr(mal + (mal === 1 ? ' propiedad no cuadra' : ' propiedades no cuadran') + ' con las reglas. Les quedan ' + (3 - intentos) + ' intentos.', -6, { ui: Object.assign({}, u, { intentos }) });
+  }
+  clasificarWc(pila) {
+    const pz = this.state.pz; if (pz.estado !== 'jugando') return;
+    const u = pz.ui, d = this.datos(pz), R = window.ESC_RETOS, c = d.cartas[u.idx % d.cartas.length], regla = d.reglas[u.cambio], ok = R.pilaDe(c, regla) === pila;
+    let persev = u.persev; if (!ok && u.cambio > 0 && R.pilaDe(c, d.reglas[u.cambio - 1]) === pila) persev++;
+    let streak = ok ? u.streak + 1 : 0, cambio = u.cambio, cambiada = false;
+    const err = u.err + (ok ? 0 : 1), n = u.n + 1;
+    if (streak >= d.K) { cambio++; streak = 0; cambiada = true; }
+    const ui = Object.assign({}, u, { idx: u.idx + 1, streak, cambio, err, n, persev, last: { pila, ok } }), NR = { color: 'color', forma: 'forma', numero: 'cantidad' };
+    this.snd(ok ? 'click' : 'err');
+    if (cambio >= d.reglas.length) { const nR = d.reglas.length, e = err <= nR + 1 ? 1 : err <= nR * 2 + 2 ? 0.75 : 0.5; this.setState({ pz: Object.assign({}, pz, { ui }) }, () => this.resolver(true, e, 'Descubrieron las ' + nR + ' reglas (' + d.reglas.map(x => NR[x]).join(' → ') + ') con ' + err + ' errores. ' + persev + ' fueron por seguir con la regla anterior.')); return; }
+    if (n >= d.max) { this.setState({ pz: Object.assign({}, pz, { ui }) }, () => this.resolver(false, 0, 'Se acabaron las tarjetas. Las reglas eran: ' + d.reglas.map(x => NR[x]).join(' → ') + '.')); return; }
+    this.setState({ pz: Object.assign({}, pz, { ui, fb: { tipo: ok ? 'ok' : 'err', titulo: ok ? '✓ Correcto' : '✗ Incorrecto', txt: cambiada && d.avisa ? '¡Atención: la regla acaba de cambiar!' : ok ? 'Sigan con el mismo criterio.' : '¿Con qué criterio están clasificando: color, forma o cantidad?' } }) });
+  }
+  probarEinstein() {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz), elige = (p, t, n) => { const x = [...Array(n).keys()].filter(i => u.m[p + t + i] === 2); return x.length === 1 ? x[0] : -1; };
+    const a = d.P.map((_, p) => elige(p, 'a', d.n)), b = d.dos ? d.P.map((_, p) => elige(p, 'b', d.n)) : [];
+    if (a.includes(-1) || b.includes(-1)) { this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'Falta completar', txt: 'Cada estudiante necesita exactamente un ✓ en ' + (d.dos ? 'proyecto y en día.' : 'proyecto.') } }) }); return; }
+    const intentos = u.intentos + 1, malas = d.P.filter((_, p) => a[p] !== d.solA[p] || (d.dos && b[p] !== d.solB[p])).length;
+    const sol = d.P.map((nom, p) => nom + ': ' + d.A[d.solA[p]] + (d.dos ? ' (' + d.B[d.solB[p]] + ')' : '')).join(' · ');
+    if (!malas) { this.setUi({ intentos }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), sol + '.'), 30); return; }
+    if (intentos >= 3) { this.setUi({ intentos }); setTimeout(() => this.resolver(false, 0, 'La solución era: ' + sol + '.'), 30); return; }
+    this.fbErr(malas + (malas === 1 ? ' estudiante está mal ubicado' : ' estudiantes están mal ubicados') + '. Revisen cada pista contra su tabla. Les quedan ' + (3 - intentos) + ' intentos.', -8, { ui: Object.assign({}, u, { intentos }) });
+  }
+  probarEstim() {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz), r = window.ESC_RETOS.evalEstim(d, u.min, u.max), f = n => Number(n).toLocaleString('es-EC');
+    if (r.ok) this.resolver(true, r.eff, 'La respuesta es ' + f(d.v) + ' y su rango la incluía' + (r.eff === 1 ? ', con precisión: bien calibrados.' : '. Con un rango más angosto ganaban más puntos.') + ' Ganan ' + Math.round(u.bet / 2) + ' % de batería.', Math.round(u.bet / 2));
+    else this.resolver(false, 0, 'La respuesta es ' + f(d.v) + ' y quedó fuera de su rango (' + f(u.min) + ' a ' + f(u.max) + '). Pierden la apuesta: ' + u.bet + ' % de batería.', -u.bet);
+  }
+  costoRuta(d, path) { let c = 0; for (let i = 1; i < path.length; i++) c += window.ESC_RETOS.aristaEntre(d, path[i - 1], path[i]).w; return c; }
+  probarRutas() {
+    const pz = this.state.pz, u = pz.ui, d = this.datos(pz);
+    if (u.p1[u.p1.length - 1] !== u.p2[u.p2.length - 1]) { this.setState({ pz: Object.assign({}, pz, { fb: { tipo: 'info', titulo: 'La ruta no está completa', txt: 'Las dos líneas tienen que encontrarse en la misma esquina.' } }) }); return; }
+    const path = u.p1.concat(u.p2.slice(0, -1).reverse()), cost = this.costoRuta(d, path), intentos = u.intentos + 1;
+    if (cost === d.opt) { this.setUi({ intentos }); setTimeout(() => this.resolver(true, this.eff(intentos, 1, 2), 'Ruta óptima: ' + cost + ' minutos.'), 30); return; }
+    if (intentos >= 3) { this.setUi({ intentos }); setTimeout(() => this.resolver(true, 0.4, 'Su ruta llega en ' + cost + ' minutos; la más corta tardaba ' + d.opt + '.'), 30); return; }
+    this.fbErr('Su ruta llega, pero tarda ' + cost + ' minutos. Existe una más rápida. Retrocedan por el mismo camino para borrar.', -4, { ui: Object.assign({}, u, { intentos }) });
+  }
+
   // ---------- salidas / sesión ----------
   salida(motivo) {
     if (!this.vigilando()) return;
@@ -1072,9 +1743,9 @@ class Component extends DCLogic {
   }
   ptsEst(id) { const e = this.state.est[id]; return e && e.rondas ? e.rondas.reduce((a, r) => a + r.pts, 0) : 0; }
   bonus(s) { s = s || this.state; return Math.round(s.bat / 20); }
-  nota(s) { s = s || this.state; const tot = EST.length * this.maxE(), v = ((s.pts + s.pen) / tot) * 9.5 + (s.bat / 100) * 0.5; return Math.max(0, Math.min(10, Math.round(v * 100) / 100)); }
+  nota(s) { s = s || this.state; const tot = REQ * this.maxE(), v = ((s.pts + s.pen) / tot) * 9.5 + (s.bat / 100) * 0.5; return Math.max(0, Math.min(10, Math.round(v * 100) / 100)); }
   insignias(s) {
-    s = s || this.state; const r = id => (s.est[id] && s.est[id].rondas) || [], completo = s.fase === 'final' && !s.cerrado && EST.every(e => ((s.est[e.id] && s.est[e.id].rondas) || []).length >= 3);
+    s = s || this.state; const r = id => (s.est[id] && s.est[id].rondas) || [], completo = s.fase === 'final' && !s.cerrado && this.nHechas() >= REQ;
     const top = id => r(id).some(x => x.tier === 3 && x.ok);
     return [
       { nombre: 'Escape completo', desc: 'Salieron del laboratorio', ok: completo, ini: 'E', color: '#7fe0a0' },
@@ -1083,6 +1754,10 @@ class Component extends DCLogic {
       { nombre: 'Descifrador', desc: 'Nivel 3 resuelto en el código', ok: top('master'), ini: 'C', color: '#c58cf0' },
       { nombre: 'Estratega', desc: 'Nivel 3 resuelto en la torre', ok: top('torre'), ini: 'T', color: '#f0a726' },
       { nombre: 'Ingeniería lógica', desc: 'Nivel 3 resuelto en las compuertas', ok: top('compuertas'), ini: 'L', color: '#ff8fd0' },
+      { nombre: 'Programador', desc: 'Nivel 3 resuelto con el robot', ok: top('robot'), ini: 'P', color: '#9ae66e' },
+      { nombre: 'Mente flexible', desc: 'Nivel 3 resuelto en la regla oculta', ok: top('wcst'), ini: 'F', color: '#ffd166' },
+      { nombre: 'Maestro de diagramas', desc: 'Nivel 3 en Arma el diagrama o Encuentra el error', ok: top('armar') || top('error'), ini: 'Δ', color: '#7fd1ff' },
+      { nombre: 'Explorador total', desc: 'Completaron todos los retos de su curso', ok: this.activos().every(e => r(e.id).length >= 3), ini: '★', color: '#66e0d2' },
       { nombre: 'Manos limpias', desc: 'Cero salidas de la partida', ok: s.salidas === 0 && completo, ini: 'M', color: '#e8f4f8' }
     ];
   }
@@ -1151,13 +1826,15 @@ class Component extends DCLogic {
       setCodigo: e => this.setState({ f: Object.assign({}, s.f, { codigo: e.target.value.replace(/\D/g, '').slice(0, 4) }) }),
       enterLogin: e => { if (e.key === 'Enter') this.entrar(); }, entrar: () => this.entrar(), empezar: () => this.empezar(), volver: () => this.volver(),
       toggleSonido: () => this.setState({ sonido: !s.sonido }),
-      entregarYa: () => { const n = this.nHechas(); if (window.confirm(n === EST.length ? '¿Entregar la partida?' : 'Llevan ' + n + ' de ' + EST.length + ' terminales. Si entregan ahora, la nota se calcula con lo que tienen. ¿Entregar?')) this.terminar('terminado'); },
+      entregarYa: () => { const n = this.nHechas(); if (window.confirm(n >= REQ ? '¿Entregar la partida?' : 'Llevan ' + n + ' de ' + REQ + ' retos necesarios. Si entregan ahora, la nota se calcula con lo que tienen. ¿Entregar?')) this.terminar('terminado'); },
       cursosBtn: Object.keys(CURSO_CFG).map(k => ({ t: CURSO_CFG[k].nombre, onClick: () => this.setState({ f: Object.assign({}, s.f, { curso: k }) }), fondo: (s.f.curso || '3BGU') === k ? 'rgba(95,208,232,.16)' : '#0f1b26', borde: (s.f.curso || '3BGU') === k ? '#5fd0e8' : 'rgba(232,244,248,.2)' })),
-      hayPrompt: !!s.prompt && s.fase === 'mundo', prompt: s.prompt, promptPct: Math.round(s.promptPct * 100) + '%', promptColor: s.promptColor,
+      hayDep: !!s.dep && s.fase === 'mundo', dep: s.dep ? { t: (s.dep.tipo === 'futbol' ? 'FÚTBOL' : 'BÁSQUET'), a: s.dep.a, b: s.dep.b, reloj: Math.max(0, Math.ceil((s.dep.fin - s.ahora) / 1000)) + ' s', msg: s.dep.msg } : { t: '', a: 0, b: 0, reloj: '', msg: '' },
+      hayToast: !!(s.toast && s.toast.hasta > s.ahora), toast: s.toast ? s.toast.t : '',
+      hayPrompt: !!s.prompt && s.fase === 'mundo' && !s.dep, prompt: s.prompt, promptPct: Math.round(s.promptPct * 100) + '%', promptColor: s.promptColor,
       hud: {
         j1: s.ses ? s.ses.a : '', j2: s.ses ? s.ses.b : '', par: s.ses ? this.cfg().nombre + ' · ' + s.ses.paralelo : '',
-        objetivo: s.escena === 'patio' ? 'Vayan juntos al LABORATORIO: planta baja del bloque celeste, bajo el pasillo. Sigan el haz de luz.' : n < EST.length ? 'Reactiven las ' + EST.length + ' terminales: cada una se enciende con los dos jugadores sobre sus placas.' : '¡Salida desbloqueada! Los dos a las placas frente a la puerta verde.',
-        est: EST.map(e => { const h = this.hecha(e.id); return { t: e.corto, color: h ? '#7fe0a0' : e.color, borde: h ? '#7fe0a0' : 'rgba(232,244,248,.18)', punto: h ? '#7fe0a0' : 'rgba(232,244,248,.25)' }; }),
+        objetivo: n >= REQ ? '¡Salida desbloqueada! Vayan al laboratorio: los dos a las placas frente a la puerta verde.' : s.escena === 'patio' ? 'Completen ' + REQ + ' retos (llevan ' + n + '). Laboratorio: puerta con el haz de luz. Aulas de diagramas: escalera al este. Fichas de cancha: ' + this.fichas() + '.' : s.escena !== 'lab' ? 'Aula de diagramas: completen ' + REQ + ' retos en total (llevan ' + n + '). La salida final está en el laboratorio.' : n < REQ ? 'Completen ' + REQ + ' de los ' + EST.length + ' retos (llevan ' + n + '). Pueden salir de un reto y volver cuando quieran. Dos están en el patio: usen la salida del fondo.' : '¡Salida desbloqueada! Los dos a las placas frente a la puerta verde.',
+        est: this.activos().map(e => { const h = this.hecha(e.id); return { t: e.corto, color: h ? '#7fe0a0' : e.color, borde: h ? '#7fe0a0' : 'rgba(232,244,248,.18)', punto: h ? '#7fe0a0' : 'rgba(232,244,248,.25)' }; }),
         bat: s.bat + '%', batPct: s.bat + '%', batColor, pts: Math.round((s.pts + s.pen) * 10) / 10, salidas: s.salidas,
         salBorde: s.salidas ? 'rgba(255,123,114,.7)' : 'rgba(232,244,248,.2)', salColor: s.salidas ? '#ff7b72' : '#c9dbe2',
         reloj: Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0'), sonido: s.sonido ? 'SONIDO ON' : 'SONIDO OFF'
@@ -1173,12 +1850,13 @@ class Component extends DCLogic {
       btnTxt: ok1 && ok2 ? 'Entrar al campus en pantalla completa' : 'Esperando que los dos prueben su teclado…', btnFondo: ok1 && ok2 ? '#7fe0a0' : '#4d6674', btnOp: ok1 && ok2 ? 1 : 0.7
     };
 
-    out.pz = {}; out.rg = {}; out.it = {}; out.mm = {}; out.tr = {}; out.cp = { cadena: [], filas: [], cab: [], leyenda: '', conC: '' };
+    out.pz = {}; out.rg = {}; out.it = {}; out.mm = {}; out.tr = {}; out.rb = { celdas: [], main: [], fun: [], paleta: [] }; out.rv = { celdas: [], perillas: [] }; out.wc = { pilas: [], carta: {} }; out.ei = { p1: [], p2: [], cab: [], filas: [] }; out.es = { bets: [] }; out.ru = { calles: [], nodos: [] }; out.fl = { grupos: [], lec: [], orden: [], tabla: { cab: [], filas: [] } }; out.cp = { cadena: [], filas: [], cab: [], leyenda: '', conC: '' };
     if (pz) {
       const E = EST.find(e => e.id === pz.est), d = this.datos(pz), u = pz.ui, fin = pz.estado !== 'jugando', idx = EST.indexOf(E);
       const opJ = (idx + pz.ronda) % 2, fb = pz.fb;
       out.pz = {
-        esReglas: pz.est === 'reglas', esInterrog: pz.est === 'interrog', esMaster: pz.est === 'master', esTorre: pz.est === 'torre', esCompuertas: pz.est === 'compuertas',
+        esReglas: pz.est === 'reglas', esInterrog: pz.est === 'interrog', esMaster: pz.est === 'master', esTorre: pz.est === 'torre', esCompuertas: pz.est === 'compuertas', esRobot: pz.est === 'robot', esRaven: pz.est === 'raven', esWcst: pz.est === 'wcst', esEinstein: pz.est === 'einstein', esEstim: pz.est === 'estim', esRutas: pz.est === 'rutas', esFlujo: !!FLUJO[pz.est], esOrden: pz.est === 'orden',
+        tec: PISTA_TEC[pz.est] || '', salir: () => this.salirReto(), salirTxt: fin ? '← VOLVER AL MAPA' : '← SALIR (SE GUARDA)',
         nombre: E.nombre, hab: E.hab, color: E.color, glow: E.glow, ronda: 'RONDA ' + (pz.ronda + 1) + ' DE 3',
         dots: [1, 2, 3].map(t => ({ c: t <= pz.tier ? E.color : 'rgba(232,244,248,.18)' })),
         operador: s.ses ? (opJ ? s.ses.b : s.ses.a).split(' ')[0].toUpperCase() : '', opColor: opJ ? '#f0a726' : '#5fd0e8',
@@ -1211,6 +1889,7 @@ class Component extends DCLogic {
         out.it.cards = d.nom.map((nom, i) => {
           const v = u.asg[i], mala = u.malas.includes(i), rev = fin && pz.estado === 'fail', vs = rev ? d.sol[i] : v;
           return { nombre: nom, ini: nom[0], frase: d.st[i].t, borde: mala ? '#ff7b72' : vs === true ? 'rgba(127,224,160,.6)' : vs === false ? 'rgba(255,123,114,.45)' : 'rgba(232,244,248,.18)',
+            quien: i % 2 ? 'J2 · MANTÉN P' : 'J1 · MANTÉN Q', quienColor: i % 2 ? '#f0a726' : '#5fd0e8', blur: fin || s.hold[i % 2 ? 'KeyP' : 'KeyQ'] ? 'none' : 'blur(7px)',
             casco: vs === true ? '#7fe0a0' : vs === false ? '#ff7b72' : '#4d6674', tipo: vs === true ? 'LEAL' : vs === false ? 'SABOTEADOR' : 'SIN CASCO', tipoColor: vs === true ? '#7fe0a0' : vs === false ? '#ff7b72' : '#8aa3ae',
             onL: () => { if (!fin) { const a = u.asg.slice(); a[i] = true; this.setUi({ asg: a, malas: [] }); } }, onS: () => { if (!fin) { const a = u.asg.slice(); a[i] = false; this.setUi({ asg: a, malas: [] }); } },
             lFondo: v === true ? '#7fe0a0' : 'transparent', lColor: v === true ? '#062914' : '#7fe0a0', sFondo: v === false ? '#ff7b72' : 'transparent', sColor: v === false ? '#2a0606' : '#ff7b72' };
@@ -1256,6 +1935,128 @@ class Component extends DCLogic {
       }
     }
 
+    if (pz) {
+      const d = this.datos(pz), u = pz.ui, fin = pz.estado !== 'jugando', R = window.ESC_RETOS, J1 = '#5fd0e8', J2 = '#f0a726';
+      if (pz.est === 'robot' && d) {
+        const run = u.run, pos = run ? run.trail[Math.min(run.i, run.trail.length - 1)] : { x: d.sx, y: d.sy, dir: d.sdir }, vis = {};
+        if (run) run.trail.slice(0, run.i + 1).forEach(q => { vis[q.y * d.W + q.x] = 1; });
+        const hayF = d.cfg.fun > 0, h1 = Math.ceil(d.cfg.main / 2);
+        const slot = (arr, arrK) => arr.map((v, i) => { const own = hayF ? (arrK === 'main' ? 1 : 2) : (i < h1 ? 1 : 2), cur = (own === 1 ? (u.c1 == null ? 0 : u.c1) : (u.c2 == null ? (hayF ? 0 : h1) : u.c2)) === i, col = own === 1 ? J1 : J2;
+          return { t: v ? TOK[v] : '', borde: cur && !fin ? col : 'rgba(232,244,248,.18)', fondo: cur && !fin ? (own === 1 ? 'rgba(95,208,232,.14)' : 'rgba(240,167,38,.14)') : '#0f1b26', color: v === 'P' ? '#ffd166' : '#9ae66e' }; });
+        out.rb = {
+          cols: 'repeat(' + d.W + ',minmax(0,1fr))',
+          celdas: [...Array(d.W * d.H)].map((_, i) => { const x = i % d.W, y = Math.floor(i / d.W), rob = pos.x === x && pos.y === y, goal = d.gx === x && d.gy === y, wall = !!d.walls[i];
+            return { t: rob ? ['▲', '▶', '▼', '◀'][pos.dir] : goal ? '◎' : '', fondo: wall ? '#3b3037' : vis[i] ? 'rgba(154,230,110,.16)' : '#0f1b26', borde: wall ? '#5e4a55' : goal ? '#ffd166' : 'rgba(232,244,248,.1)', color: rob ? (pos.crash ? '#ff7b72' : '#9ae66e') : '#ffd166' }; }),
+          main: slot(u.main, 'main'), fun: slot(u.fun, 'fun'), hayFun: hayF, mainQuien: hayF ? 'J1' : 'J1 la primera mitad · J2 la segunda', funQuien: 'J2',
+          paleta: d.cfg.tokens.map(t => ({ t: TOK[t], n: TOKN[t] })),
+          txt: pz.tier === 1 ? 'Los giros no mueven al robot: solo lo hacen mirar hacia otro lado.' : pz.tier === 2 ? 'Cada P del programa ejecuta la función P completa: busquen el patrón que se repite.' : 'El bloque ? es un sensor: avanza si está libre y, si hay muro, gira a la derecha.'
+        };
+        if (!fin) Object.assign(out.pz, { btn: u.run ? 'Ejecutando…' : '▶ Ejecutar', accion: () => this.probarRobot(), btnOp: u.run ? 0.4 : 1, info: 'EJECUCIONES ' + u.intentos + ' DE 4', hay2: !u.run, btn2: 'Borrar todo', accion2: () => this.setUi({ main: u.main.map(() => null), fun: u.fun.map(() => null) }) });
+      }
+      if (pz.est === 'raven' && d && R) {
+        const gl = c => ({ t: Array(c.num).fill((c.fill === 1 ? R.FIG_V : R.FIG)[c.fig]).join(' '), color: c.fill === 2 ? '#b8a4ff' : '#e8f4f8' });
+        const mine = fin && pz.estado === 'fail' ? d.resp : { fig: u.fig, num: u.num, fill: u.fill };
+        out.rv = {
+          celdas: d.celdas.map((c, i) => Object.assign(gl(i < 8 ? c : mine), i < 8 ? { borde: 'rgba(232,244,248,.2)', fondo: '#0f1b26', linea: 'solid' } : { borde: '#b8a4ff', fondo: 'rgba(184,164,255,.1)', linea: 'dashed' })),
+          perillas: [{ nombre: 'FIGURA', v: ['círculo', 'cuadrado', 'triángulo', 'rombo'][u.fig] + ' ' + R.FIG[u.fig], teclas: 'J1 · A D', borde: J1 }, { nombre: 'CANTIDAD', v: String(u.num), teclas: 'J1 · W S', borde: J1 }, { nombre: 'RELLENO', v: ['lleno', 'vacío', 'de color'][u.fill], teclas: 'J2 · ← →', borde: J2 }]
+        };
+        if (!fin) Object.assign(out.pz, { btn: 'Colocar pieza', accion: () => this.probarRaven(), info: 'INTENTOS ' + u.intentos + ' DE 3' });
+      }
+      if (pz.est === 'wcst' && d && R) {
+        const gl = c => Array(c.numero).fill(R.WC_FIG[c.forma]).join(' '), c = d.cartas[u.idx % d.cartas.length];
+        out.wc = {
+          pilas: R.WC_PILAS.map((q, i) => ({ t: gl(q), color: R.WC_COL[q.color], tecla: ['J1 · A', 'J1 · D', 'J2 · ←', 'J2 · →'][i], tc: i < 2 ? J1 : J2, borde: u.last && u.last.pila === i ? (u.last.ok ? '#7fe0a0' : '#ff7b72') : '#2a3a44' })),
+          carta: { t: gl(c), color: R.WC_COL[c.color] }, n: Math.min(u.n + 1, d.max), max: d.max, racha: u.streak + ' / ' + d.K, hechas: u.cambio + ' de ' + d.reglas.length
+        };
+        if (!fin) Object.assign(out.pz, { btn: '', accion: () => {}, btnOp: 0, info: 'CON ' + d.K + ' ACIERTOS SEGUIDOS LA REGLA CAMBIA' });
+      }
+      if (pz.est === 'einstein' && d) {
+        const rev = fin && pz.estado === 'fail';
+        const cell = (p, t, i) => { const k = p + t + i, v = rev ? ((t === 'a' ? d.solA : d.solB)[p] === i ? 2 : 1) : (u.m[k] || 0);
+          return { t: ['', '✗', '✓'][v], color: v === 2 ? '#7fe0a0' : '#ff7b72', fondo: v === 2 ? 'rgba(127,224,160,.14)' : v === 1 ? 'rgba(255,123,114,.08)' : '#0f1b26', borde: v === 2 ? '#7fe0a0' : t === 'a' ? 'rgba(255,159,107,.3)' : 'rgba(143,184,255,.3)',
+            onClick: () => { if (fin) return; const m = Object.assign({}, this.state.pz.ui.m); m[k] = ((m[k] || 0) + 1) % 3; this.snd('click'); this.setUi({ m }); } }; };
+        out.ei = {
+          extra: d.dos ? ' y lo presenta un día distinto' : '',
+          p1: d.pistas.filter((_, i) => i % 2 === 0).map(t => ({ t, blur: fin || s.hold.KeyQ ? 'none' : 'blur(7px)' })),
+          p2: d.pistas.filter((_, i) => i % 2 === 1).map(t => ({ t, blur: fin || s.hold.KeyP ? 'none' : 'blur(7px)' })),
+          cab: d.A.map(t => ({ t: t.toUpperCase(), color: '#ff9f6b' })).concat(d.dos ? d.B.map(t => ({ t: t.toUpperCase(), color: '#8fb8ff' })) : []),
+          filas: d.P.map((nom, p) => ({ nom, celdas: d.A.map((_, i) => cell(p, 'a', i)).concat(d.dos ? d.B.map((_, i) => cell(p, 'b', i)) : []) }))
+        };
+        if (!fin) Object.assign(out.pz, { btn: 'Comprobar tabla', accion: () => this.probarEinstein(), info: 'INTENTOS ' + u.intentos + ' DE 3' });
+      }
+      if (pz.est === 'estim' && d) {
+        const f = n => Number(n).toLocaleString('es-EC');
+        out.es = { q: d.q, min: f(u.min), max: f(u.max), pasoTxt: 'A D / ← → cambian de ' + f(d.paso) + ' en ' + f(d.paso) + ' · W S / ↑ ↓ cambian de ' + f(d.paso * 10) + ' en ' + f(d.paso * 10),
+          bets: [10, 20, 30, 40].map(b => ({ t: b + ' %', onClick: () => { if (!fin) this.setUi({ bet: b }); }, fondo: u.bet === b ? 'rgba(102,224,210,.2)' : '#0f1b26', borde: u.bet === b ? '#66e0d2' : 'rgba(232,244,248,.2)' })) };
+        if (!fin) Object.assign(out.pz, { btn: 'Apostar ' + u.bet + ' %', accion: () => this.probarEstim(), info: 'UNA SOLA OPORTUNIDAD POR RONDA' });
+      }
+      if (pz.est === 'rutas' && d && R) {
+        const px = c => (c / (d.C - 1) * 100) + '%', py = r => (r / (d.F - 1) * 100) + '%', ek = (a, b) => a < b ? a + '-' + b : b + '-' + a, en = (path) => { const x = {}; for (let i = 1; i < path.length; i++) x[ek(path[i - 1], path[i])] = 1; return x; };
+        const e1 = en(u.p1), e2 = en(u.p2), h1 = u.p1[u.p1.length - 1], h2 = u.p2[u.p2.length - 1];
+        out.ru = {
+          ratio: (d.C - 1) + ' / ' + (d.F - 1), txt: pz.tier === 3 ? 'Las calles rojas están en obra.' : '',
+          calles: Object.keys(d.aristas).map(k => { const e = d.aristas[k], ra = Math.floor(e.a / d.C), ca = e.a % d.C, col = e.obra ? '#ff5d5d' : e1[k] ? J1 : e2[k] ? J2 : 'rgba(232,244,248,.22)';
+            return e.dir === 'h' ? { l: px(ca), t: py(ra), w: (100 / (d.C - 1)) + '%', h: '7px', tr: 'translateY(-50%)', color: col, tc: e.obra ? '#ff9b93' : '#e8f4f8', w8: e.obra ? 'OBRA' : e.w + ' min' }
+              : { l: px(ca), t: py(ra), w: '7px', h: (100 / (d.F - 1)) + '%', tr: 'translateX(-50%)', color: col, tc: e.obra ? '#ff9b93' : '#e8f4f8', w8: e.obra ? 'OBRA' : e.w + ' min' }; }),
+          nodos: [...Array(d.C * d.F).keys()].map(n => { const r = Math.floor(n / d.C), c = n % d.C, esI = n === d.ini, esF = n === d.fin, head = n === h1 || n === h2;
+            return { l: px(c), t: py(r), s: esI || esF ? '46px' : head ? '28px' : '18px', fondo: esI ? J1 : esF ? J2 : head ? (n === h1 && n === h2 ? '#7fe0a0' : n === h1 ? J1 : J2) : '#1a2630', borde: head ? '#ffffff' : 'rgba(232,244,248,.35)', t2: esI ? 'COL' : esF ? 'CASA' : '' }; }),
+          costo: 'J1 lleva ' + this.costoRuta(d, u.p1) + ' min · J2 lleva ' + this.costoRuta(d, u.p2) + ' min' + (h1 === h2 && u.p1.length + u.p2.length > 2 ? ' · TOTAL ' + (this.costoRuta(d, u.p1) + this.costoRuta(d, u.p2)) + ' min' : '')
+        };
+        if (!fin) Object.assign(out.pz, { btn: 'Enviar al robot', accion: () => this.probarRutas(), info: 'INTENTOS ' + u.intentos + ' DE 3', hay2: true, btn2: 'Borrar', accion2: () => this.setUi({ p1: [d.ini], p2: [d.fin] }) });
+      }
+      if (FLUJO[pz.est] && d && FL()) {
+        const F = FL(), J = q => q === 1 ? J1 : J2, an = u.anim, hl = {};
+        if (an) hl[an.path[an.i]] = '#ffd166';
+        const fl = { info: '', grupos: [], lec: [], hayLec: false, orden: [], hayTabla: false, tabla: { cab: [], filas: [] }, hayDisp: false, disp: {}, svg: null };
+        const svgO = { hl };
+        if (pz.est === 'armar') {
+          const bl = {}, sh = {}, tx = {}, bad = {}; d.slots.forEach(sl => { const a = u.asg[sl] || {}; if (a.text) tx[sl] = a.text; else bl[sl] = 1; if (d.formas) sh[sl] = a.shape || '?'; if (u.malas.includes(sl)) bad[sl] = 1; });
+          const rev = fin && pz.estado === 'fail';
+          Object.assign(svgO, rev ? {} : { blank: bl, shape: sh, txt: tx, bad, sel: fin ? null : u.sel, onNode: id => { if (!fin && d.slots.includes(id)) this.setUi({ sel: id }); } });
+          fl.info = d.p.nombre + ': completen el diagrama. ' + (d.formas ? 'Cada casillero necesita la figura correcta y su texto. Sobran tarjetas.' : 'Elijan el texto de cada casillero. Sobran tarjetas.');
+        }
+        if (pz.est === 'sigue') {
+          fl.info = d.p.nombre + '. Sigan el diagrama con la lectura del sensor y digan qué hace el sistema.' + (d.lec.length > 1 ? ' El programa se repite (loop) con cada lectura.' : '');
+          fl.hayLec = true; fl.lec = d.lec.map((r, i) => { const due = d.lec.length === 1 ? 1 : i % 2 ? 2 : 1, ver = due === 1 ? 2 : 1, key = ver === 1 ? 'KeyQ' : 'KeyP'; return { t: 'Lectura ' + (i + 1) + ' · ' + F.lectTxt(d.p, r), quien: 'VISIBLE PARA J' + ver + ' · MANTÉN ' + (ver === 1 ? 'Q' : 'P'), color: J(ver), blur: fin || an || s.hold[key] ? 'none' : 'blur(8px)' }; });
+        }
+        if (pz.est === 'error') {
+          const ids = d.d.orden, bad = {}; Object.keys(u.marks).forEach(k => { bad[k] = 1; });
+          Object.assign(svgO, d.opt, { bad, sel: fin ? null : ids[u.cur], onNode: id => { if (fin) return; const i = ids.indexOf(id), mk = Object.assign({}, u.marks); if (u.cur === i) { if (mk[id] == null) mk[id] = -1; else delete mk[id]; } this.setUi({ cur: i, marks: mk }); } });
+          fl.info = d.p.nombre + '. Este diagrama tiene ' + (d.n === 1 ? 'un error' : d.n + ' errores') + '. Encuéntrenlo y digan qué tipo de error es. Figuras: óvalo = inicio, rectángulo = proceso, paralelogramo = lectura, rombo = decisión.';
+        }
+        if (pz.est === 'decision') {
+          const p = d.p, c = d.libre ? F.condTxt(p.v, u.op, u.k) : u.c != null ? d.conds[u.c].t : '¿ … ?';
+          Object.assign(svgO, { txt: { dec: c, si: u.swap ? p.no : p.si, no: u.swap ? p.si : p.no } });
+          fl.info = p.spec + (d.libre ? ' Armen la condición: comparación y número.' : ' Elijan la condición correcta' + (d.swap ? ' y qué acción va en la rama Sí.' : '.'));
+          if (u.res) { fl.hayTabla = true; fl.tabla = { cab: [{ t: p.v.n.toUpperCase() }, { t: 'DEBE' }, { t: 'SU DIAGRAMA' }], filas: u.res.map(r => ({ fondo: r.ok ? 'rgba(127,224,160,.07)' : 'rgba(255,123,114,.1)', celdas: [{ t: r.v + ' ' + p.v.u, color: '#e8f4f8' }, { t: r.esp, color: '#c9dbe2' }, { t: r.hace, color: r.ok ? '#7fe0a0' : '#ff7b72' }] })) }; }
+        }
+        if (pz.est === 'aparato') {
+          const p = d.p, tx = {}; d.slots.forEach(sl => { tx[sl] = u.asg[sl] || '?'; }); if (d.conds) tx.dec = u.c != null ? d.conds[u.c].t : '¿ … ?';
+          Object.assign(svgO, { txt: tx });
+          if (u.run != null && u.res[u.run]) { const rr = F.run(p, u.res[u.run].r); ['leer'].concat(rr.path).forEach(x => { hl[x] = '#ffd166'; }); }
+          fl.info = p.nombre + ': programen las ramas para que el aparato haga lo correcto con cada lectura. Sobran acciones.';
+          const last = u.res && u.res.length ? u.res[u.res.length - 1] : null;
+          fl.hayDisp = true; fl.disp = last ? { t: (last.hace || '—').toUpperCase(), sub: F.lectTxt(p, last.r), color: last.ok ? '#7fe0a0' : '#ff7b72', glow: last.ok ? 'rgba(127,224,160,.35)' : 'rgba(255,123,114,.35)' } : { t: 'APARATO EN ESPERA', sub: d.lec.length + ' lecturas de prueba', color: '#9fb6c0', glow: 'transparent' };
+          fl.hayTabla = !!(u.res && u.res.length); fl.tabla = { cab: [{ t: 'LECTURA' }, { t: 'DEBE' }, { t: 'SU APARATO' }], filas: (u.res || []).map(r => ({ fondo: r.ok ? 'rgba(127,224,160,.07)' : 'rgba(255,123,114,.1)', celdas: [{ t: F.lectTxt(p, r.r), color: '#e8f4f8' }, { t: r.esp, color: '#c9dbe2' }, { t: r.hace, color: r.ok ? '#7fe0a0' : '#ff7b72' }] })) };
+        }
+        if (pz.est === 'orden') {
+          fl.info = d.titulo + ': ordenen los pasos del algoritmo de arriba abajo.' + (u.bien != null ? ' Pasos en su lugar: ' + u.bien + ' de ' + u.ord.length + '.' : '');
+          fl.orden = u.ord.map((v, i) => ({ n: i + 1, t: d.pasos[v], borde: !fin && i === u.cur ? J1 : fin ? '#7fe0a0' : 'rgba(232,244,248,.25)', fondo: !fin && i === u.cur ? 'rgba(95,208,232,.14)' : '#0f1b26',
+            onClick: () => { if (fin) return; if (u.cur === i) return; const o = u.ord.slice(); [o[u.cur], o[i]] = [o[i], o[u.cur]]; this.setUi({ ord: o, cur: i, bien: null }); this.snd('click'); } }));
+        } else fl.svg = F.svg(React, d.d, svgO);
+        fl.grupos = pz.est === 'orden' ? [] : this.flCtl(pz, d, u).map(gr => ({ titulo: gr.titulo, quien: 'J' + gr.quien + ' · ' + (gr.quien === 1 ? (gr.eje === 'h' ? 'A D' : 'W S') : (gr.eje === 'h' ? '← →' : '↑ ↓')), color: J(gr.quien), hayOps: !!gr.ops, hayVal: !gr.ops, val: gr.val || '',
+          menos: () => { if (!fin && gr.step) gr.step(1); }, mas: () => { if (!fin && gr.step) gr.step(-1); },
+          ops: (gr.ops || []).map((t, i) => ({ t, onClick: () => { if (!fin && !an) gr.set(i); }, fondo: i === gr.cur ? (gr.quien === 1 ? 'rgba(95,208,232,.2)' : 'rgba(240,167,38,.2)') : '#0f1b26', borde: i === gr.cur ? J(gr.quien) : 'rgba(232,244,248,.18)' })) }));
+        fl.haySvg = !!fl.svg; out.fl = fl;
+        if (!fin) Object.assign(out.pz, { btn: an || u.run != null ? 'Ejecutando…' : pz.est === 'aparato' ? '▶ Encender el aparato' : pz.est === 'sigue' ? 'Soltar la bola' : 'Comprobar', accion: () => { if (!this.state.pz.ui.anim && this.state.pz.ui.run == null) this.probarFlujo(); }, info: u.intentos != null ? 'INTENTOS ' + u.intentos + ' DE ' + (pz.est === 'orden' ? 4 : 3) : 'UNA SOLA OPORTUNIDAD' });
+      }
+      if (!fin && SUB[pz.est] && out.pz.accion) {
+        this._accion = out.pz.accion; const now = Date.now(), l1 = s.llave.KeyE && now - s.llave.KeyE < 1500, l2 = s.llave.Enter && now - s.llave.Enter < 1500;
+        Object.assign(out.pz, { hayLlave: true, ll1f: l1 ? J1 : 'transparent', ll1c: l1 ? '#081018' : J1, ll2f: l2 ? J2 : 'transparent', ll2c: l2 ? '#081018' : J2,
+          accion: () => this.setState({ pz: Object.assign({}, this.state.pz, { fb: { tipo: 'info', titulo: 'Confirmen los dos', txt: 'Para enviar, J1 presiona E y J2 presiona ENTER al mismo tiempo.' } }) }) });
+      } else out.pz.hayLlave = false;
+      if (pz.est === 'wcst' && !fin) out.pz.btnOp = 0;
+    }
     if (s.erId) {
       const E = EST.find(e => e.id === s.erId), e = s.est[s.erId] || { rondas: [] };
       out.er = {
@@ -1271,9 +2072,9 @@ class Component extends DCLogic {
     const color = cerr ? '#ff7b72' : nota >= 9 ? '#7fe0a0' : nota >= 7 ? '#5fd0e8' : '#f0a726';
     out.fin = {
       nota: nota.toFixed(2).replace('.', ','), color, pareja: s.ses ? s.ses.a + ' y ' + s.ses.b : '',
-      linea: cerr ? 'PARTIDA CERRADA POR SALIDAS' : this.nHechas() === EST.length ? '¡ESCAPARON DEL LABORATORIO!' : 'PARTIDA ENTREGADA · ' + this.nHechas() + ' DE ' + EST.length + ' TERMINALES',
+      linea: cerr ? 'PARTIDA CERRADA POR SALIDAS' : this.nHechas() >= REQ ? '¡ESCAPARON DEL LABORATORIO! · ' + this.nHechas() + ' DE ' + this.activos().length + ' RETOS' : 'PARTIDA ENTREGADA · ' + this.nHechas() + ' DE ' + REQ + ' RETOS',
       mensaje: cerr ? 'Salieron tres veces de la partida. Se registró la nota que tenían.' : nota >= 9 ? 'Pensamiento de nivel experto.' : nota >= 7 ? 'Buen escape. Revisen las rondas que se escaparon.' : 'Lograron salir: la próxima vez, planifiquen antes de probar.',
-      desglose: EST.map(e => ({ t: e.nombre, v: this.ptsEst(e.id) + ' / ' + this.maxE() })).concat([{ t: 'Batería restante (' + s.bat + ' %)', v: '+' + (s.bat / 200).toFixed(2).replace('.', ',') + ' de nota' }, { t: 'Penalización por batería agotada', v: String(s.pen) }, { t: 'Salidas registradas', v: s.salidas + ' / 3' }]),
+      desglose: EST.filter(e => s.est[e.id] && s.est[e.id].rondas && s.est[e.id].rondas.length).map(e => ({ t: e.nombre, v: this.ptsEst(e.id) + ' / ' + this.maxE() })).concat([{ t: 'Nota calculada sobre ' + REQ + ' retos', v: 'máx. 10' }]).concat([{ t: 'Batería restante (' + s.bat + ' %)', v: '+' + (s.bat / 200).toFixed(2).replace('.', ',') + ' de nota' }, { t: 'Penalización por batería agotada', v: String(s.pen) }, { t: 'Salidas registradas', v: s.salidas + ' / 3' }]),
       insignias: this.insignias().map(x => ({ nombre: x.nombre, desc: x.desc, ini: x.ini, color: x.ok ? x.color : '#4d6674', opac: x.ok ? 1 : 0.45 })),
       envioTxt: this.demo() ? 'Modo demostración: la nota quedó guardada en este navegador.' : s.envio === 'ok' ? 'Nota enviada al docente ✓' : s.envio === 'enviando' ? 'Enviando la nota…' : 'No se pudo enviar la nota. No cierren esta ventana y avisen al docente.',
       envioColor: this.demo() || s.envio === 'ok' ? 'rgba(127,224,160,.6)' : s.envio === 'enviando' ? 'rgba(95,208,232,.5)' : '#ff7b72',
