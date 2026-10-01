@@ -122,7 +122,7 @@
     st = st || {};
     const pool = {
       1: [{ q: '¿Cuántos minutos tiene una semana?', v: 10080, paso: 10 }, { q: '¿Cuántas baldosas de 50 cm × 50 cm cubren un patio de 20 m × 15 m?', v: 1200, paso: 10 }, { q: '¿Cuántas horas tiene un año de 365 días?', v: 8760, paso: 10 }],
-      2: [{ q: '¿Cuántas veces late un corazón en una hora de clase, a 70 latidos por minuto?', v: 4200, paso: 50 }, { q: '¿Cuántos pasos de 70 cm hacen falta para recorrer 1 km? (redondeen hacia arriba)', v: 1429, paso: 10 }, { q: '¿Cuántas hojas de papel de 0,1 mm forman una pila de 1 metro?', v: 10000, paso: 100 }],
+      2: [{ q: '¿Cuántas veces late tu corazón durante una hora clase de 40 minutos? (pulso tranquilo)', v: 2800, paso: 100, tol: 0.2 }, { q: '¿Cuántos pasos de 70 cm hacen falta para recorrer 1 km? (redondeen hacia arriba)', v: 1429, paso: 10 }, { q: '¿Cuántas hojas de papel de 0,1 mm forman una pila de 1 metro?', v: 10000, paso: 100 }],
       3: [{ q: '¿Cuántos litros de agua caben en una piscina de 25 m × 10 m × 2 m?', v: 500000, paso: 5000 }, { q: '¿Cuántos segundos vive una persona de 15 años? (365 días por año)', v: 473040000, paso: 1000000 }, { q: '¿Cuántas horas duerme en un año alguien que duerme 8 horas cada noche?', v: 2920, paso: 10 }]
     };
     const e = h.pick(pool[tier]);

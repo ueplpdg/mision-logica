@@ -18,6 +18,7 @@
 </style>
 <script src="./config.js"></script>
 <script src="./escape-retos.js"></script>
+<script src="./escape-mente.js"></script>
 <script src="./escape-flujo.js"></script>
 </helmet>
 
@@ -137,9 +138,9 @@
 <div style="position:absolute;inset:0;background:rgba(5,9,14,.9);display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:40px 20px">
 <div style="width:100%;max-width:1040px;display:flex;flex-direction:column;gap:22px">
 <div>
-<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#5fd0e8;font-weight:600">MISIÓN · 80 MINUTOS · 5 TERMINALES × 3 RONDAS</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.2em;color:#5fd0e8;font-weight:600">MISIÓN · 80 MINUTOS · 10 RETOS PARA ESCAPAR</div>
 <div style="font-family:'Archivo Black',sans-serif;font-size:42px;line-height:1.05;margin-top:8px">El campus se bloqueó</div>
-<div style="font-size:18px;line-height:1.5;color:#c9dbe2;margin-top:10px;max-width:70ch">Crucen el patio juntos y entren al <b style="color:#e8f4f8">laboratorio</b>. Adentro hay cinco terminales apagadas. Cada una se enciende solo si <b style="color:#e8f4f8">los dos</b> se paran sobre sus placas, y se reactiva resolviendo tres desafíos que se adaptan a ustedes: si aciertan, el siguiente es más difícil.</div>
+<div style="font-size:18px;line-height:1.5;color:#c9dbe2;margin-top:10px;max-width:70ch">Exploren juntos el campus: <b style="color:#e8f4f8">laboratorio, aulas, biblioteca, taller, comedor, azotea y patio</b>. En cada lugar hay terminales apagadas. Cada una se enciende solo si <b style="color:#e8f4f8">los dos</b> se paran sobre sus placas, y se reactiva resolviendo tres desafíos que se adaptan a ustedes: si aciertan, el siguiente es más difícil.</div>
 </div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
 <div style="border:2px solid rgba(95,208,232,.5);background:rgba(95,208,232,.06);padding:18px;display:flex;flex-direction:column;gap:12px">
@@ -159,6 +160,25 @@
 <div style="border:2px solid #ff7b72;background:rgba(255,123,114,.07);padding:18px;display:flex;flex-direction:column;gap:10px">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#ff7b72;font-weight:600">REGLAS</div>
 <div style="font-size:15px;line-height:1.5;color:#ffd3cf">Cada error <b style="color:#fff">descarga la batería</b>; cada acierto la recarga. Salir de la pantalla completa, cambiar de pestaña o recargar <b style="color:#fff">se registra y cuesta 20 % de batería</b>. A la tercera salida, la partida se cierra con la nota que tengan.</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#9fb6c0;font-weight:600">PERSONALICEN SU ROBOT</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px">
+<sc-for list="{{ intro.av }}" as="p" hint-placeholder-count="2">
+<div style="border:2px solid {{ p.tag }};background:#0a141d;padding:16px;display:flex;gap:16px;align-items:center">
+<div style="width:90px;height:116px;display:flex;align-items:flex-end;justify-content:center;flex:none;background:rgba(232,244,248,.04);padding-bottom:8px">
+<div style="width:{{ p.pw }};height:{{ p.ph }};background:{{ p.color }};border-radius:{{ p.rad }};clip-path:{{ p.clip }}"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px;min-width:0;flex:1">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:{{ p.tag }};font-weight:600">{{ p.nombre }} · {{ p.acc }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ p.colores }}" as="o" hint-placeholder-count="8"><button onClick="{{ o.onClick }}" style="width:26px;height:26px;background:{{ o.c }};border:3px solid {{ o.borde }};cursor:pointer;padding:0"></button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ p.formas }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.onClick }}" style="background:{{ o.fondo }};border:1px solid {{ o.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:5px 9px;cursor:pointer">{{ o.t }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ p.tams }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="background:{{ o.fondo }};border:1px solid {{ o.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:5px 9px;cursor:pointer">{{ o.t }}</button></sc-for></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ p.accs }}" as="o" hint-placeholder-count="5"><button onClick="{{ o.onClick }}" style="background:{{ o.fondo }};border:1px solid {{ o.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:5px 9px;cursor:pointer">{{ o.t }}</button></sc-for></div>
+</div>
+</div>
+</sc-for>
 </div>
 </div>
 <div style="font-size:15px;color:#9fb6c0;text-align:center">Prueben el teclado: <b style="color:#e8f4f8">los dos</b> deben presionar sus teclas a la vez para comprobar que el teclado las lee.</div>
@@ -541,6 +561,10 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ pz.esMente }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;min-width:0">{{ mente }}</div>
+</sc-if>
+
 <sc-if value="{{ pz.hayFb }}" hint-placeholder-val="{{ false }}">
 <div style="border:2px solid {{ pz.fbColor }};background:{{ pz.fbFondo }};padding:14px 18px;margin-top:18px;display:flex;flex-direction:column;gap:6px">
 <div style="font-family:'Archivo Black',sans-serif;font-size:22px;color:{{ pz.fbColor }}">{{ pz.fbTitulo }}</div>
@@ -643,6 +667,18 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ vPausa }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:49;background:rgba(6,14,22,.95);display:flex;align-items:center;justify-content:center;padding:30px">
+<div style="max-width:620px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:15px;letter-spacing:.2em;color:#f0a726;font-weight:600">PARTIDA EN PAUSA</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:44px;line-height:1.05;color:#fff">{{ pausa.titulo }}</div>
+<div style="font-size:19px;line-height:1.45;color:#dce9ee">{{ pausa.txt }}</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:64px;color:{{ pausa.color }};line-height:1">{{ pausa.seg }}</div>
+<button onClick="{{ pausa.volver }}" style="background:#f0a726;border:none;color:#1a1004;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px 30px;cursor:pointer">Volver a pantalla completa</button>
+</div>
+</div>
+</sc-if>
+
 <sc-if value="{{ vBloq }}" hint-placeholder-val="{{ false }}">
 <div style="position:absolute;inset:0;z-index:50;background:rgba(40,6,6,.96);display:flex;align-items:center;justify-content:center;padding:30px">
 <div style="max-width:620px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
@@ -675,10 +711,31 @@ const EST = [
   { id: 'sigue', nombre: 'Sigue el diagrama', corto: 'SEGUIR', hab: 'DIAGRAMAS: SEGUIMIENTO', color: '#a0f0a0', glow: 'rgba(160,240,160,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'aula2' },
   { id: 'error', nombre: 'Encuentra el error', corto: 'ERROR', hab: 'DIAGRAMAS: DEPURACIÓN', color: '#ff8a65', glow: 'rgba(255,138,101,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'aula2' },
   { id: 'aparato', nombre: 'Del diagrama al aparato', corto: 'APARATO', hab: 'DIAGRAMAS → ARDUINO', color: '#c4f06b', glow: 'rgba(196,240,107,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'aula2' },
-  { id: 'rutas', nombre: 'Rutas de la ciudad', corto: 'RUTAS', hab: 'GRAFOS Y OPTIMIZACIÓN', color: '#8fb8ff', glow: 'rgba(143,184,255,.25)', x: -12, z: 6.2, face: [0, -1], esc: 'patio' }
+  { id: 'rutas', nombre: 'Rutas de la ciudad', corto: 'RUTAS', hab: 'GRAFOS Y OPTIMIZACIÓN', color: '#8fb8ff', glow: 'rgba(143,184,255,.25)', x: -12, z: 6.2, face: [0, -1], esc: 'patio' },
+  { id: 'simon', nombre: 'Memoria de luces', corto: 'MEMORIA', hab: 'MEMORIA DE TRABAJO', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'biblio' },
+  { id: 'sudoku', nombre: 'Sudoku en equipo', corto: 'SUDOKU', hab: 'LÓGICA DE REGLAS', color: '#7fd1ff', glow: 'rgba(127,209,255,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'biblio' },
+  { id: 'pares', nombre: 'Pares divididos', corto: 'PARES', hab: 'MEMORIA Y ASOCIACIÓN', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'biblio' },
+  { id: 'cripto', nombre: 'Mensaje cifrado', corto: 'CIFRADO', hab: 'PATRONES Y CÓDIGOS', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: 7.9, z: 2.0, face: [-1, 0], esc: 'biblio' },
+  { id: 'tangram', nombre: 'Tangram de bloques', corto: 'TANGRAM', hab: 'VISIÓN ESPACIAL', color: '#9ae66e', glow: 'rgba(154,230,110,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'taller' },
+  { id: 'tuberias', nombre: 'Tuberías de riego', corto: 'TUBERÍAS', hab: 'PLANIFICAR CONEXIONES', color: '#4fc3ff', glow: 'rgba(79,195,255,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'taller' },
+  { id: 'laser', nombre: 'Láser y espejos', corto: 'LÁSER', hab: 'RAZONAMIENTO ESPACIAL', color: '#ff5d7a', glow: 'rgba(255,93,122,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'taller' },
+  { id: 'calculo', nombre: 'Cálculo relámpago', corto: 'CÁLCULO', hab: 'CÁLCULO MENTAL', color: '#ffb86b', glow: 'rgba(255,184,107,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'comedor' },
+  { id: 'balanza', nombre: 'La caja pesada', corto: 'BALANZA', hab: 'ESTRATEGIA ÓPTIMA', color: '#66e0d2', glow: 'rgba(102,224,210,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'comedor' },
+  { id: 'cerillos', nombre: 'Fósforos', corto: 'FÓSFOROS', hab: 'PENSAMIENTO LATERAL', color: '#ff9f6b', glow: 'rgba(255,159,107,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'comedor' },
+  { id: 'stroop', nombre: 'Atención al color', corto: 'ATENCIÓN', hab: 'CONTROL DE LA ATENCIÓN', color: '#ff7b72', glow: 'rgba(255,123,114,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'azotea' },
+  { id: 'cubos', nombre: 'Torre de cubos', corto: 'CUBOS', hab: 'VISIÓN ESPACIAL 3D', color: '#b8a4ff', glow: 'rgba(184,164,255,.25)', x: 12, z: 6.2, face: [0, -1], esc: 'patio' }
 ];
 EST.forEach(e => { e.lado = e.face[0]; });
-const REQ = 7;
+const REQ = 10;
+const MENTE = { simon: 1, sudoku: 1, pares: 1, cripto: 1, tangram: 1, tuberias: 1, laser: 1, calculo: 1, balanza: 1, cerillos: 1, stroop: 1, cubos: 1 };
+const SCN = { patio: 'Patio', lab: 'Laboratorio', aula1: 'Aula de diagramas (2.º piso)', aula2: 'Aula de diagramas (3.er piso)', biblio: 'Biblioteca', taller: 'Taller maker', comedor: 'Comedor', azotea: 'Azotea' };
+const DEP = [
+  { id: 'futbol', n: 'FÚTBOL 1 VS 1', c: '#ffffff', x: -5, z: -3.5 }, { id: 'basket', n: 'BÁSQUET 1 VS 1', c: '#ff9f43', x: 5, z: -3.5 },
+  { id: 'penales', n: 'PENALES', c: '#7fe0a0', x: -9.5, z: -1.0 }, { id: 'voley', n: 'VÓLEY 1 VS 1', c: '#ffe9a8', x: 9.5, z: -1.0 },
+  { id: 'tiro', n: 'TIRO AL BLANCO', c: '#ff7b72', x: -5, z: 2.4 }, { id: 'catapulta', n: 'CATAPULTA', c: '#c58cf0', x: 5, z: 2.4 }, { id: 'relevos', n: 'RELEVOS', c: '#5fd0e8', x: 0, z: -6.5 }
+];
+const DEP_N = { futbol: 'FÚTBOL', basket: 'BÁSQUET', penales: 'PENALES', voley: 'VÓLEY', tiro: 'TIRO AL BLANCO', catapulta: 'CATAPULTA', relevos: 'RELEVOS' };
+const AV_C = ['#5fd0e8', '#f0a726', '#7fe0a0', '#ff7b72', '#c58cf0', '#ffd166', '#f4f4f4', '#ff8fd0'], AV_F = ['Cápsula', 'Cubo', 'Esfera', 'Cono'], AV_T = ['Pequeño', 'Mediano', 'Grande'], AV_A = ['Nada', 'Antena', 'Gorra', 'Corona', 'Audífonos'];
 const FL = () => window.ESC_FLUJO;
 const FLUJO = { armar: 1, orden: 1, decision: 1, sigue: 1, error: 1, aparato: 1 };
 const TOK = { F: '▲', L: '↺', R: '↻', P: 'P', S: '?' }, TOKN = { F: 'avanzar', L: 'izquierda', R: 'derecha', P: 'función', S: 'sensor' };
@@ -699,10 +756,15 @@ const PISTA_TEC = {
   sigue: 'Las lecturas del sensor están ocultas: J2 mantiene P para verlas y se las dicta a J1, que elige la respuesta. En el nivel 3 se turnan. Para responder: E + ENTER a la vez.',
   error: 'J1 recorre las figuras (W · S) y marca la sospechosa (A · D). J2 dice qué tipo de error es (← →). También pueden tocar la figura con el mouse. Para comprobar: E + ENTER a la vez.',
   aparato: 'J1 elige la acción de la rama Sí y J2 la de la rama No (en el nivel 3, J1 usa también W · S). Para encender el aparato: E + ENTER a la vez.',
-  rutas: 'J1 sale del colegio con W A S D y J2 sale de la casa del cliente con las flechas. Encuéntrense en una esquina y envíen con E + ENTER a la vez.'
+  rutas: 'J1 sale del colegio con W A S D y J2 sale de la casa del cliente con las flechas. Encuéntrense en una esquina y envíen con E + ENTER a la vez.',
+  simon: 'J1: A · D (rojo, verde). J2: ← · → (azul, amarillo).', sudoku: 'J1 mueve el cursor (W A S D). J2 cambia el número (↑ ↓). Para comprobar: E + ENTER a la vez.', pares: 'J1 voltea cartas de su lado (W A S D + E). J2 del suyo (flechas + ENTER).',
+  cripto: 'J1 gira la clave 1 (A · D). J2 gira la clave 2 (← ·  →) o mira la pista (mantener P). Para enviar: E + ENTER.', tangram: 'J1 mueve el cursor (W A S D) y gira (E). J2 elige la pieza (← →) y la coloca (ENTER).',
+  tuberias: 'J1 gira las piezas de la izquierda (W A S D + E). J2 las de la derecha (flechas + ENTER).', laser: 'J1 gira los espejos celestes (A · D + E). J2 los naranjas (← · → + ENTER).',
+  calculo: 'J1: A · D y E. J2: ← · → y ENTER. El total lo propone J1 y lo aprueba J2.', balanza: 'J1 pone cajas a la izquierda (A · D + E). J2 a la derecha (← · → + ENTER). Pesar: W + ↑. Elegir: S + ↓.',
+  cerillos: 'J1 levanta un fósforo (A · D + E). J2 lo suelta en un espacio (← · → + ENTER).', stroop: 'J1: A rojo, D verde. J2: ← azul, → amarillo.', cubos: 'J1 gira la torre (A · D). J2 escribe la respuesta (↑ ↓ ← →). Para enviar: E + ENTER.'
 };
 const SUB = { armar: 1, orden: 1, decision: 1, sigue: 1, error: 1, aparato: 1, reglas: 1, interrog: 1, master: 1, compuertas: 1, robot: 1, raven: 1, einstein: 1, estim: 1, rutas: 1 };
-const BASICO = ['armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
+const BASICO = ['simon', 'sudoku', 'pares', 'cripto', 'tangram', 'tuberias', 'laser', 'calculo', 'balanza', 'cerillos', 'stroop', 'cubos', 'armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
 const CURSO_CFG = { '8vo': { nombre: '8vo EGB', inicio: 1, retos: BASICO }, '9no': { nombre: '9no EGB', inicio: 1, retos: BASICO }, '10mo': { nombre: '10mo EGB', inicio: 1 }, '3BGU': { nombre: '3ro BGU', inicio: 2 } };
 function maxEst(inicio) { let t = inicio, s = 0; for (let i = 0; i < 3; i++) { s += BASE_T[t]; t = Math.min(3, t + 1); } return s; }
 const BASE_T = { 1: 5, 2: 8, 3: 12 };
@@ -732,6 +794,18 @@ const ESTR = {
   master: ['Usamos cada intento para descartar colores', 'Cambiamos una sola cosa por intento para ver el efecto', 'Primero buscamos los colores y después el orden', 'Probamos al azar'],
   torre: ['Apartamos la pila chica para liberar la celda grande', 'Pensamos hacia atrás desde el final', 'Seguimos un patrón que se repetía', 'Movimos hasta que salió']
 };
+ESTR.simon = ['Dijimos los colores en voz alta', 'Agrupamos la secuencia de a dos o tres', 'Cada uno recordó sus colores', 'Lo hicimos de memoria sin estrategia'];
+ESTR.sudoku = ['Buscamos primero la casilla con menos opciones', 'Revisamos fila, columna y bloque antes de escribir', 'Uno leía y el otro escribía', 'Probamos números al azar'];
+ESTR.pares = ['Recordamos dónde estaba cada carta', 'Nos dijimos en voz alta lo que veíamos', 'Volteamos en orden, fila por fila', 'Volteamos al azar'];
+ESTR.cripto = ['Buscamos palabras cortas como EL o LA', 'Usamos la pista para hallar la clave', 'Giramos la rueda hasta que se leyó', 'Probamos sin mirar'];
+ESTR.tangram = ['Colocamos primero las piezas más grandes', 'Llenamos primero las esquinas', 'Giramos cada pieza antes de colocarla', 'Probamos al azar'];
+ESTR.tuberias = ['Seguimos el camino desde el agua', 'Empezamos desde la planta hacia atrás', 'Cada uno conectó su mitad con la del otro', 'Giramos al azar'];
+ESTR.laser = ['Seguimos el rayo espejo por espejo', 'Empezamos desde el sensor hacia atrás', 'Nos turnamos para girar', 'Giramos al azar'];
+ESTR.calculo = ['Descompusimos los números (ej. 25 × 4 = 100)', 'Redondeamos y después corregimos', 'Revisamos el resultado del compañero', 'Elegimos al azar'];
+ESTR.balanza = ['Dividimos las cajas en tres grupos iguales', 'Pensamos qué pasaba con cada resultado', 'Pesamos de a una', 'Adivinamos'];
+ESTR.cerillos = ['Revisamos qué números cambian con un fósforo', 'Probamos cambiar el signo', 'Calculamos qué resultado necesitábamos', 'Movimos al azar'];
+ESTR.stroop = ['Nos concentramos solo en la tinta', 'Ignoramos la palabra a propósito', 'Cada uno cuidó sus dos colores', 'Respondimos lo primero que vimos'];
+ESTR.cubos = ['Contamos por columnas', 'Giramos para ver los escondidos', 'Contamos piso por piso', 'Estimamos a ojo'];
 ESTR.robot = ['Recorrimos el camino con el dedo antes de programar', 'Buscamos un patrón que se repetía para la función P', 'Programamos por partes y ejecutamos para corregir', 'Probamos bloques al azar'];
 ESTR.raven = ['Revisamos una propiedad a la vez', 'Comparamos filas y después columnas', 'Buscamos qué valor faltaba en la última fila', 'Probamos al azar'];
 ESTR.wcst = ['Cuando empezamos a fallar, cambiamos de criterio', 'Probamos color, forma y cantidad en orden', 'Contamos los aciertos seguidos para anticipar el cambio', 'Elegimos al azar'];
@@ -817,8 +891,8 @@ class Component extends DCLogic {
     return {
       fase: 'login', f: { curso: '3BGU', paralelo: '', a: '', b: '', codigo: '' }, msg: '', cargando: false, ses: null,
       escena: 'patio', est: {}, pz: null, erId: null, erEstr: null, bat: 100, pts: 0, pen: 0,
-      salidas: 0, bloq: false, bloqMsg: '', t0: 0, tFin: 0, ahora: Date.now(), envio: '', cerrado: false, estadoFinal: '',
-      sonido: true, fade: 0, kt: {}, guard: {}, hold: {}, llave: {}, dep: null, depUsadas: 0, toast: null, prompt: '', promptPct: 0, promptColor: '#5fd0e8', c3d: true, err3d: ''
+      salidas: 0, avisos: 0, fueraSeg: 0, pausa: null, bloq: false, bloqMsg: '', t0: 0, tFin: 0, ahora: Date.now(), envio: '', cerrado: false, estadoFinal: '',
+      sonido: true, av: [{ c: 0, f: 0, t: 1, a: 1 }, { c: 1, f: 0, t: 1, a: 1 }], fade: 0, kt: {}, guard: {}, hold: {}, llave: {}, dep: null, depUsadas: 0, toast: null, prompt: '', promptPct: 0, promptColor: '#5fd0e8', c3d: true, err3d: ''
     };
   }
 
@@ -826,7 +900,7 @@ class Component extends DCLogic {
     try {
       const g = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (g && g.ses && g.fase !== 'login') {
-        this.setState(Object.assign({}, g, { ahora: Date.now(), bloq: false, fade: 0, prompt: '', c3d: !this.g, err3d: '' }), () => {
+        this.setState(Object.assign({}, g, { ahora: Date.now(), pausa: null, bloq: false, fade: 0, prompt: '', c3d: !this.g, err3d: '' }), () => {
           if (['mundo', 'puzzle', 'estres'].includes(g.fase) && !g.cerrado) { this._ult = 0; this.salida('recarga'); }
           this.aplicarEscena();
         });
@@ -835,9 +909,9 @@ class Component extends DCLogic {
     this.keys = {};
     this.h = {
       down: e => this.teclaAbajo(e), up: e => { this.keys[e.code] = false; if ((e.code === 'KeyQ' || e.code === 'KeyP') && this.state.hold && this.state.hold[e.code]) this.setState({ hold: Object.assign({}, this.state.hold, { [e.code]: false }) }); },
-      vis: () => { if (document.hidden) this.salida('pestaña'); },
-      blur: () => { this.keys = {}; this.salida('ventana'); },
-      fs: () => { if (document.fullscreenElement) this._fs = true; else if (this._fs) { this._fs = false; this.salida('pantalla completa'); } },
+      vis: () => this.incidente(), focus: () => this.incidente(),
+      blur: () => { this.keys = {}; this.incidente(); },
+      fs: () => { if (document.fullscreenElement) this._fsOk = true; this.incidente(); },
       bloquear: e => { if (!this.enJuego()) return; e.preventDefault(); },
       salir: e => { if (this.enJuego()) { e.preventDefault(); e.returnValue = ''; } },
       resize: () => this.resize()
@@ -845,7 +919,7 @@ class Component extends DCLogic {
     document.addEventListener('keydown', this.h.down, true);
     document.addEventListener('keyup', this.h.up, true);
     document.addEventListener('visibilitychange', this.h.vis);
-    window.addEventListener('blur', this.h.blur);
+    window.addEventListener('blur', this.h.blur); window.addEventListener('focus', this.h.focus);
     document.addEventListener('fullscreenchange', this.h.fs);
     ['copy', 'cut', 'paste', 'contextmenu', 'dragstart', 'drop'].forEach(ev => document.addEventListener(ev, this.h.bloquear));
     window.addEventListener('beforeunload', this.h.salir);
@@ -856,14 +930,15 @@ class Component extends DCLogic {
   componentWillUnmount() {
     this.muerto = true; clearInterval(this.tick); cancelAnimationFrame(this.raf);
     document.removeEventListener('keydown', this.h.down, true); document.removeEventListener('keyup', this.h.up, true);
-    document.removeEventListener('visibilitychange', this.h.vis); window.removeEventListener('blur', this.h.blur);
+    document.removeEventListener('visibilitychange', this.h.vis); window.removeEventListener('blur', this.h.blur); window.removeEventListener('focus', this.h.focus); clearInterval(this._incT);
     document.removeEventListener('fullscreenchange', this.h.fs);
     ['copy', 'cut', 'paste', 'contextmenu', 'dragstart', 'drop'].forEach(ev => document.removeEventListener(ev, this.h.bloquear));
     window.removeEventListener('beforeunload', this.h.salir); window.removeEventListener('resize', this.h.resize);
     if (this.g && this.g.r) { this.g.r.dispose(); if (this.g.r.domElement.parentNode) this.g.r.domElement.parentNode.removeChild(this.g.r.domElement); }
   }
   componentDidUpdate() {
-    try { if (this.state.ses) { const s = Object.assign({}, this.state); ['msg', 'cargando', 'prompt', 'promptPct', 'kt', 'fade', 'c3d', 'err3d'].forEach(k => delete s[k]); localStorage.setItem(KEY, JSON.stringify(s)); } } catch (e) {}
+    window.__escPausa = !!(this.state.pausa || this.state.bloq);
+    try { if (this.state.ses) { const s = Object.assign({}, this.state); ['msg', 'cargando', 'prompt', 'promptPct', 'kt', 'fade', 'c3d', 'err3d', 'pausa'].forEach(k => delete s[k]); localStorage.setItem(KEY, JSON.stringify(s)); } } catch (e) {}
   }
 
   enJuego() { const s = this.state; return !!s.ses && ['mundo', 'puzzle', 'estres'].includes(s.fase) && !s.cerrado; }
@@ -878,6 +953,7 @@ class Component extends DCLogic {
       if (['f12', 'f5', 'f3', 'printscreen', 'contextmenu'].includes(k)) e.preventDefault();
     }
     if ((s.fase === 'mundo' || s.fase === 'intro') && (K1[code] || K2[code] || code === 'Space')) { if (e.target && e.target.tagName !== 'INPUT') e.preventDefault(); }
+    if (s.pausa || s.bloq) { this.keys = {}; return; }
     this.keys[code] = true;
     if (s.fase === 'mundo' && s.dep && !s.bloq && (code === 'KeyE' || code === 'Enter')) { e.preventDefault(); if (!e.repeat) this.accionDep(code === 'KeyE' ? 0 : 1); }
     if (s.fase === 'puzzle' && s.pz && !s.bloq) {
@@ -921,12 +997,13 @@ class Component extends DCLogic {
     const dl = g.dl = new T.DirectionalLight(0xffffff, 1.25); dl.position.set(18, 32, 14); dl.castShadow = true;
     dl.shadow.mapSize.set(2048, 2048); Object.assign(dl.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 1, far: 90 }); dl.shadow.bias = -0.0005;
     sc.add(dl); sc.add(dl.target);
-    g.patio = new T.Group(); g.lab = new T.Group(); g.aula1 = new T.Group(); g.aula2 = new T.Group(); [g.patio, g.lab, g.aula1, g.aula2].forEach(x => sc.add(x));
-    this.construirPatio(); this.construirLab(); this.coll.aula1 = []; this.coll.aula2 = []; this.construirAula('aula1', 'AULA DE DIAGRAMAS · 2.º PISO', true); this.construirAula('aula2', 'AULA DE DIAGRAMAS · 3.er PISO', false); this.construirExtrasPatio();
+    g.patio = new T.Group(); g.lab = new T.Group(); g.aula1 = new T.Group(); g.aula2 = new T.Group(); [g.patio, g.lab, g.aula1, g.aula2].forEach(x => sc.add(x)); this.coll = this.coll || {};
+    this.construirPatio(); this.construirLab(); this.coll.aula1 = []; this.coll.aula2 = []; this.construirAula('aula1', 'AULA DE DIAGRAMAS · 2.º PISO', true); this.construirAula('aula2', 'AULA DE DIAGRAMAS · 3.er PISO', false); this.anilloTxt(g.aula2, -7.0, 4.6, 'BIBLIOTECA', '#ffd166'); this.anilloTxt(g.aula2, 7.0, 4.6, 'SUBIR A LA AZOTEA', '#a9cbe6');
+    const coll0 = this.coll; ['biblio', 'taller', 'comedor', 'azotea'].forEach(k => this.construirSala(k)); this.coll = Object.assign(coll0, this.coll); this.construirExtrasPatio();
     EST.filter(e => e.esc && e.esc !== 'lab').forEach(e => this.construirTerminal(e));
     g.stats = { macetas: 13, columnas: 10, postes: 14, ventanas: 32, pcs: 8, escalones: 6, casas: this._casas || 120 };
     this.construirJugadores();
-    this.posP = { patio: [[-2, 5], [2, 5]], lab: [[-0.9, 3.9], [0.9, 3.9]], aula1: [[-0.9, 3.9], [0.9, 3.9]], aula2: [[-0.9, 3.9], [0.9, 3.9]] };
+    this.posP = { patio: [[-2, 5], [2, 5]], lab: [[-0.9, 3.9], [0.9, 3.9]], aula1: [[-0.9, 3.9], [0.9, 3.9]], aula2: [[-0.9, 3.9], [0.9, 3.9]], biblio: [[-0.9, 3.9], [0.9, 3.9]], taller: [[-0.9, 3.9], [0.9, 3.9]], comedor: [[-0.9, 3.9], [0.9, 3.9]], azotea: [[-0.9, 3.9], [0.9, 3.9]] };
     this.camPos = null; this.aplicarEscena(); this.resize();
     this.setState({ c3d: false });
     let last = performance.now();
@@ -1012,9 +1089,9 @@ class Component extends DCLogic {
       const gx = sd * 15.4, blanco = M('#f4f4f4');
       [-1.5, 1.5].forEach(z => { const p = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, 2.1, 8), blanco); p.position.set(gx, 1.05, z - 0.3); p.castShadow = true; P.add(p); C(gx - 0.15, gx + 0.15, z - 0.45, z - 0.15); });
       const tr = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, 3.1, 8), blanco); tr.rotation.x = Math.PI / 2; tr.position.set(gx, 2.1, -0.3); P.add(tr);
-      const px = sd * 17.3; const poste = new T.Mesh(new T.CylinderGeometry(0.1, 0.1, 3.4, 8), M('#2f3b44')); poste.position.set(px, 1.7, -0.3); poste.castShadow = true; P.add(poste); C(px - 0.2, px + 0.2, -0.5, -0.1);
-      box(0.08, 1.05, 1.7, M('#f4f4f4'), px - sd * 0.25, 2.8, -0.3);
-      const ring = new T.Mesh(new T.TorusGeometry(0.24, 0.025, 6, 16), M('#e0562e')); ring.rotation.x = Math.PI / 2; ring.position.set(px - sd * 0.55, 3.05, -0.3); P.add(ring);
+      const px = sd * 17.0; const poste = new T.Mesh(new T.CylinderGeometry(0.1, 0.1, 3.4, 8), M('#2f3b44')); poste.position.set(px, 1.7, -0.3); poste.castShadow = true; P.add(poste); C(px - 0.2, px + 0.2, -0.5, -0.1);
+      box(1.5, 0.12, 0.12, M('#2f3b44'), px - sd * 0.75, 3.3, -0.3); box(0.08, 1.05, 1.7, M('#f4f4f4'), px - sd * 1.5, 2.8, -0.3);
+      const ring = new T.Mesh(new T.TorusGeometry(0.24, 0.025, 6, 16), M('#e0562e')); ring.rotation.x = Math.PI / 2; ring.position.set(px - sd * 1.82, 3.05, -0.3); P.add(ring);
     });
     // ciudad alrededor
     const h = Hh(rng(777)), techos = ['#b5473a', '#c65a3c', '#a8423a', '#d06f45'], muros = ['#e9e1d0', '#d8cdb8', '#f1ece2', '#cfd8dc', '#e6c9a8', '#b7c9d6'];
@@ -1061,7 +1138,7 @@ class Component extends DCLogic {
     { const ar = new T.Mesh(new T.RingGeometry(0.75, 0.95, 40), new T.MeshBasicMaterial({ color: '#66e0d2', transparent: true, opacity: 0.85, side: T.DoubleSide })); ar.rotation.x = -Math.PI / 2; ar.position.set(0, 0.03, 5.2); L.add(ar); const ep = new T.Mesh(new T.PlaneGeometry(1.8, 0.36), new T.MeshBasicMaterial({ map: this.cartel('PATIO', 360, 72, '#0a141d', '#66e0d2', 40), transparent: true })); ep.position.set(0, 2.3, 6.0); L.add(ep); }
     // puerta de salida
     box(2.4, 2.7, 0.12, M('#141d25'), 0, 0, -5.96);
-    this.g.luces = [...Array(REQ)].map((e, i) => { const m = new T.Mesh(new T.SphereGeometry(0.11, 12, 8), new T.MeshBasicMaterial({ color: '#39444c' })); m.position.set((i - (REQ - 1) / 2) * 0.42, 2.95, -5.9); L.add(m); return m; });
+    this.g.luces = [...Array(REQ)].map((e, i) => { const m = new T.Mesh(new T.SphereGeometry(0.11, 12, 8), new T.MeshBasicMaterial({ color: '#39444c' })); m.position.set((i - (REQ - 1) / 2) * Math.min(0.42, 2.6 / REQ), 2.95, -5.9); L.add(m); return m; });
     this.g.marcoSalida = new T.MeshBasicMaterial({ color: '#39444c' });
     [[-1.2, 0, 0.12, 2.8], [1.2, 0, 0.12, 2.8], [0, 2.7, 2.52, 0.12]].forEach(([dx, y, w, h]) => box(w, h, 0.14, this.g.marcoSalida, dx, y, -5.92));
     const sal = new T.Mesh(new T.PlaneGeometry(2.4, 0.4), new T.MeshBasicMaterial({ map: this.cartel('SALIDA', 400, 70, '#141d25', '#7fe0a0', 44) })); sal.position.set(0, 3.35, -5.95); L.add(sal);
@@ -1069,18 +1146,27 @@ class Component extends DCLogic {
     this.g.salPlacas = this.g.salPP.map(([px, pz]) => { const m = new T.Mesh(new T.CylinderGeometry(0.46, 0.46, 0.06, 28), new T.MeshBasicMaterial({ color: '#2a3a33' })); m.position.set(px, 0.03, pz); L.add(m); return m; });
   }
   construirJugadores() {
-    const T = this.g.T;
-    this.g.jug = [['#5fd0e8', 0], ['#f0a726', 1]].map(([c]) => {
-      const gr = new T.Group(), col = new T.Color(c);
-      const cuerpo = new T.Mesh(new T.CapsuleGeometry(0.36, 0.6, 4, 12), new T.MeshLambertMaterial({ color: col })); cuerpo.position.y = 0.72; cuerpo.castShadow = true; gr.add(cuerpo);
-      const visor = new T.Mesh(new T.BoxGeometry(0.46, 0.16, 0.2), new T.MeshBasicMaterial({ color: '#0a141d' })); visor.position.set(0, 1.05, 0.28); gr.add(visor);
-      const ojo = new T.Mesh(new T.BoxGeometry(0.36, 0.05, 0.02), new T.MeshBasicMaterial({ color: '#ffffff' })); ojo.position.set(0, 1.05, 0.39); gr.add(ojo);
-      const ant = new T.Mesh(new T.SphereGeometry(0.07, 8, 6), new T.MeshBasicMaterial({ color: col })); ant.position.set(0, 1.62, 0); gr.add(ant);
-      const palo = new T.Mesh(new T.CylinderGeometry(0.02, 0.02, 0.3, 6), new T.MeshLambertMaterial({ color: '#333' })); palo.position.set(0, 1.45, 0); gr.add(palo);
-      const aro = new T.Mesh(new T.RingGeometry(0.5, 0.62, 28), new T.MeshBasicMaterial({ color: col, side: T.DoubleSide, transparent: true, opacity: 0.9 })); aro.rotation.x = -Math.PI / 2; aro.position.y = 0.04; gr.add(aro);
-      const et = new T.Sprite(new T.SpriteMaterial({ map: this.cartel('J', 128, 64, 'rgba(0,0,0,0)', c, 44), transparent: true, depthTest: false })); et.scale.set(1.6, 0.8, 1); et.position.y = 2.15; gr.add(et);
+    const T = this.g.T, av = this.state.av || [{ c: 0, f: 0, t: 1, a: 1 }, { c: 1, f: 0, t: 1, a: 1 }], old = this.g.jug;
+    if (old) old.forEach(j => this.g.sc.remove(j.gr));
+    this.g.jug = [0, 1].map(i => {
+      const o = av[i] || { c: i, f: 0, t: 1, a: 1 }, f = o.f || 0, tag = i ? '#f0a726' : '#5fd0e8', col = new T.Color(AV_C[o.c] || tag);
+      const gr = new T.Group(), body = new T.Group(); gr.add(body); const mat = new T.MeshLambertMaterial({ color: col });
+      const geo = [new T.CapsuleGeometry(0.36, 0.6, 4, 12), new T.BoxGeometry(0.72, 1.0, 0.62), new T.SphereGeometry(0.5, 18, 14), new T.ConeGeometry(0.48, 1.15, 20)][f];
+      const cuerpo = new T.Mesh(geo, mat); cuerpo.position.y = [0.72, 0.5, 0.52, 0.58][f]; cuerpo.castShadow = true; body.add(cuerpo);
+      const top = [1.38, 1.0, 1.02, 1.15][f], vy = [1.05, 0.78, 0.62, 0.55][f], vz = [0.3, 0.32, 0.43, 0.3][f];
+      const visor = new T.Mesh(new T.BoxGeometry(0.46, 0.16, 0.2), new T.MeshBasicMaterial({ color: '#0a141d' })); visor.position.set(0, vy, vz); body.add(visor);
+      const ojo = new T.Mesh(new T.BoxGeometry(0.36, 0.05, 0.02), new T.MeshBasicMaterial({ color: '#ffffff' })); ojo.position.set(0, vy, vz + 0.11); body.add(ojo);
+      const add = (g, m, x, y, z) => { const me = new T.Mesh(g, m); me.position.set(x, y, z); body.add(me); return me; };
+      if (o.a === 1) { add(new T.CylinderGeometry(0.02, 0.02, 0.3, 6), new T.MeshLambertMaterial({ color: '#333' }), 0, top + 0.1, 0); add(new T.SphereGeometry(0.07, 8, 6), new T.MeshBasicMaterial({ color: col }), 0, top + 0.27, 0); }
+      if (o.a === 2) { add(new T.CylinderGeometry(0.3, 0.32, 0.16, 16), new T.MeshLambertMaterial({ color: '#1d2a33' }), 0, top + 0.02, 0); add(new T.BoxGeometry(0.42, 0.04, 0.3), new T.MeshLambertMaterial({ color: '#1d2a33' }), 0, top - 0.04, 0.3); }
+      if (o.a === 3) { add(new T.CylinderGeometry(0.27, 0.23, 0.2, 8, 1, true), new T.MeshLambertMaterial({ color: '#ffd166', side: T.DoubleSide }), 0, top + 0.08, 0); }
+      if (o.a === 4) { const m = new T.MeshLambertMaterial({ color: '#1d2a33' }); add(new T.SphereGeometry(0.12, 10, 8), m, -0.42, vy + 0.05, 0); add(new T.SphereGeometry(0.12, 10, 8), m, 0.42, vy + 0.05, 0); const arco = add(new T.TorusGeometry(0.42, 0.035, 6, 18, Math.PI), m, 0, vy + 0.05, 0); arco.rotation.y = 0; }
+      body.scale.setScalar([0.82, 1, 1.18][o.t == null ? 1 : o.t]);
+      const aro = new T.Mesh(new T.RingGeometry(0.5, 0.62, 28), new T.MeshBasicMaterial({ color: tag, side: T.DoubleSide, transparent: true, opacity: 0.9 })); aro.rotation.x = -Math.PI / 2; aro.position.y = 0.04; gr.add(aro);
+      const et = new T.Sprite(new T.SpriteMaterial({ map: this.cartel('J', 128, 64, 'rgba(0,0,0,0)', tag, 44), transparent: true, depthTest: false })); et.scale.set(1.6, 0.8, 1); et.position.y = 2.25; gr.add(et);
       this.g.sc.add(gr);
-      return { gr, cuerpo, et, x: 0, z: 0, fase: 0 };
+      const pv = old && old[i]; if (pv) { gr.position.copy(pv.gr.position); gr.rotation.y = pv.gr.rotation.y; }
+      return { gr, cuerpo, et, x: pv ? pv.x : 0, z: pv ? pv.z : 0, fase: 0 };
     });
     this.etiquetas();
   }
@@ -1092,11 +1178,11 @@ class Component extends DCLogic {
   aplicarEscena() {
     const g = this.g; if (!g || !g.patio) return;
     const e = this.state.escena, T = g.T;
-    ['patio', 'lab', 'aula1', 'aula2'].forEach(k => { if (g[k]) g[k].visible = e === k; });
+    Object.keys(SCN).forEach(k => { if (g[k]) g[k].visible = e === k; });
     EST.forEach(x => { const tm = g.term[x.id]; if (!tm) return; const a = this.activo(x.id); tm.meshes.forEach(m => { m.visible = a; }); for (let i = 0; i < 4; i++) tm.cr[i] = a ? tm.cb[i] : 9999; });
-    g.sc.background = new T.Color(e === 'patio' ? '#a9cbe6' : e === 'lab' ? '#0b1117' : '#12171d');
+    g.sc.background = new T.Color(e === 'patio' || e === 'azotea' ? '#a9cbe6' : e === 'lab' ? '#0b1117' : '#12171d');
     g.sc.fog = e === 'patio' ? new T.Fog('#a9cbe6', 70, 180) : null;
-    g.dl.intensity = e === 'patio' ? 1.25 : 0.7;
+    g.dl.intensity = e === 'patio' || e === 'azotea' ? 1.25 : 0.7;
     const p = this._spawn || (e === 'patio' && this._vuelta ? [[-10, -5.4], [-6, -5.4]] : this.posP[e]); this._vuelta = false; this._spawn = null; g.jug.forEach((j, i) => { j.x = p[i][0]; j.z = p[i][1]; j.gr.rotation.y = Math.PI; });
     this.camPos = null; this.hold = null; this.etiquetas();
   }
@@ -1108,7 +1194,7 @@ class Component extends DCLogic {
   }
   paso(dt, t) {
     const g = this.g, s = this.state, esc = s.escena;
-    const mover = s.fase === 'mundo' && !s.bloq && !this.transicion;
+    const mover = s.fase === 'mundo' && !s.bloq && !s.pausa && !this.transicion;
     g.jug.forEach((j, i) => {
       const k = this.keys, up = i ? k.ArrowUp : k.KeyW, dn = i ? k.ArrowDown : k.KeyS, lf = i ? k.ArrowLeft : k.KeyA, rt = i ? k.ArrowRight : k.KeyD;
       let dx = (rt ? 1 : 0) - (lf ? 1 : 0), dz = (dn ? 1 : 0) - (up ? 1 : 0);
@@ -1174,9 +1260,10 @@ class Component extends DCLogic {
     if (esc === 'patio') {
       portal(-8, -8.6, 2.2, 'puerta', 'Abriendo el laboratorio', '#5fd0e8', () => this.entrarLab());
       portal(17.8, -8.4, 1.25, 'escalera', 'Subiendo a las aulas de diagramas', '#7fd1ff', () => this.irA('aula1'));
-      const bq = fichas > 0 ? null : 'Cancha cerrada: cada 2 retos resueltos ganan un partido de 60 s';
-      portal(-5, -3.5, 1.2, 'futbol', 'Partido de fútbol (' + fichas + ' fichas)', '#ffffff', () => this.iniciarDep('futbol'), bq);
-      portal(5, -3.5, 1.2, 'basket', 'Partido de básquet (' + fichas + ' fichas)', '#ff9f43', () => this.iniciarDep('basket'), bq);
+      portal(18.4, 3.0, 1.25, 'comedor', 'Entrando al comedor', '#ffb86b', () => this.irA('comedor'));
+      portal(-18.4, 3.0, 1.25, 'taller', 'Entrando al taller maker', '#9ae66e', () => this.irA('taller'));
+      const bq = fichas > 0 ? null : 'Cancha cerrada: cada 2 retos resueltos ganan una ficha para un minijuego de 2 minutos';
+      DEP.forEach(d => portal(d.x, d.z, 1.2, d.id, d.n + ' (' + fichas + ' ficha' + (fichas === 1 ? '' : 's') + ')', d.c, () => this.iniciarDep(d.id), bq));
     } else if (esc === 'lab') {
       g.luces.forEach((l, i) => l.material.color.set(i < n ? '#7fe0a0' : '#39444c'));
       g.marcoSalida.color.set(lista ? '#7fe0a0' : '#39444c');
@@ -1193,6 +1280,12 @@ class Component extends DCLogic {
       portal(7.0, 4.6, 0.95, 'subir', 'Subiendo al 3.er piso', '#7fd1ff', () => this.irA('aula2'));
     } else if (esc === 'aula2') {
       portal(0, 5.2, 0.95, 'bajar', 'Bajando al 2.º piso', '#7fd1ff', () => this.irA('aula1', [[6.2, 3.7], [7.8, 3.7]]));
+      portal(-7.0, 4.6, 0.95, 'biblio', 'Entrando a la biblioteca', '#ffd166', () => this.irA('biblio'));
+      portal(7.0, 4.6, 0.95, 'azotea', 'Subiendo a la azotea', '#a9cbe6', () => this.irA('azotea'));
+    } else if (esc === 'biblio' || esc === 'azotea') {
+      portal(0, 5.2, 0.95, 'bajar', 'Volviendo al 3.er piso', '#66e0d2', () => this.irA('aula2', esc === 'biblio' ? [[-7.8, 3.4], [-6.2, 3.4]] : [[6.2, 3.4], [7.8, 3.4]]));
+    } else if (esc === 'taller' || esc === 'comedor') {
+      portal(0, 5.2, 0.95, 'bajar', 'Saliendo al patio', '#66e0d2', () => this.irA('patio', esc === 'taller' ? [[-16.3, 2.2], [-16.3, 3.8]] : [[16.3, 2.2], [16.3, 3.8]]));
     }
     if (id) {
       if (!this.hold || this.hold.id !== id) this.hold = { id, t: 0 };
@@ -1233,69 +1326,185 @@ class Component extends DCLogic {
     this.anilloTxt(G, 0, 5.2, subir ? 'BAJAR AL PATIO' : 'BAJAR AL 2.º PISO', '#66e0d2');
     if (subir) this.anilloTxt(G, 7.0, 4.6, 'SUBIR AL 3.er PISO', '#7fd1ff');
   }
+  construirSala(key) {
+    const T = this.g.T, g = this.g; g[key] = new T.Group(); g.sc.add(g[key]); this.coll[key] = [];
+    const G = g[key], M = c => this.M(c), box = (w, hh, d, m, x, y, z) => this.box(w, hh, d, m, x, y, z, G), C = (a, b, c, d) => this.coll[key].push([a, b, c, d]);
+    const cfg = { biblio: ['#7a5a3a', '#efe6d2', '#8b3a3a', 'BIBLIOTECA · 3.er PISO'], taller: ['#59636b', '#d9dde0', '#2f8f5b', 'TALLER MAKER'], comedor: ['#c9b48a', '#f3ead6', '#d07a2e', 'COMEDOR · BAR'], azotea: ['#9aa0a6', null, '#2f8fc0', 'AZOTEA'] }[key];
+    const piso = new T.Mesh(new T.PlaneGeometry(18, 12), new T.MeshLambertMaterial({ map: this.tex(256, 256, (c, w, hh) => { c.fillStyle = cfg[0]; c.fillRect(0, 0, w, hh); c.strokeStyle = 'rgba(0,0,0,.18)'; c.lineWidth = 3; for (let y = 0; y <= hh; y += 64) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); } for (let x = 0; x <= w; x += 64) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, hh); c.stroke(); } }, 4) }));
+    piso.rotation.x = -Math.PI / 2; piso.receiveShadow = true; G.add(piso);
+    const suelo = new T.Mesh(new T.PlaneGeometry(200, 200), M(key === 'azotea' ? '#7d8a6a' : '#0b1117')); suelo.rotation.x = -Math.PI / 2; suelo.position.y = key === 'azotea' ? -11 : -0.05; G.add(suelo);
+    if (cfg[1]) { const pared = M(cfg[1]); box(18.6, 3.2, 0.3, pared, 0, 0, -6.15); box(0.3, 3.2, 12.6, pared, -9.15, 0, 0); box(0.3, 3.2, 12.6, pared, 9.15, 0, 0); box(8, 0.9, 0.3, pared, -5, 0, 6.15); box(8, 0.9, 0.3, pared, 5, 0, 6.15); box(18.6, 0.25, 0.32, M(cfg[2]), 0, 3.2, -6.15); }
+    else { const par = M('#c9c4ba'); box(18.6, 1.0, 0.3, par, 0, 0, -6.15); box(0.3, 1.0, 12.6, par, -9.15, 0, 0); box(0.3, 1.0, 12.6, par, 9.15, 0, 0); box(8, 1.0, 0.3, par, -5, 0, 6.15); box(8, 1.0, 0.3, par, 5, 0, 6.15);
+      const hh = Hh(rng(91)); for (let i = 0; i < 60; i++) { const a = hh.int(0, 359) * Math.PI / 180, dd = 16 + hh.int(0, 60), w = 4 + hh.int(0, 6), alt = 3 + hh.int(0, 4) * 3; box(w, alt, w, M(hh.pick(['#e9e1d0', '#d8cdb8', '#cfd8dc', '#e6c9a8'])), Math.cos(a) * dd, -11, Math.sin(a) * dd); }
+      const mt = new T.Mesh(new T.ConeGeometry(40, 26, 7), M('#6b7a4c')); mt.position.set(-30, 2, -90); G.add(mt); }
+    const cart = new T.Mesh(new T.PlaneGeometry(6.4, 1.0), new T.MeshBasicMaterial({ map: this.cartel(cfg[3], 640, 100, '#0a141d', '#e8f4f8', 46) })); cart.position.set(0, key === 'azotea' ? 1.6 : 2.5, -5.98); if (key === 'azotea') { cart.position.z = -5.2; box(6.6, 1.2, 0.1, M('#1a2630'), 0, 1.0, -5.3); } G.add(cart);
+    const mesa = (x, z, w, d, col) => { box(w, 0.08, d, M(col), x, 0.72, z); box(0.1, 0.72, 0.1, M('#333'), x - w / 2 + 0.15, 0, z - d / 2 + 0.15); box(0.1, 0.72, 0.1, M('#333'), x + w / 2 - 0.15, 0, z + d / 2 - 0.15); box(0.1, 0.72, 0.1, M('#333'), x - w / 2 + 0.15, 0, z + d / 2 - 0.15); box(0.1, 0.72, 0.1, M('#333'), x + w / 2 - 0.15, 0, z - d / 2 + 0.15); C(x - w / 2, x + w / 2, z - d / 2, z + d / 2); };
+    if (key === 'biblio') {
+      [-6.4, -3.6, 3.6, 6.4].forEach(x => { box(2.5, 2.6, 0.6, M('#5a3f28'), x, 0, -5.6); C(x - 1.25, x + 1.25, -5.9, -5.3); for (let r = 0; r < 4; r++) for (let b = 0; b < 9; b++) box(0.2, 0.42, 0.05, M(['#b5473a', '#2f8fc0', '#7fe0a0', '#f0a726', '#c58cf0', '#e8e2d2'][(((b * 7 + r * 3 + Math.round(x)) % 6) + 6) % 6]), x - 1.0 + b * 0.25, 0.15 + r * 0.62, -5.28); });
+      mesa(-3, 0.4, 3.2, 1.3, '#8b6a46'); mesa(3, 0.4, 3.2, 1.3, '#8b6a46');
+      [-3, 3].forEach(x => { const l = new T.Mesh(new T.CylinderGeometry(0.12, 0.2, 0.35, 10), M('#f0d27a')); l.position.set(x + 1, 0.95, 0.4); G.add(l); });
+    } else if (key === 'taller') {
+      mesa(-3, 0.3, 3.4, 1.4, '#a07a4f'); mesa(3, 0.3, 3.4, 1.4, '#a07a4f');
+      [[-3.8, '#2f8fc0'], [-2.4, '#f0a726'], [2.6, '#7fe0a0'], [3.6, '#ff7b72']].forEach(([x, c]) => box(0.5, 0.3, 0.4, M(c), x, 0.8, 0.3));
+      box(1.4, 1.6, 1.0, M('#2a3640'), -5.8, 0, -5.3); box(1.0, 0.6, 0.6, M('#5fd0e8'), -5.8, 0.6, -4.95); C(-6.5, -5.1, -5.9, -4.8);
+      box(1.6, 0.9, 1.0, M('#3a454e'), 5.8, 0, -5.3); C(5.0, 6.6, -5.9, -4.8); const brazo = new T.Mesh(new T.CylinderGeometry(0.1, 0.12, 1.2, 10), M('#f0a726')); brazo.position.set(5.8, 1.5, -5.3); brazo.rotation.z = 0.5; G.add(brazo);
+    } else if (key === 'comedor') {
+      box(9, 1.1, 0.8, M(cfg[2]), 0, 0, -5.4); box(9.2, 0.08, 1.0, M('#efe6d2'), 0, 1.1, -5.4); C(-4.6, 4.6, -5.9, -4.9);
+      [[-3, -1.6], [3, -1.6], [-3, 1.4], [3, 1.4]].forEach(([x, z]) => mesa(x, z, 2.6, 1.0, '#e8e2d2'));
+      [-2, -0.6, 0.8, 2.2].forEach((x, i) => box(0.3, 0.32, 0.3, M(['#ff7b72', '#7fe0a0', '#ffd166', '#5fd0e8'][i]), x, 1.18, -5.4));
+    } else {
+      [[-6.6, -4.6], [6.6, -4.6]].forEach(([x, z]) => { const t = new T.Mesh(new T.CylinderGeometry(0.8, 0.8, 1.8, 18), M('#1f6fb0')); t.position.set(x, 0.9, z); t.castShadow = true; G.add(t); C(x - 0.9, x + 0.9, z - 0.9, z + 0.9); });
+      [-3, 0, 3].forEach(x => { const s = this.box(2.4, 0.08, 1.4, M('#22364a'), x, 0.9, 0.6, G); s.rotation.x = -0.4; box(0.1, 0.9, 0.1, M('#888'), x, 0, 0.9); C(x - 1.2, x + 1.2, 0.0, 1.2); });
+      const an = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 4, 6), M('#ccc')); an.position.set(7.8, 2, 4.4); G.add(an);
+    }
+    const lz = new T.PointLight('#fff4dc', key === 'azotea' ? 0.4 : 1.2, 30, 1.3); lz.position.set(0, 3, 0); G.add(lz);
+    this.anilloTxt(G, 0, 5.2, key === 'taller' || key === 'comedor' ? 'SALIR AL PATIO' : 'BAJAR AL 3.er PISO', '#66e0d2');
+  }
   construirExtrasPatio() {
-    const T = this.g.T, G = this.g.patio, M = c => this.M(c), C = (a, b, c, d) => this.coll.patio.push([a, b, c, d]);
+    const T = this.g.T, G = this.g.patio, g = this.g, M = c => this.M(c);
     this.anilloTxt(G, 17.8, -8.4, 'AULAS · ESCALERA', '#7fd1ff');
-    this.anilloTxt(G, -5, -3.5, 'FÚTBOL 1 VS 1', '#ffffff');
-    this.anilloTxt(G, 5, -3.5, 'BÁSQUET 1 VS 1', '#ff9f43');
-    [-9.0, 8.4].forEach(z => { [-1.6, 1.6].forEach(x => { this.box(0.12, 1.4, 0.12, M('#f4f4f4'), x, 0, z, G); C(x - 0.1, x + 0.1, z - 0.1, z + 0.1); }); this.box(3.32, 0.12, 0.12, M('#f4f4f4'), 0, 1.4, z, G);
-      const red = new T.Mesh(new T.PlaneGeometry(3.2, 1.4), new T.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.25, side: T.DoubleSide })); red.position.set(0, 0.7, z + (z < 0 ? -0.35 : 0.35)); G.add(red); });
-    const b = new T.Mesh(new T.SphereGeometry(0.25, 20, 14), new T.MeshLambertMaterial({ color: '#ffffff' })); b.castShadow = true; b.visible = false; G.add(b); this.g.balon = b;
+    this.anilloTxt(G, 18.4, 3.0, 'COMEDOR · BAR', '#ffb86b');
+    this.anilloTxt(G, -18.4, 3.0, 'TALLER MAKER', '#9ae66e');
+    DEP.forEach(d => this.anilloTxt(G, d.x, d.z, d.n, d.c));
+    const b = new T.Mesh(new T.SphereGeometry(0.25, 20, 14), new T.MeshLambertMaterial({ color: '#ffffff' })); b.castShadow = true; b.visible = false; G.add(b); g.balon = b;
+    g.red = new T.Group(); const rm = new T.Mesh(new T.PlaneGeometry(17, 0.9), new T.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.45, side: T.DoubleSide })); rm.position.y = 1.95; rm.rotation.y = Math.PI / 2; g.red.add(rm);
+    [-8.8, 8.2].forEach(z => { const ps = new T.Mesh(new T.CylinderGeometry(0.06, 0.06, 2.4, 8), M('#2f3b44')); ps.position.set(0, 1.2, z); g.red.add(ps); }); g.red.position.z = -0.3; g.red.visible = false; G.add(g.red);
+    g.marca = new T.Mesh(new T.RingGeometry(0.45, 0.62, 32), new T.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.9, side: T.DoubleSide, depthWrite: false })); g.marca.rotation.x = -Math.PI / 2; g.marca.position.y = 0.05; g.marca.visible = false; G.add(g.marca);
+    g.proy = ['#5fd0e8', '#f0a726'].map(c => { const m = new T.Mesh(new T.SphereGeometry(0.2, 14, 10), new T.MeshBasicMaterial({ color: c })); m.visible = false; G.add(m); return m; });
+    const diTex = this.tex(128, 128, (c, w) => { [['#ffffff', 64], ['#e2543d', 52], ['#ffffff', 38], ['#e2543d', 24], ['#ffd166', 11]].forEach(([col, r]) => { c.fillStyle = col; c.beginPath(); c.arc(64, 64, r, 0, Math.PI * 2); c.fill(); }); });
+    g.dianas = [0, 1, 2, 3].map(i => { const gr = new T.Group(); const d = new T.Mesh(new T.CircleGeometry(0.62, 28), new T.MeshBasicMaterial({ map: diTex, side: T.DoubleSide, transparent: true })); d.position.y = 1.3; gr.add(d); const pl = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 1.0, 6), M('#2f3b44')); pl.position.y = 0.5; gr.add(pl); gr.visible = false; G.add(gr); return gr; });
+    g.cats = [0, 1].map(i => { const gr = new T.Group(); const base = new T.Mesh(new T.BoxGeometry(1.2, 0.4, 0.9), M('#7a5a3a')); base.position.y = 0.2; gr.add(base); const brazo = new T.Mesh(new T.BoxGeometry(0.12, 0.12, 1.4), M('#5a3f28')); brazo.position.set(0, 0.7, 0); brazo.rotation.x = -0.6; gr.add(brazo); gr.userData.brazo = brazo; gr.visible = false; G.add(gr); return gr; });
   }
   fichas() { return Math.max(0, Math.floor(this.nHechas() / 2) - (this.state.depUsadas || 0)); }
   iniciarDep(tipo) {
-    const g = this.g, fut = tipo === 'futbol';
-    const pos = fut ? [[0, 3], [0, -6]] : [[-4, -0.3], [4, -0.3]];
-    g.jug.forEach((j, i) => { j.x = pos[i][0]; j.z = pos[i][1]; });
-    this.bola = { x: 0, z: fut ? -1.5 : -0.3, y: 0.25, vx: 0, vz: 0, hold: -1, fly: null, cd: [0, 0] };
-    g.balon.material.color.set(fut ? '#ffffff' : '#e8742c'); g.balon.visible = true; this._depFin = false;
-    this.snd('open'); this.keys = {};
-    this.setState({ dep: { tipo, fin: Date.now() + 60000, a: 0, b: 0, msg: fut ? 'J1 ataca hacia el edificio, J2 hacia las gradas. Patea con E / ENTER.' : 'Toca el balón para tomarlo. Lanza con E / ENTER. Roba acercándote y pulsando tu tecla.' }, depUsadas: (this.state.depUsadas || 0) + 1 });
+    const g = this.g, X = this.depX = { t: 0 }, bal = ['futbol', 'basket', 'penales', 'voley'].includes(tipo);
+    const pos = { futbol: [[-4, -0.3], [4, -0.3]], basket: [[-4, -0.3], [4, -0.3]], penales: [[11, -0.3], [15.1, -0.3]], voley: [[-6, -0.3], [6, -0.3]], tiro: [[-3, 6], [3, 6]], catapulta: [[-12, -0.3], [12, -0.3]], relevos: [[-2, 5], [2, 5]] }[tipo];
+    g.jug.forEach((j, i) => { j.x = pos[i][0]; j.z = pos[i][1]; j.gr.rotation.y = tipo === 'tiro' ? Math.PI : (i ? -Math.PI / 2 : Math.PI / 2); });
+    this.bola = { x: 0, z: -0.3, y: 0.25, vx: 0, vz: 0, hold: -1, fly: null, cd: [0, 0] };
+    g.balon.material.color.set(tipo === 'basket' ? '#e8742c' : tipo === 'voley' ? '#ffe9a8' : '#ffffff'); g.balon.visible = bal;
+    g.red.visible = tipo === 'voley'; g.marca.visible = false; g.proy.forEach(m => { m.visible = false; }); g.dianas.forEach(d => { d.visible = tipo === 'tiro'; }); g.cats.forEach(c => { c.visible = tipo === 'catapulta'; });
+    if (tipo === 'penales') Object.assign(X, { turno: 0, tiros: 0, fase: 'apuntar', tf: 0 });
+    if (tipo === 'voley') { Object.assign(X, { saque: 0 }); this.bola.wait = 0; }
+    if (tipo === 'tiro') { X.di = g.dianas.map((d, i) => this.nuevaDiana(i)); X.p = [null, null]; }
+    if (tipo === 'catapulta') { X.ang = [45, 45]; X.vel = [12, 12]; X.p = [null, null]; X.tx = (Math.random() * 10 - 5); g.cats.forEach((c, i) => { c.position.set(i ? 13.4 : -13.4, 0, -0.3); c.rotation.y = i ? -Math.PI / 2 : Math.PI / 2; }); g.marca.visible = true; g.marca.scale.setScalar(2.2); g.marca.position.set(X.tx, 0.05, -0.3); g.marca.material.color.set('#c58cf0'); }
+    if (tipo === 'relevos') { X.run = 0; X.paso = 0; X.cp = this.nuevoCp(); g.marca.visible = true; g.marca.scale.setScalar(1.6); }
+    const msg = {
+      futbol: 'J1 ataca el arco del este (derecha) y J2 el del oeste. Patea con E / ENTER.',
+      basket: 'Toma el balón tocándolo. J1 encesta en el aro del este, J2 en el del oeste. Lanza con E / ENTER. Desde fuera del semicírculo vale 3.',
+      penales: 'El que patea mantiene arriba, abajo o nada (centro) y patea con su tecla. El arquero debe estar manteniendo su lado en ese instante. ¡Adivinen al otro!',
+      voley: 'Pásenla sobre la red: muévanse hasta el aro blanco y golpeen con E / ENTER cuando la bola baje. Si cae en tu lado, punto para el otro.',
+      tiro: 'Apunten girando y disparen con E / ENTER. Diana normal 1 punto, la dorada 3. No se puede disparar desde más cerca que la línea de la mitad.',
+      catapulta: 'J1: W S ángulo · A D fuerza · E lanzar. J2: ↑ ↓ ángulo · ← → fuerza · ENTER lanzar. Calculen: el alcance depende del ángulo y la fuerza.',
+      relevos: 'Carrera en equipo: el que corre toca los anillos de su color. Después de 4, debe tocar a su compañero para pasarle el testigo.'
+    }[tipo];
+    this.snd('open'); this.keys = {}; this._depFin = false;
+    this.setState({ dep: { tipo, fin: Date.now() + 120000, a: 0, b: 0, msg }, depUsadas: (this.state.depUsadas || 0) + 1 });
   }
+  nuevaDiana(i) { const d = this.g.dianas[i]; const o = { x: -12 + Math.random() * 24, z: -7.6 + Math.random() * 4.5, v: (Math.random() < 0.5 ? -1 : 1) * (1 + Math.random() * 2.2), oro: Math.random() < 0.22 }; d.position.set(o.x, 0, o.z); d.children[0].scale.setScalar(o.oro ? 0.65 : 1); d.children[0].material.color.set(o.oro ? '#ffd166' : '#ffffff'); return o; }
+  nuevoCp() { const j = this.g.jug[this.depX ? this.depX.run || 0 : 0]; let x, z, k = 0; do { x = -14 + Math.random() * 28; z = -7.8 + Math.random() * 15; k++; } while (k < 40 && (Math.hypot(x - j.x, z - j.z) < 6 || this.bloqueado(x, z, 'patio'))); return [x, z]; }
   terminarDep() {
-    const d = this.state.dep; if (!d) return; const tot = d.a + d.b, gana = Math.min(25, 10 + tot * 2);
-    if (this.g.balon) this.g.balon.visible = false; this.bola = null;
+    const d = this.state.dep, g = this.g; if (!d) return; const tot = d.a + d.b, gana = Math.min(25, 10 + tot * 2);
+    if (g.balon) g.balon.visible = false; g.red.visible = false; g.marca.visible = false; g.marca.scale.setScalar(1); g.proy.forEach(m => { m.visible = false; }); g.dianas.forEach(x => { x.visible = false; }); g.cats.forEach(c => { c.visible = false; }); this.bola = null; this.depX = null;
     const st = this.bateria(gana); delete st._aviso; this.snd('win');
-    this.setState(Object.assign(st, { dep: null, toast: { t: (d.tipo === 'futbol' ? 'FÚTBOL' : 'BÁSQUET') + ' · ' + d.a + ' – ' + d.b + ' · +' + gana + ' % de batería para el equipo', hasta: Date.now() + 6000 } }));
+    this.setState(Object.assign(st, { dep: null, toast: { t: DEP_N[d.tipo] + ' · ' + d.a + ' – ' + d.b + ' · +' + gana + ' % de batería para el equipo', hasta: Date.now() + 6000 } }));
   }
-  golDep(quien, pts) {
+  golDep(quien, pts, sinReset) {
     const d = this.state.dep; if (!d) return; this.snd('ok');
-    const nd = Object.assign({}, d, quien ? { b: d.b + pts } : { a: d.a + pts }); this.setState({ dep: nd });
-    const fut = d.tipo === 'futbol'; Object.assign(this.bola, { x: 0, z: fut ? -1.5 : -0.3, y: 0.25, vx: 0, vz: 0, hold: -1, fly: null });
+    this.setState({ dep: Object.assign({}, d, quien ? { b: d.b + pts } : { a: d.a + pts }) });
+    if (!sinReset && this.bola) Object.assign(this.bola, { x: 0, z: -0.3, y: 0.25, vx: 0, vz: 0, hold: -1, fly: null });
   }
+  setDepMsg(m) { const d = this.state.dep; if (d && d.msg !== m) this.setState({ dep: Object.assign({}, d, { msg: m }) }); }
   accionDep(i) {
-    const b = this.bola, s = this.state, j = this.g.jug[i], o = this.g.jug[1 - i]; if (!b || !s.dep) return;
+    const b = this.bola, s = this.state, j = this.g.jug[i], o = this.g.jug[1 - i], X = this.depX, tipo = s.dep && s.dep.tipo; if (!b || !s.dep || !X) return;
     const now = performance.now() / 1000; if (now - b.cd[i] < 0.35) return; b.cd[i] = now;
-    const fx = Math.sin(j.gr.rotation.y), fz = Math.cos(j.gr.rotation.y);
-    if (s.dep.tipo === 'futbol') { if (Math.hypot(b.x - j.x, b.z - j.z) < 1.2) { b.vx = fx * 15; b.vz = fz * 15; this.snd('click'); } return; }
-    if (b.hold === i) {
-      const hx = i === 0 ? 16.75 : -16.75, hz = -0.3, dist = Math.hypot(hx - j.x, hz - j.z), pr = Math.max(0.15, Math.min(0.9, 1.05 - dist / 13));
-      b.fly = { sx: b.x, sz: b.z, tx: hx, tz: hz, u: 0, dur: 0.7 + dist * 0.04, ok: Math.random() < pr, pts: dist > 8 ? 3 : 2, who: i }; b.hold = -1; this.snd('click'); return;
+    const fx = Math.sin(j.gr.rotation.y), fz = Math.cos(j.gr.rotation.y), k = this.keys;
+    if (tipo === 'futbol') { if (Math.hypot(b.x - j.x, b.z - j.z) < 1.2) { b.vx = fx * 15; b.vz = fz * 15; this.snd('click'); } return; }
+    if (tipo === 'basket') {
+      if (b.hold === i) { const hx = i === 0 ? 15.18 : -15.18, hz = -0.3, dist = Math.hypot(hx - j.x, hz - j.z), pr = Math.max(0.15, Math.min(0.9, 1.05 - dist / 13));
+        b.fly = { sx: b.x, sz: b.z, tx: hx, tz: hz, u: 0, dur: 0.7 + dist * 0.04, ok: Math.random() < pr, pts: Math.hypot(j.x - Math.sign(hx) * 16, j.z + 0.3) > 6.1 ? 3 : 2, who: i }; b.hold = -1; this.snd('click'); return; }
+      if (b.hold === 1 - i && Math.hypot(j.x - o.x, j.z - o.z) < 1.3 && Math.random() < 0.45) { b.hold = i; this.snd('click'); } return;
     }
-    if (b.hold === 1 - i && Math.hypot(j.x - o.x, j.z - o.z) < 1.3 && Math.random() < 0.45) { b.hold = i; this.snd('click'); }
+    if (tipo === 'penales') { if (X.fase !== 'apuntar' || i !== X.turno) return; const up = i ? k.ArrowUp : k.KeyW, dn = i ? k.ArrowDown : k.KeyS; X.zona = up ? -1 : dn ? 1 : 0; { const ki = 1 - i, ku = ki ? k.ArrowUp : k.KeyW, kd = ki ? k.ArrowDown : k.KeyS; X.kz = ku ? -1 : kd ? 1 : 0; } X.fase = 'vuelo'; X.tf = 0; b.fly = { sx: b.x, sz: b.z }; this.snd('click'); return; }
+    if (tipo === 'voley') {
+      const lado = i ? 1 : -1;
+      if (b.wait != null && b.wait === i) { b.wait = null; this.lanzarVoley(i); this.snd('click'); return; }
+      if (b.fly && b.fly.u > 0.5 && b.y < 3 && Math.sign(b.x) === lado && Math.hypot(b.x - j.x, b.z - j.z) < 1.5) { this.lanzarVoley(i); this.snd('click'); } return;
+    }
+    if (tipo === 'tiro') { if (X.p[i]) return; X.p[i] = { x: j.x + fx * 0.6, z: j.z + fz * 0.6, vx: fx * 20, vz: fz * 20, d: 0 }; this.snd('click'); return; }
+    if (tipo === 'catapulta') { if (X.p[i]) return; const a = X.ang[i] * Math.PI / 180, v = X.vel[i]; X.p[i] = { x: i ? 13.4 : -13.4, y: 1.2, vh: v * Math.cos(a) * (i ? -1 : 1), vy: v * Math.sin(a) }; this.snd('click'); return; }
+  }
+  lanzarVoley(i) {
+    const b = this.bola, lado = i ? -1 : 1, tx = lado * (2.5 + Math.random() * 11.5), tz = -8.2 + Math.random() * 15.6, out = Math.random() < 0.08;
+    b.fly = { sx: b.x, sz: b.z, sy: Math.max(b.y, 1.6), tx: out ? lado * 17 : tx, tz, u: 0, dur: 1.25 + Math.random() * 0.35, by: i };
+    this.g.marca.visible = true; this.g.marca.position.set(b.fly.tx, 0.05, tz); this.g.marca.material.color.set('#ffffff');
   }
   pasoDep(dt) {
-    const b = this.bola, s = this.state, g = this.g; if (!b || !s.dep) return;
+    const b = this.bola, s = this.state, g = this.g, X = this.depX; if (!b || !s.dep || !X) return;
     if (Date.now() >= s.dep.fin) { if (!this._depFin) { this._depFin = true; this.terminarDep(); } return; }
-    if (s.dep.tipo === 'futbol') {
-      g.jug.forEach(j => { const dx = b.x - j.x, dz = b.z - j.z, d = Math.hypot(dx, dz); if (d < 0.7 && d > 0.001) { const sp = Math.max(4.5, Math.hypot(b.vx, b.vz)); b.vx = dx / d * sp; b.vz = dz / d * sp; b.x = j.x + dx / d * 0.7; b.z = j.z + dz / d * 0.7; } });
+    const tipo = s.dep.tipo, J = g.jug, k = this.keys; X.t += dt;
+    if (tipo === 'futbol') {
+      J.forEach(j => { const dx = b.x - j.x, dz = b.z - j.z, d = Math.hypot(dx, dz); if (d < 0.7 && d > 0.001) { const sp = Math.max(4.5, Math.hypot(b.vx, b.vz)); b.vx = dx / d * sp; b.vz = dz / d * sp; b.x = j.x + dx / d * 0.7; b.z = j.z + dz / d * 0.7; } });
       b.x += b.vx * dt; b.z += b.vz * dt; const fr = Math.max(0, 1 - 1.3 * dt); b.vx *= fr; b.vz *= fr;
-      if (Math.abs(b.x) < 1.6 && b.z < -9.0) { this.golDep(0, 1); return; }
-      if (Math.abs(b.x) < 1.6 && b.z > 8.4) { this.golDep(1, 1); return; }
-      if (b.x < -19 || b.x > 19) { b.vx = -b.vx; b.x = Math.max(-19, Math.min(19, b.x)); }
-      if ((b.z < -9.0 || b.z > 8.4) && Math.abs(b.x) >= 1.6) { b.vz = -b.vz; b.z = Math.max(-9.0, Math.min(8.4, b.z)); }
+      const boca = Math.abs(b.z + 0.3) < 1.45;
+      if (boca && b.x > 15.4) { this.golDep(0, 1); return; }
+      if (boca && b.x < -15.4) { this.golDep(1, 1); return; }
+      if ((b.x < -15.9 || b.x > 15.9) && !boca) { b.vx = -b.vx; b.x = Math.max(-15.9, Math.min(15.9, b.x)); }
+      if (b.z < -8.6 || b.z > 8.0) { b.vz = -b.vz; b.z = Math.max(-8.6, Math.min(8.0, b.z)); }
       b.y = 0.25;
-    } else {
+    } else if (tipo === 'basket') {
       if (b.fly) {
         const f = b.fly; f.u += dt / f.dur; const u = Math.min(1, f.u);
         b.x = f.sx + (f.tx - f.sx) * u; b.z = f.sz + (f.tz - f.sz) * u; b.y = 1.3 + (3.05 - 1.3) * u + Math.sin(u * Math.PI) * 2.6;
         if (u >= 1) { if (f.ok) { this.golDep(f.who, f.pts); return; } b.fly = null; b.vx = (Math.random() - 0.5) * 6 - Math.sign(f.tx) * 3; b.vz = (Math.random() - 0.5) * 6; b.y = 0.25; }
-      } else if (b.hold >= 0) { const j = g.jug[b.hold]; b.x = j.x + Math.sin(j.gr.rotation.y) * 0.55; b.z = j.z + Math.cos(j.gr.rotation.y) * 0.55; b.y = 0.9 + Math.abs(Math.sin(performance.now() / 150)) * 0.35; }
+      } else if (b.hold >= 0) { const j = J[b.hold]; b.x = j.x + Math.sin(j.gr.rotation.y) * 0.55; b.z = j.z + Math.cos(j.gr.rotation.y) * 0.55; b.y = 0.9 + Math.abs(Math.sin(performance.now() / 150)) * 0.35; }
       else {
         b.x += b.vx * dt; b.z += b.vz * dt; const fr = Math.max(0, 1 - 1.6 * dt); b.vx *= fr; b.vz *= fr; b.y = 0.25;
-        b.x = Math.max(-18.5, Math.min(18.5, b.x)); b.z = Math.max(-9, Math.min(8.4, b.z));
-        g.jug.forEach((j, i) => { if (b.hold < 0 && Math.hypot(b.x - j.x, b.z - j.z) < 0.75) b.hold = i; });
+        b.x = Math.max(-15.8, Math.min(15.8, b.x)); b.z = Math.max(-8.6, Math.min(8.0, b.z));
+        J.forEach((j, i) => { if (b.hold < 0 && Math.hypot(b.x - j.x, b.z - j.z) < 0.75) b.hold = i; });
       }
+    } else if (tipo === 'penales') {
+      const sh = J[X.turno], kp = J[1 - X.turno];
+      sh.x = 11; sh.z = -0.3; sh.gr.rotation.y = Math.PI / 2; kp.x = 15.1; kp.gr.rotation.y = -Math.PI / 2;
+      if (X.fase === 'apuntar') { kp.z = -0.3; b.x = 11.6; b.z = -0.3; b.y = 0.25; }
+      else if (X.fase === 'vuelo') {
+        X.tf += dt; const u = Math.min(1, X.tf / 0.55), tz = -0.3 + X.zona * 1.05;
+        if (X.kz != null) kp.z += ((-0.3 + X.kz * 1.05) - kp.z) * Math.min(1, dt * 14);
+        b.x = 11.6 + (15.6 - 11.6) * u; b.z = -0.3 + (tz + 0.3) * u; b.y = 0.25 + Math.sin(u * Math.PI) * 0.5 + u * 0.4;
+        if (u >= 1) { const atajo = X.kz === X.zona; if (!atajo) this.golDep(X.turno, 1, true); else this.snd('err'); X.res = atajo ? '¡Atajada!' : '¡Gol!'; X.fase = 'pausa'; X.tf = 0; X.tiros++; X.kz = null;
+          this.setDepMsg((atajo ? '¡ATAJADA! ' : '¡GOL! ') + 'Tiro ' + X.tiros + ' de 10. Ahora patea J' + (2 - X.turno) + '.'); }
+      } else if (X.fase === 'pausa') { X.tf += dt; if (X.tf > 1.3) { if (X.tiros >= 10) { s.dep.fin = Date.now(); return; } X.turno = 1 - X.turno; X.fase = 'apuntar'; } }
+    } else if (tipo === 'voley') {
+      J[0].x = Math.min(-0.7, J[0].x); J[1].x = Math.max(0.7, J[1].x);
+      if (b.wait != null) { const j = J[b.wait]; b.x = j.x + (b.wait ? -0.6 : 0.6); b.z = j.z; b.y = 1.7 + Math.sin(performance.now() / 200) * 0.15; }
+      else if (b.fly) {
+        const f = b.fly; f.u += dt / f.dur; const u = Math.min(1, f.u);
+        b.x = f.sx + (f.tx - f.sx) * u; b.z = f.sz + (f.tz - f.sz) * u; b.y = f.sy + (0.25 - f.sy) * u + Math.sin(u * Math.PI) * 4.2;
+        if (u >= 1) { const dentro = Math.abs(b.x) < 16 && b.z > -8.8 && b.z < 8.2, ladoCae = b.x < 0 ? 0 : 1, gana = dentro ? 1 - ladoCae : 1 - f.by;
+          this.golDep(gana, 1, true); b.fly = null; b.wait = gana; g.marca.visible = false; this.setDepMsg((dentro ? 'Cayó en la cancha de J' + (ladoCae + 1) : 'Afuera') + ': punto para J' + (gana + 1) + '. Saca J' + (gana + 1) + ' (E / ENTER).'); }
+      }
+    } else if (tipo === 'tiro') {
+      J.forEach(j => { j.z = Math.max(1.5, j.z); });
+      X.di.forEach((o, i) => { o.x += o.v * dt; if (o.x < -14 || o.x > 14) o.v = -o.v; g.dianas[i].position.x = o.x; });
+      X.p.forEach((q, i) => { if (!q) { g.proy[i].visible = false; return; } q.x += q.vx * dt; q.z += q.vz * dt; q.d += 20 * dt; g.proy[i].visible = true; g.proy[i].position.set(q.x, 1.3, q.z);
+        const hit = X.di.findIndex(o => Math.hypot(o.x - q.x, o.z - q.z) < (o.oro ? 0.45 : 0.7));
+        if (hit >= 0) { this.golDep(i, X.di[hit].oro ? 3 : 1, true); X.di[hit] = this.nuevaDiana(hit); X.p[i] = null; }
+        else if (q.d > 22 || Math.abs(q.x) > 19 || q.z < -11) X.p[i] = null; });
+    } else if (tipo === 'catapulta') {
+      J.forEach((j, i) => { j.x = i ? 14.4 : -14.4; j.z = -0.3; j.gr.rotation.y = i ? -Math.PI / 2 : Math.PI / 2;
+        const up = i ? k.ArrowUp : k.KeyW, dn = i ? k.ArrowDown : k.KeyS, lf = i ? k.ArrowLeft : k.KeyA, rt = i ? k.ArrowRight : k.KeyD;
+        if (up) X.ang[i] = Math.min(80, X.ang[i] + 30 * dt); if (dn) X.ang[i] = Math.max(10, X.ang[i] - 30 * dt);
+        if (rt) X.vel[i] = Math.min(18, X.vel[i] + 5 * dt); if (lf) X.vel[i] = Math.max(5, X.vel[i] - 5 * dt);
+        g.cats[i].userData.brazo.rotation.x = -(X.ang[i] * Math.PI / 180);
+        const q = X.p[i]; if (!q) { g.proy[i].visible = false; return; }
+        q.vy -= 9.8 * dt; q.x += q.vh * dt; q.y += q.vy * dt; g.proy[i].visible = true; g.proy[i].position.set(q.x, Math.max(0.2, q.y), -0.3);
+        if (q.y <= 0.2) { const e = Math.abs(q.x - X.tx); if (e < 1.0) { this.golDep(i, 3, true); X.tx = Math.random() * 10 - 5; g.marca.position.x = X.tx; } else if (e < 2.2) this.golDep(i, 1, true); else this.snd('err'); X.ult = X.ult || ['', '']; X.ult[i] = 'J' + (i + 1) + ' cayó a ' + e.toFixed(1) + ' m'; X.p[i] = null; } });
+      if (Math.floor(X.t * 5) !== X.mt) { X.mt = Math.floor(X.t * 5); const d1 = (X.tx + 14.4).toFixed(1), d2 = (14.4 - X.tx).toFixed(1);
+        this.setDepMsg('J1 · ' + Math.round(X.ang[0]) + '° · ' + X.vel[0].toFixed(1) + ' m/s · diana a ' + d1 + ' m   |   J2 · ' + Math.round(X.ang[1]) + '° · ' + X.vel[1].toFixed(1) + ' m/s · diana a ' + d2 + ' m' + (X.ult ? '   ·   ' + X.ult.filter(Boolean).join(' · ') : '')); }
+    } else if (tipo === 'relevos') {
+      const r = J[X.run], o = J[1 - X.run];
+      g.marca.material.color.set(X.paso < 4 ? (X.run ? '#f0a726' : '#5fd0e8') : '#7fe0a0');
+      if (X.paso < 4) { g.marca.position.set(X.cp[0], 0.05, X.cp[1]); if (Math.hypot(r.x - X.cp[0], r.z - X.cp[1]) < 0.9) { this.golDep(X.run, 1, true); X.paso++; if (X.paso < 4) X.cp = this.nuevoCp(); else this.setDepMsg('¡Pásale el testigo! J' + (X.run + 1) + ', toca a tu compañero.'); } }
+      else { g.marca.position.set(o.x, 0.05, o.z); if (Math.hypot(r.x - o.x, r.z - o.z) < 1.15) { X.run = 1 - X.run; X.paso = 0; X.cp = this.nuevoCp(); this.snd('ok'); this.setDepMsg('Corre J' + (X.run + 1) + ': toca 4 anillos de tu color y vuelve a pasar el testigo.'); } }
     }
     g.balon.position.set(b.x, b.y, b.z);
   }
@@ -1373,7 +1582,7 @@ class Component extends DCLogic {
     this.fbErr('Su circuito falla en ' + malas + (malas === 1 ? ' fila' : ' filas') + ' de la tabla (marcadas en rojo). Les quedan ' + (4 - intentos) + ' pruebas.', -6, { ui });
   }
   abrirPuzzle(id) {
-    const s = this.state, e = s.est[id] || { rondas: [], tier: 1 };
+    const s = this.state, e = s.est[id] || { rondas: [], tier: this.cfg().inicio };
     const ronda = e.rondas.length, tier = e.tier || this.cfg().inicio;
     const gd = s.guard && s.guard[id]; if (gd && gd.ronda === ronda) { this.keys = {}; this.setState({ fase: 'puzzle', pz: gd, hold: {}, llave: {}, est: Object.assign({}, s.est, { [id]: e }) }); return; }
     const pz = { est: id, ronda, tier, ui: this.uiInicial(id, tier), estado: 'jugando', fb: null };
@@ -1712,16 +1921,40 @@ class Component extends DCLogic {
   }
 
   // ---------- salidas / sesión ----------
+  fueraDeJuego() { return document.hidden || !document.hasFocus() || (!!this._fsOk && !document.fullscreenElement); }
+  incidente() {
+    if (this._dlg) return;
+    if (this._inc) { this.revisarInc(); return; }
+    if (!this.vigilando() || !this.fueraDeJuego()) return;
+    const now = Date.now(); this._inc = { t0: now, hid: 0, hidT0: document.hidden ? now : 0, pen: false };
+    this.keys = {}; this.setState({ pausa: { t0: now, hid: document.hidden } });
+    clearInterval(this._incT); this._incT = setInterval(() => this.revisarInc(), 500);
+  }
+  revisarInc() {
+    const I = this._inc; if (!I) return; const now = Date.now();
+    if (document.hidden) { if (!I.hidT0) I.hidT0 = now; } else if (I.hidT0) { I.hid += now - I.hidT0; I.hidT0 = 0; }
+    const hid = I.hid + (I.hidT0 ? now - I.hidT0 : 0), dur = now - I.t0;
+    if (hid > 0 && this.state.pausa && !this.state.pausa.hid) this.setState({ pausa: Object.assign({}, this.state.pausa, { hid: true }) });
+    if (!I.pen && hid >= 2500) { I.pen = true; this.salida('pestaña'); }
+    else if (!I.pen && dur >= 15000) { I.pen = true; this.salida('tiempo'); }
+    if (this.fueraDeJuego()) return;
+    clearInterval(this._incT); this._inc = null;
+    const st = { pausa: null, fueraSeg: (this.state.fueraSeg || 0) + dur / 1000 };
+    if (!I.pen && hid > 0) { const av = (this.state.avisos || 0) + 1; st.avisos = av; if (av >= 3) { this.setState(st, () => this.salida('repetido')); return; } st.toast = { t: 'Aviso ' + av + ' de 2: cambiaron de pestaña un instante. La próxima vez contará como salida.', hasta: Date.now() + 6000 }; }
+    else if (!I.pen) st.toast = { t: 'Volvieron a tiempo: no se registró ninguna salida.', hasta: Date.now() + 4000 };
+    this.keys = {}; this.setState(st);
+  }
+  volverFS() { this.pedirFS(); try { window.focus(); } catch (e) {} setTimeout(() => this.revisarInc(), 400); }
   salida(motivo) {
-    if (!this.vigilando()) return;
+    if (this.props.vigilancia === false || !this.enJuego() || this.state.bloq) return;
     const now = Date.now(); if (now - (this._ult || 0) < 2000) return; this._ult = now;
     const salidas = this.state.salidas + 1;
     if (salidas >= 3) { this.setState({ salidas, cerrado: true, bloq: false }, () => this.terminar('cerrado')); return; }
     const st = this.bateria(-20); const aviso = st._aviso; delete st._aviso;
-    this.setState(Object.assign(st, { salidas, bloq: true, bloqMsg: 'Perdieron 20 % de batería' + (motivo === 'recarga' ? ' (se recargó la página).' : '.') + aviso }), () => this.ping('bloqueado'));
+    this.setState(Object.assign(st, { salidas, bloq: true, bloqMsg: ({ recarga: 'Se recargó la página.', 'pestaña': 'Se cambió de pestaña o de programa.', tiempo: 'Estuvieron más de 15 segundos fuera de la pantalla completa.', repetido: 'Cambiaron de pestaña varias veces.' }[motivo] || 'Salieron de la partida.') + ' Perdieron 20 % de batería.' + aviso, pausa: null }), () => this.ping('bloqueado'));
   }
   pedirFS() { const el = document.documentElement; if (el.requestFullscreen) el.requestFullscreen().then(() => { this._fs = true; }).catch(() => {}); }
-  volver() { this.pedirFS(); this._ult = Date.now(); this.keys = {}; this.setState({ bloq: false }, () => this.ping('jugando')); }
+  volver() { this.pedirFS(); this._ult = Date.now(); this.keys = {}; clearInterval(this._incT); this._inc = null; this.setState({ bloq: false, pausa: null }, () => this.ping('jugando')); }
   async api(accion, datos) {
     if (this.demo()) return this.demoApi(accion, datos);
     const res = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion }, datos)) });
@@ -1764,7 +1997,7 @@ class Component extends DCLogic {
   payload(estado, s) {
     s = s || this.state;
     const det = EST.map(e => { const r = (s.est[e.id] && s.est[e.id].rondas) || []; return e.corto + ' ' + r.map(x => 'N' + x.tier + (x.ok ? '✓' : '✗')).join(' ') + (s.est[e.id] && s.est[e.id].estr != null ? ' [' + ESTR[e.id][s.est[e.id].estr] + ']' : ''); }).join(' · ');
-    return { sesionId: s.ses.id, curso: s.ses.curso || '3BGU', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.a + ' / ' + s.ses.b, nivel: Math.min(EST.length, this.nHechas() + 1), niveles: EST.length, puntos: s.pts, bonus: this.bonus(s) + s.pen, nota: this.nota(s), salidas: s.salidas, estado, duracionMin: Math.round(((s.tFin || Date.now()) - (s.t0 || Date.now())) / 6000) / 10, insignias: this.insignias(s).filter(b => b.ok).map(b => b.nombre).join(', '), detalle: 'Escape del Laboratorio · ' + det };
+    return { sesionId: s.ses.id, curso: s.ses.curso || '3BGU', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.a + ' / ' + s.ses.b, nivel: Math.min(EST.length, this.nHechas() + 1), niveles: EST.length, puntos: s.pts, bonus: this.bonus(s) + s.pen, nota: this.nota(s), salidas: s.salidas, avisos: s.avisos || 0, fueraSeg: Math.round(s.fueraSeg || 0), estado, duracionMin: Math.round(((s.tFin || Date.now()) - (s.t0 || Date.now())) / 6000) / 10, insignias: this.insignias(s).filter(b => b.ok).map(b => b.nombre).join(', '), detalle: 'Escape del Laboratorio · ' + det };
   }
   ping(estado) { if (!this.state.ses) return; this.api('progreso', this.payload(estado)).catch(() => {}); }
   async entrar() {
@@ -1817,7 +2050,7 @@ class Component extends DCLogic {
     const out = {
       mountRef: this.mountRef, fadeOp: s.fade, vCarga3d: s.c3d && s.fase !== 'login', hayErr3d: !!s.err3d, err3d: s.err3d,
       vLogin: s.fase === 'login', vIntro: s.fase === 'intro', vHud: ['mundo', 'puzzle', 'estres'].includes(s.fase) && !!s.ses,
-      vPuzzle: s.fase === 'puzzle' && !!pz, vEstRes: s.fase === 'estres', vFinal: s.fase === 'final', vBloq: s.bloq,
+      vPuzzle: s.fase === 'puzzle' && !!pz, vEstRes: s.fase === 'estres', vFinal: s.fase === 'final', vBloq: s.bloq, vPausa: !!s.pausa && !s.bloq && this.enJuego(), pausa: s.pausa ? { titulo: s.pausa.hid ? 'Se detectó otra pestaña' : '¿Salieron sin querer?', txt: s.pausa.hid ? 'Cambiaron de pestaña o de programa. Vuelvan ya: si se quedan fuera, se registra como salida.' : 'Salieron de la pantalla completa o de la ventana. Tienen 15 segundos para volver sin castigo.', seg: Math.max(0, 15 - Math.floor((s.ahora - s.pausa.t0) / 1000)) + ' s', color: s.ahora - s.pausa.t0 > 10000 ? '#ff7b72' : '#f0a726', volver: () => this.volverFS() } : { titulo: '', txt: '', seg: '', color: '#f0a726', volver: () => {} },
       demo: this.demo(), f: s.f, msg: s.msg, hayMsg: !!s.msg, bloqMsg: s.bloqMsg,
       loginLabel: s.cargando ? 'Verificando…' : 'Entrar', loginOpac: s.cargando ? 0.6 : 1,
       setA: e => this.setState({ f: Object.assign({}, s.f, { a: e.target.value.slice(0, 40) }) }),
@@ -1826,15 +2059,15 @@ class Component extends DCLogic {
       setCodigo: e => this.setState({ f: Object.assign({}, s.f, { codigo: e.target.value.replace(/\D/g, '').slice(0, 4) }) }),
       enterLogin: e => { if (e.key === 'Enter') this.entrar(); }, entrar: () => this.entrar(), empezar: () => this.empezar(), volver: () => this.volver(),
       toggleSonido: () => this.setState({ sonido: !s.sonido }),
-      entregarYa: () => { const n = this.nHechas(); if (window.confirm(n >= REQ ? '¿Entregar la partida?' : 'Llevan ' + n + ' de ' + REQ + ' retos necesarios. Si entregan ahora, la nota se calcula con lo que tienen. ¿Entregar?')) this.terminar('terminado'); },
+      entregarYa: () => { const n = this.nHechas(); this._dlg = true; const okC = window.confirm(n >= REQ ? '¿Entregar la partida?' : 'Llevan ' + n + ' de ' + REQ + ' retos necesarios. Si entregan ahora, la nota se calcula con lo que tienen. ¿Entregar?'); setTimeout(() => { this._dlg = false; }, 300); if (okC) this.terminar('terminado'); },
       cursosBtn: Object.keys(CURSO_CFG).map(k => ({ t: CURSO_CFG[k].nombre, onClick: () => this.setState({ f: Object.assign({}, s.f, { curso: k }) }), fondo: (s.f.curso || '3BGU') === k ? 'rgba(95,208,232,.16)' : '#0f1b26', borde: (s.f.curso || '3BGU') === k ? '#5fd0e8' : 'rgba(232,244,248,.2)' })),
-      hayDep: !!s.dep && s.fase === 'mundo', dep: s.dep ? { t: (s.dep.tipo === 'futbol' ? 'FÚTBOL' : 'BÁSQUET'), a: s.dep.a, b: s.dep.b, reloj: Math.max(0, Math.ceil((s.dep.fin - s.ahora) / 1000)) + ' s', msg: s.dep.msg } : { t: '', a: 0, b: 0, reloj: '', msg: '' },
+      hayDep: !!s.dep && s.fase === 'mundo', dep: s.dep ? { t: DEP_N[s.dep.tipo] || '', a: s.dep.a, b: s.dep.b, reloj: Math.max(0, Math.ceil((s.dep.fin - s.ahora) / 1000)) + ' s', msg: s.dep.msg } : { t: '', a: 0, b: 0, reloj: '', msg: '' },
       hayToast: !!(s.toast && s.toast.hasta > s.ahora), toast: s.toast ? s.toast.t : '',
       hayPrompt: !!s.prompt && s.fase === 'mundo' && !s.dep, prompt: s.prompt, promptPct: Math.round(s.promptPct * 100) + '%', promptColor: s.promptColor,
       hud: {
         j1: s.ses ? s.ses.a : '', j2: s.ses ? s.ses.b : '', par: s.ses ? this.cfg().nombre + ' · ' + s.ses.paralelo : '',
-        objetivo: n >= REQ ? '¡Salida desbloqueada! Vayan al laboratorio: los dos a las placas frente a la puerta verde.' : s.escena === 'patio' ? 'Completen ' + REQ + ' retos (llevan ' + n + '). Laboratorio: puerta con el haz de luz. Aulas de diagramas: escalera al este. Fichas de cancha: ' + this.fichas() + '.' : s.escena !== 'lab' ? 'Aula de diagramas: completen ' + REQ + ' retos en total (llevan ' + n + '). La salida final está en el laboratorio.' : n < REQ ? 'Completen ' + REQ + ' de los ' + EST.length + ' retos (llevan ' + n + '). Pueden salir de un reto y volver cuando quieran. Dos están en el patio: usen la salida del fondo.' : '¡Salida desbloqueada! Los dos a las placas frente a la puerta verde.',
-        est: this.activos().map(e => { const h = this.hecha(e.id); return { t: e.corto, color: h ? '#7fe0a0' : e.color, borde: h ? '#7fe0a0' : 'rgba(232,244,248,.18)', punto: h ? '#7fe0a0' : 'rgba(232,244,248,.25)' }; }),
+        objetivo: n >= REQ ? '¡Salida desbloqueada! Vayan al laboratorio: los dos a las placas frente a la puerta verde.' : s.escena === 'patio' ? 'Completen ' + REQ + ' retos (llevan ' + n + '). Laboratorio: puerta con el haz de luz. Escalera al este: aulas, biblioteca y azotea. Comedor al este y taller al oeste. Fichas de cancha: ' + this.fichas() + '.' : s.escena !== 'lab' ? (SCN[s.escena] || 'Aula') + ': ' + this.activos().filter(e => e.esc === s.escena && !this.hecha(e.id)).length + ' retos pendientes aquí. Llevan ' + n + ' de ' + REQ + '. La salida final está en el laboratorio.' : n < REQ ? 'Completen ' + REQ + ' de los ' + EST.length + ' retos (llevan ' + n + '). Pueden salir de un reto y volver cuando quieran. Dos están en el patio: usen la salida del fondo.' : '¡Salida desbloqueada! Los dos a las placas frente a la puerta verde.',
+        est: this.activos().filter(e => (e.esc || 'lab') === s.escena).map(e => { const h = this.hecha(e.id); return { t: e.corto, color: h ? '#7fe0a0' : e.color, borde: h ? '#7fe0a0' : 'rgba(232,244,248,.18)', punto: h ? '#7fe0a0' : 'rgba(232,244,248,.25)' }; }),
         bat: s.bat + '%', batPct: s.bat + '%', batColor, pts: Math.round((s.pts + s.pen) * 10) / 10, salidas: s.salidas,
         salBorde: s.salidas ? 'rgba(255,123,114,.7)' : 'rgba(232,244,248,.2)', salColor: s.salidas ? '#ff7b72' : '#c9dbe2',
         reloj: Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0'), sonido: s.sonido ? 'SONIDO ON' : 'SONIDO OFF'
@@ -1847,10 +2080,14 @@ class Component extends DCLogic {
       k1: [key('W', 'w', 2, 1), key('A', 'a', 1, 2), key('S', 's', 2, 2), key('D', 'd', 3, 2)].map(k => Object.assign(k, { fondo: kt[k.t.toLowerCase()] ? '#5fd0e8' : 'transparent' })),
       k2: [key('↑', 'up', 2, 1), key('←', 'left', 1, 2), key('↓', 'down', 2, 2), key('→', 'right', 3, 2)].map((k, i) => Object.assign(k, { fondo: kt[['up', 'left', 'down', 'right'][i]] ? '#f0a726' : 'transparent' })),
       ok1: ok1 ? '✓ Teclado listo' : 'Presiona tus teclas', ok1Color: ok1 ? '#7fe0a0' : '#9fb6c0', ok2: ok2 ? '✓ Teclado listo' : 'Presiona tus teclas', ok2Color: ok2 ? '#7fe0a0' : '#9fb6c0',
+      av: [0, 1].map(i => { const o = (s.av || [])[i] || { c: i, f: 0, t: 1, a: 1 }, sc = [0.82, 1, 1.18][o.t], tag = i ? '#f0a726' : '#5fd0e8', set = patch => { const av = (s.av || [{ c: 0, f: 0, t: 1, a: 1 }, { c: 1, f: 0, t: 1, a: 1 }]).map(x => Object.assign({}, x)); Object.assign(av[i], patch); this.setState({ av }, () => { if (this.g && this.g.T && this.g.jug) this.construirJugadores(); }); this.snd('click'); };
+        const dims = [[46, 82, '999px', 'none'], [62, 70, '6px', 'none'], [72, 72, '50%', 'none'], [66, 86, '0', 'polygon(50% 0,100% 100%,0 100%)']][o.f], opt = (arr, key) => arr.map((t, k) => ({ t, onClick: () => set({ [key]: k }), fondo: o[key] === k ? (i ? 'rgba(240,167,38,.2)' : 'rgba(95,208,232,.2)') : '#0f1b26', borde: o[key] === k ? tag : 'rgba(232,244,248,.2)' }));
+        return { nombre: 'J' + (i + 1) + ' · ' + (i ? (s.ses ? s.ses.b : '') : (s.ses ? s.ses.a : '')).split(' ')[0].toUpperCase(), acc: AV_A[o.a].toUpperCase(), tag, color: AV_C[o.c], pw: Math.round(dims[0] * sc) + 'px', ph: Math.round(dims[1] * sc) + 'px', rad: dims[2], clip: dims[3],
+          colores: AV_C.map((c, k) => ({ c, onClick: () => set({ c: k }), borde: o.c === k ? '#ffffff' : 'transparent' })), formas: opt(AV_F, 'f'), tams: opt(AV_T, 't'), accs: opt(AV_A, 'a') }; }),
       btnTxt: ok1 && ok2 ? 'Entrar al campus en pantalla completa' : 'Esperando que los dos prueben su teclado…', btnFondo: ok1 && ok2 ? '#7fe0a0' : '#4d6674', btnOp: ok1 && ok2 ? 1 : 0.7
     };
 
-    out.pz = {}; out.rg = {}; out.it = {}; out.mm = {}; out.tr = {}; out.rb = { celdas: [], main: [], fun: [], paleta: [] }; out.rv = { celdas: [], perillas: [] }; out.wc = { pilas: [], carta: {} }; out.ei = { p1: [], p2: [], cab: [], filas: [] }; out.es = { bets: [] }; out.ru = { calles: [], nodos: [] }; out.fl = { grupos: [], lec: [], orden: [], tabla: { cab: [], filas: [] } }; out.cp = { cadena: [], filas: [], cab: [], leyenda: '', conC: '' };
+    out.mente = null; out.pz = {}; out.rg = {}; out.it = {}; out.mm = {}; out.tr = {}; out.rb = { celdas: [], main: [], fun: [], paleta: [] }; out.rv = { celdas: [], perillas: [] }; out.wc = { pilas: [], carta: {} }; out.ei = { p1: [], p2: [], cab: [], filas: [] }; out.es = { bets: [] }; out.ru = { calles: [], nodos: [] }; out.fl = { grupos: [], lec: [], orden: [], tabla: { cab: [], filas: [] } }; out.cp = { cadena: [], filas: [], cab: [], leyenda: '', conC: '' };
     if (pz) {
       const E = EST.find(e => e.id === pz.est), d = this.datos(pz), u = pz.ui, fin = pz.estado !== 'jugando', idx = EST.indexOf(E);
       const opJ = (idx + pz.ronda) % 2, fb = pz.fb;
@@ -2056,6 +2293,12 @@ class Component extends DCLogic {
           accion: () => this.setState({ pz: Object.assign({}, this.state.pz, { fb: { tipo: 'info', titulo: 'Confirmen los dos', txt: 'Para enviar, J1 presiona E y J2 presiona ENTER al mismo tiempo.' } }) }) });
       } else out.pz.hayLlave = false;
       if (pz.est === 'wcst' && !fin) out.pz.btnOp = 0;
+      if (MENTE[pz.est]) {
+        out.pz.esMente = true; if (!fin) Object.assign(out.pz, { btn: 'Resuelvan el reto', btnOp: 0, accion: () => {}, info: '' });
+        const mk = pz.est + '|' + pz.ronda + '|' + pz.tier; if (this._mhk !== mk) { this._mhk = mk; this._mh = this.hnd(pz.est, pz.ronda, pz.tier); }
+        const MC = window.ESC_MENTE && window.ESC_MENTE.make(React);
+        out.mente = MC ? React.createElement(MC, { key: mk, id: pz.est, tier: pz.tier, fin, h: this._mh, snd: t => this.snd(t), onFin: (ok, eff, txt) => this.resolver(ok, eff, txt), onErr: (txt, dl) => this.fbErr(txt, dl || 0) }) : null;
+      }
     }
     if (s.erId) {
       const E = EST.find(e => e.id === s.erId), e = s.est[s.erId] || { rondas: [] };
