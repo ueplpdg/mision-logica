@@ -20,6 +20,7 @@
 <script src="./escape-retos.js"></script>
 <script src="./escape-mente.js"></script>
 <script src="./escape-flujo.js"></script>
+<script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
 </helmet>
 
 <div style="position:fixed;inset:0;background:#05090e;color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none">
@@ -108,6 +109,8 @@
 <sc-for list="{{ cursosBtn }}" as="c" hint-placeholder-count="2"><button onClick="{{ c.onClick }}" style="background:{{ c.fondo }};border:2px solid {{ c.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:700;padding:12px;cursor:pointer">{{ c.t }}</button></sc-for>
 </div>
 </div>
+<a href="clase9.html" style="display:block;border:2px solid #7fe0a0;color:#7fe0a0;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.08em;padding:10px 12px;text-decoration:none;text-align:center">9NO · ENTRAR A LA CLASE INTERACTIVA →</a>
+<a href="clase.html" style="display:block;border:2px solid #7fe0a0;color:#7fe0a0;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.08em;padding:10px 12px;text-decoration:none;text-align:center">10MO · ENTRAR A LA CLASE INTERACTIVA →</a>
 <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 100px;gap:10px">
 <div style="display:flex;flex-direction:column;gap:6px">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#5fd0e8">JUGADOR 1 · WASD</div>
@@ -711,6 +714,9 @@ const EST = [
   { id: 'sigue', nombre: 'Sigue el diagrama', corto: 'SEGUIR', hab: 'DIAGRAMAS: SEGUIMIENTO', color: '#a0f0a0', glow: 'rgba(160,240,160,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'aula2' },
   { id: 'error', nombre: 'Encuentra el error', corto: 'ERROR', hab: 'DIAGRAMAS: DEPURACIÓN', color: '#ff8a65', glow: 'rgba(255,138,101,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'aula2' },
   { id: 'aparato', nombre: 'Del diagrama al aparato', corto: 'APARATO', hab: 'DIAGRAMAS → ARDUINO', color: '#c4f06b', glow: 'rgba(196,240,107,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'aula2' },
+  { id: 'codigo', nombre: 'Lee el código Arduino', corto: 'CÓDIGO', hab: 'SETUP, LOOP Y COMENTARIOS', color: '#5fe0b0', glow: 'rgba(95,224,176,.25)', x: 7.9, z: 2.0, face: [-1, 0], esc: 'aula1' },
+  { id: 'vars', nombre: 'Variables y operadores', corto: 'VARIABLES', hab: 'VARIABLES Y OPERADORES', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: 7.9, z: 2.0, face: [-1, 0], esc: 'aula2' },
+  { id: 'sistema', nombre: 'Planifica el sistema', corto: 'SISTEMA', hab: 'ENTRADA · PROCESO · SALIDA', color: '#8fe3ff', glow: 'rgba(143,227,255,.25)', x: 7.9, z: 2.0, face: [-1, 0], esc: 'taller' },
   { id: 'rutas', nombre: 'Rutas de la ciudad', corto: 'RUTAS', hab: 'GRAFOS Y OPTIMIZACIÓN', color: '#8fb8ff', glow: 'rgba(143,184,255,.25)', x: -12, z: 6.2, face: [0, -1], esc: 'patio' },
   { id: 'simon', nombre: 'Memoria de luces', corto: 'MEMORIA', hab: 'MEMORIA DE TRABAJO', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'biblio' },
   { id: 'sudoku', nombre: 'Sudoku en equipo', corto: 'SUDOKU', hab: 'LÓGICA DE REGLAS', color: '#7fd1ff', glow: 'rgba(127,209,255,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'biblio' },
@@ -726,8 +732,9 @@ const EST = [
   { id: 'cubos', nombre: 'Torre de cubos', corto: 'CUBOS', hab: 'VISIÓN ESPACIAL 3D', color: '#b8a4ff', glow: 'rgba(184,164,255,.25)', x: 12, z: 6.2, face: [0, -1], esc: 'patio' }
 ];
 EST.forEach(e => { e.lado = e.face[0]; });
-const REQ = 10;
-const MENTE = { simon: 1, sudoku: 1, pares: 1, cripto: 1, tangram: 1, tuberias: 1, laser: 1, calculo: 1, balanza: 1, cerillos: 1, stroop: 1, cubos: 1 };
+const MODO_CLASE = !!(window.MISION_CONFIG && window.MISION_CONFIG.modoClase);
+const REQ = MODO_CLASE ? 6 : 10;
+const MENTE = { codigo: 1, vars: 1, sistema: 1, simon: 1, sudoku: 1, pares: 1, cripto: 1, tangram: 1, tuberias: 1, laser: 1, calculo: 1, balanza: 1, cerillos: 1, stroop: 1, cubos: 1 };
 const SCN = { patio: 'Patio', lab: 'Laboratorio', aula1: 'Aula de diagramas (2.º piso)', aula2: 'Aula de diagramas (3.er piso)', biblio: 'Biblioteca', taller: 'Taller maker', comedor: 'Comedor', azotea: 'Azotea' };
 const DEP = [
   { id: 'futbol', n: 'FÚTBOL 1 VS 1', c: '#ffffff', x: -5, z: -3.5 }, { id: 'basket', n: 'BÁSQUET 1 VS 1', c: '#ff9f43', x: 5, z: -3.5 },
@@ -757,6 +764,7 @@ const PISTA_TEC = {
   error: 'J1 recorre las figuras (W · S) y marca la sospechosa (A · D). J2 dice qué tipo de error es (← →). También pueden tocar la figura con el mouse. Para comprobar: E + ENTER a la vez.',
   aparato: 'J1 elige la acción de la rama Sí y J2 la de la rama No (en el nivel 3, J1 usa también W · S). Para encender el aparato: E + ENTER a la vez.',
   rutas: 'J1 sale del colegio con W A S D y J2 sale de la casa del cliente con las flechas. Encuéntrense en una esquina y envíen con E + ENTER a la vez.',
+  codigo: 'J1 elige con A · D y J2 con ← · →. Deben marcar la misma opción y confirmar con E + ENTER a la vez.', vars: 'J1 elige con A · D y J2 con ← · →. Deben marcar la misma opción y confirmar con E + ENTER a la vez.', sistema: 'J1 elige con A · D y J2 con ← · →. Deben marcar la misma opción y confirmar con E + ENTER a la vez.',
   simon: 'J1: A · D (rojo, verde). J2: ← · → (azul, amarillo).', sudoku: 'J1 mueve el cursor (W A S D). J2 cambia el número (↑ ↓). Para comprobar: E + ENTER a la vez.', pares: 'J1 voltea cartas de su lado (W A S D + E). J2 del suyo (flechas + ENTER).',
   cripto: 'J1 gira la clave 1 (A · D). J2 gira la clave 2 (← ·  →) o mira la pista (mantener P). Para enviar: E + ENTER.', tangram: 'J1 mueve el cursor (W A S D) y gira (E). J2 elige la pieza (← →) y la coloca (ENTER).',
   tuberias: 'J1 gira las piezas de la izquierda (W A S D + E). J2 las de la derecha (flechas + ENTER).', laser: 'J1 gira los espejos celestes (A · D + E). J2 los naranjas (← · → + ENTER).',
@@ -764,8 +772,9 @@ const PISTA_TEC = {
   cerillos: 'J1 levanta un fósforo (A · D + E). J2 lo suelta en un espacio (← · → + ENTER).', stroop: 'J1: A rojo, D verde. J2: ← azul, → amarillo.', cubos: 'J1 gira la torre (A · D). J2 escribe la respuesta (↑ ↓ ← →). Para enviar: E + ENTER.'
 };
 const SUB = { armar: 1, orden: 1, decision: 1, sigue: 1, error: 1, aparato: 1, reglas: 1, interrog: 1, master: 1, compuertas: 1, robot: 1, raven: 1, einstein: 1, estim: 1, rutas: 1 };
-const BASICO = ['simon', 'sudoku', 'pares', 'cripto', 'tangram', 'tuberias', 'laser', 'calculo', 'balanza', 'cerillos', 'stroop', 'cubos', 'armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
-const CURSO_CFG = { '8vo': { nombre: '8vo EGB', inicio: 1, retos: BASICO }, '9no': { nombre: '9no EGB', inicio: 1, retos: BASICO }, '10mo': { nombre: '10mo EGB', inicio: 1 }, '3BGU': { nombre: '3ro BGU', inicio: 2 } };
+const BASICO = ['codigo', 'vars', 'sistema', 'simon', 'sudoku', 'pares', 'cripto', 'tangram', 'tuberias', 'laser', 'calculo', 'balanza', 'cerillos', 'stroop', 'cubos', 'armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
+const CLASE = { '8vo': ['codigo', 'orden', 'armar', 'decision', 'sigue', 'error', 'aparato'], '9no': ['vars', 'compuertas', 'calculo', 'decision', 'sigue', 'error', 'aparato'], '10mo': ['sistema', 'armar', 'decision', 'error', 'aparato', 'robot', 'tuberias'] };
+const CURSO_CFG = { '8vo': { nombre: '8vo EGB', inicio: 1, retos: MODO_CLASE ? CLASE['8vo'] : BASICO }, '9no': { nombre: '9no EGB', inicio: 1, retos: MODO_CLASE ? CLASE['9no'] : BASICO }, '10mo': { nombre: '10mo EGB', inicio: 1, retos: MODO_CLASE ? CLASE['10mo'] : undefined }, '3BGU': { nombre: '3ro BGU', inicio: 2 } };
 function maxEst(inicio) { let t = inicio, s = 0; for (let i = 0; i < 3; i++) { s += BASE_T[t]; t = Math.min(3, t + 1); } return s; }
 const BASE_T = { 1: 5, 2: 8, 3: 12 };
 const GATES = { AND: (a, b) => a && b, OR: (a, b) => a || b, XOR: (a, b) => a !== b, NAND: (a, b) => !(a && b), NOR: (a, b) => !(a || b) };
@@ -794,6 +803,9 @@ const ESTR = {
   master: ['Usamos cada intento para descartar colores', 'Cambiamos una sola cosa por intento para ver el efecto', 'Primero buscamos los colores y después el orden', 'Probamos al azar'],
   torre: ['Apartamos la pila chica para liberar la celda grande', 'Pensamos hacia atrás desde el final', 'Seguimos un patrón que se repetía', 'Movimos hasta que salió']
 };
+ESTR.codigo = ['Separamos lo que se hace una vez (setup) de lo que se repite (loop)', 'Sumamos los tiempos de los delay', 'Leímos línea por línea', 'Elegimos al azar'];
+ESTR.vars = ['Escribimos el valor de cada variable después de cada línea', 'Reemplazamos las variables por sus números', 'Revisamos el operador con cuidado', 'Elegimos al azar'];
+ESTR.sistema = ['Identificamos primero qué hay que medir', 'Pensamos qué debe pasar en cada caso (Sí / No)', 'Usamos ejemplos de nuestro propio proyecto', 'Elegimos al azar'];
 ESTR.simon = ['Dijimos los colores en voz alta', 'Agrupamos la secuencia de a dos o tres', 'Cada uno recordó sus colores', 'Lo hicimos de memoria sin estrategia'];
 ESTR.sudoku = ['Buscamos primero la casilla con menos opciones', 'Revisamos fila, columna y bloque antes de escribir', 'Uno leía y el otro escribía', 'Probamos números al azar'];
 ESTR.pares = ['Recordamos dónde estaba cada carta', 'Nos dijimos en voz alta lo que veíamos', 'Volteamos en orden, fila por fila', 'Volteamos al azar'];

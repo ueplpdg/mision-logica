@@ -576,7 +576,95 @@
         div({ display: 'flex', flexWrap: 'wrap', gap: 18 }, Stat('GIROS ' + tog), Stat('MÍNIMO ' + d.minT, MU)));
     }
 
-    const MAP = { simon: Simon, calculo: Calculo, tangram: Tangram, sudoku: Sudoku, cubos: Cubos, cerillos: Cerillos, stroop: Stroop, tuberias: Tuberias, balanza: Balanza, cripto: Cripto, pares: Pares, laser: Laser };
+
+    // ---------- QUIZ COOPERATIVO (código Arduino, variables, sistemas) ----------
+    const pick = (H, a) => a[H.int(0, a.length - 1)];
+    function genCodigo(T, H) {
+      const it = [];
+      if (T === 1) {
+        const pool = [['pinMode(LED, OUTPUT);', 0, 'Configurar un pin se hace una sola vez: va en setup().'], ['pinMode(BOTON, INPUT);', 0, 'Configurar un pin se hace una sola vez: va en setup().'], ['Serial.begin(9600);', 0, 'Abrir la comunicación se hace una vez al encender: setup().'],
+          ['digitalWrite(LED, HIGH);', 1, 'Encender el LED es parte del comportamiento que se repite: loop().'], ['delay(500);', 1, 'La espera forma parte del ciclo que se repite: loop().'], ['digitalWrite(LED, LOW);', 1, 'Apagar el LED se repite en cada vuelta: loop().'], ['estado = digitalRead(BOTON);', 1, 'El botón hay que leerlo todo el tiempo: loop().'], ['pinMode(ZUMBADOR, OUTPUT);', 0, 'Configurar un pin se hace una sola vez: va en setup().']];
+        H.shuffle(pool).slice(0, 6).forEach(([c, a, ex]) => it.push({ code: [c], q: '¿Dónde va esta instrucción?', opts: ['setup()', 'loop()'], ans: a, ex }));
+      } else if (T === 2) {
+        for (let k = 0; k < 5; k++) {
+          const on = pick(H, [200, 250, 500, 1000]), off = pick(H, [200, 250, 500, 1000]), pin = H.int(8, 13), seg = pick(H, [4, 6, 10]);
+          const n = Math.floor(seg * 1000 / (on + off)), tipo = k % 3;
+          const code = ['int LED = ' + pin + ';  // pin del LED', 'void setup() {', '  pinMode(LED, OUTPUT);', '}', 'void loop() {', '  digitalWrite(LED, HIGH);', '  delay(' + on + ');', '  digitalWrite(LED, LOW);', '  delay(' + off + ');', '}'];
+          if (tipo === 0) { const o = [...new Set([n, n + 1, Math.max(1, n - 1), n * 2])].slice(0, 4); it.push({ code, q: '¿Cuántas veces se enciende el LED en ' + seg + ' segundos?', opts: H.shuffle(o.map(String)), ansV: String(n), ex: 'Cada vuelta del loop dura ' + on + ' + ' + off + ' = ' + (on + off) + ' ms. En ' + seg * 1000 + ' ms caben ' + n + ' vueltas.' }); }
+          else if (tipo === 1) it.push({ code, q: '¿En qué pin está conectado el LED?', opts: H.shuffle([pin, pin === 13 ? 12 : pin + 1, 0, 9 === pin ? 10 : 9].filter((v, i, a) => a.indexOf(v) === i)).map(String), ansV: String(pin), ex: 'La variable LED guarda el número ' + pin + '; pinMode(LED, …) usa ese pin.' });
+          else it.push({ code, q: '¿Cuánto tiempo pasa el LED encendido en cada vuelta?', opts: H.shuffle([on, off === on ? on * 2 : off, on + off, on / 2].map(v => v + ' ms').filter((v, i, a) => a.indexOf(v) === i)), ansV: on + ' ms', ex: 'Después de HIGH viene delay(' + on + '): ese es el tiempo encendido.' });
+        }
+      } else {
+        const errs = [
+          [['void setup() {', '  pinMode(13, OUTPUT);', '}', 'void loop() {', '  digitalWrite(13, HIGH)', '  delay(1000);', '}'], 'Línea 5', ['Línea 2', 'Línea 5', 'Línea 6', 'No hay error'], 'A la línea 5 le falta el punto y coma (;).'],
+          [['void setup() {', '}', 'void loop() {', '  digitalWrite(13, HIGH);', '  delay(500);', '  digitalWrite(13, LOW);', '  delay(500);', '}'], 'Falta pinMode', ['Falta pinMode', 'Falta un delay', 'loop está vacío', 'No hay error'], 'Sin pinMode(13, OUTPUT) en setup(), el pin no queda configurado como salida.'],
+          [['void setup() {', '  pinMode(13, OUTPUT);', '}', 'void loop() {', '  digitalWrite(13, HIGH);', '  digitalWrite(13, LOW);', '}'], 'Parpadea tan rápido que no se ve', ['Parpadea cada segundo', 'Queda siempre apagado', 'Parpadea tan rápido que no se ve', 'No compila'], 'Sin delay() entre HIGH y LOW, el cambio es tan rápido que el ojo no lo ve.'],
+          [['void setup() {', '  pinMode(13, OUTPUT);', '  digitalWrite(13, HIGH);', '  delay(1000);', '  digitalWrite(13, LOW);', '}', 'void loop() {', '}'], 'Parpadea una sola vez', ['Parpadea siempre', 'Parpadea una sola vez', 'Nunca se enciende', 'No compila'], 'Todo está en setup(), que se ejecuta una sola vez. loop() está vacío.'],
+          [['// Enciende el LED', 'void setup() {', '  pinMode(13, OUTPUT);', '}', 'void loop() {', '  digitalWrite(13, HIGH); // encender', '}'], 'Queda siempre encendido', ['Queda siempre encendido', 'Parpadea', 'Da error por los comentarios', 'Queda apagado'], 'Los comentarios (//) no se ejecutan. El loop solo enciende, así que el LED queda encendido.'],
+          [['void setup() {', '  pinMode(13, OUTPUT);', '}', 'void loop() {', '  digitalWrite(13, HIGH);', '  delay(1000);', '  digitalWrite(13, LOW);', '  delay(1000);', '}'], 'Parpadea cada segundo', ['Parpadea cada segundo', 'Queda encendido', 'Parpadea una vez', 'No compila'], 'Programa correcto: 1 s encendido y 1 s apagado, repetido en el loop.']];
+        H.shuffle(errs).slice(0, 5).forEach(([code, a, opts, ex]) => it.push({ code, q: opts.includes('Línea 5') || opts.includes('Falta pinMode') ? '¿Dónde está el error?' : '¿Qué hace este programa?', opts, ansV: a, ex }));
+      }
+      return it;
+    }
+    function genVars(T, H) {
+      const it = [];
+      for (let k = 0; k < 5; k++) {
+        if (T === 1) {
+          const a = H.int(2, 9), b = H.int(2, 6), op = pick(H, ['+', '*', '-']), c = op === '+' ? a + b : op === '*' ? a * b : a - b, d = c * 2;
+          const code = ['int a = ' + a + ';', 'int b = ' + b + ';', 'a = a ' + op + ' b;', 'b = a * 2;'], q = k % 2 ? '¿Cuánto vale b al final?' : '¿Cuánto vale a al final?', v = k % 2 ? d : c;
+          it.push({ code, q, opts: H.shuffle([v, v + 1, k % 2 ? c : a, v + b].filter((x, i, ar) => ar.indexOf(x) === i)).map(String), ansV: String(v), ex: 'Paso a paso: a = ' + a + ' ' + op + ' ' + b + ' = ' + c + '; luego b = ' + c + ' × 2 = ' + d + '.' });
+        } else if (T === 2) {
+          const t = H.int(18, 40), L = pick(H, [25, 28, 30, 35]), op = pick(H, ['>', '<', '>=', '==', '!=']), r = op === '>' ? t > L : op === '<' ? t < L : op === '>=' ? t >= L : op === '==' ? t === L : t !== L;
+          it.push({ code: ['const int LIMITE = ' + L + ';', 'int temperatura = ' + t + ';', 'bool ventilador = (temperatura ' + op + ' LIMITE);'], q: '¿Qué valor queda en ventilador?', opts: ['true (se enciende)', 'false (apagado)'], ans: r ? 0 : 1, ex: t + ' ' + op + ' ' + L + ' es ' + (r ? 'verdadero' : 'falso') + '. ' + (op === '!=' ? '!= significa «distinto de».' : op === '==' ? '== compara si son iguales.' : '') });
+        } else {
+          const luz = H.int(100, 900), mov = H.int(0, 1), op = pick(H, ['&&', '||']), neg = H.int(0, 2) === 0, c1 = luz < 400, c2 = neg ? !mov : !!mov, r = op === '&&' ? c1 && c2 : c1 || c2;
+          it.push({ code: ['int luz = ' + luz + ';        // sensor de luz (0 a 1023)', 'int movimiento = ' + (mov ? 'HIGH' : 'LOW') + ';', 'if (luz < 400 ' + op + ' ' + (neg ? '!' : '') + 'movimiento) {', '  digitalWrite(LAMPARA, HIGH);', '} else {', '  digitalWrite(LAMPARA, LOW);', '}'], q: '¿La lámpara del pasillo se enciende?', opts: ['Sí, se enciende', 'No, queda apagada'], ans: r ? 0 : 1, ex: '(luz < 400) es ' + c1 + ' y (' + (neg ? '!' : '') + 'movimiento) es ' + c2 + '. Con ' + (op === '&&' ? '&& (Y) deben cumplirse las dos' : '|| (O) basta con una') + ': resultado ' + r + '.' });
+        }
+      }
+      return it;
+    }
+    function genSistema(T, H) {
+      const it = [];
+      if (T === 1) {
+        const pool = [['Sensor de humedad de suelo', 0], ['Sensor ultrasónico', 0], ['Pulsador', 0], ['Sensor de luz (LDR)', 0], ['Sensor PIR de movimiento', 0], ['Arduino UNO', 1], ['Servomotor', 2], ['Bomba de agua', 2], ['LED', 2], ['Zumbador', 2], ['Pantalla LCD', 2]];
+        H.shuffle(pool).slice(0, 6).forEach(([c, a]) => it.push({ code: [c], q: '¿Qué papel cumple en el sistema?', opts: ['Entrada (lee datos)', 'Proceso (decide)', 'Salida (actúa)'], ans: a, ex: a === 0 ? 'Mide algo del entorno y se lo envía al Arduino: es una entrada.' : a === 1 ? 'Recibe las entradas, ejecuta el algoritmo y decide: es el proceso.' : 'Recibe la orden del Arduino y hace algo en el mundo: es una salida.' }));
+      } else if (T === 2) {
+        const pool = [['Regar la maceta del patio solo cuando la tierra esté seca.', 'Sensor de humedad → bomba de agua'], ['Abrir la puerta del laboratorio cuando alguien se acerque.', 'Sensor ultrasónico → servomotor'], ['Encender la luz del pasillo al anochecer.', 'Sensor de luz (LDR) → LED / lámpara'], ['Avisar si alguien entra al aula en la noche.', 'Sensor PIR → zumbador'], ['Mostrar la temperatura del aula.', 'Sensor de temperatura → pantalla LCD']];
+        const all = pool.map(p => p[1]);
+        H.shuffle(pool).forEach(([n, a]) => it.push({ code: ['NECESIDAD DEL COLEGIO:', n], q: '¿Qué entrada y qué salida elegirían?', opts: H.shuffle(all.slice()).filter(x => x !== a).slice(0, 3).concat([a]).sort(() => H.int(0, 1) ? 1 : -1), ansV: a, ex: 'La entrada mide lo que importa (' + a.split(' → ')[0] + ') y la salida resuelve la necesidad (' + a.split(' → ')[1] + ').' }));
+      } else {
+        const pool = [['Riego automático', ['INICIO', 'Leer humedad', '¿humedad < 30 %?', '  Sí → ???', '  No → apagar bomba', 'Volver a leer'], 'Encender bomba', ['Encender bomba', 'Leer humedad otra vez', 'Apagar bomba', 'FIN'], 'Si la tierra está seca (Sí), la acción es regar: encender la bomba.'],
+          ['Puerta automática', ['INICIO', 'Medir distancia', '¿distancia < ???', '  Sí → abrir puerta (servo 90°)', '  No → cerrar puerta (servo 0°)'], '50 cm', ['50 cm', '5 m', '0 cm', '1023'], 'Debe abrirse cuando alguien está cerca: un umbral razonable es 50 cm.'],
+          ['Luz del pasillo', ['INICIO', 'Leer luz (LDR)', '??? ', '  Sí → encender lámpara', '  No → apagar lámpara'], '¿luz < 300?', ['¿luz < 300?', '¿luz > 900?', '¿lámpara encendida?', 'Esperar 1 s'], 'La lámpara se enciende cuando hay poca luz: la decisión es ¿luz < 300?.'],
+          ['Alarma del laboratorio', ['INICIO', '???', '¿hay movimiento?', '  Sí → sonar zumbador', '  No → silencio'], 'Leer sensor PIR', ['Leer sensor PIR', 'Sonar zumbador', 'FIN', 'Abrir puerta'], 'Antes de decidir hay que leer la entrada: leer el sensor PIR.'],
+          ['Semáforo escolar', ['INICIO', 'Verde 5 s', 'Amarillo 2 s', 'Rojo 5 s', '???'], 'Volver al inicio (repetir)', ['Volver al inicio (repetir)', 'FIN', 'Apagar todo', 'Leer humedad'], 'Un semáforo nunca termina: el diagrama vuelve al inicio, como el loop().']];
+        H.shuffle(pool).forEach(([t, code, a, opts, ex]) => it.push({ code: ['SISTEMA: ' + t.toUpperCase()].concat(code), q: '¿Qué va en lugar de ???', opts: H.shuffle(opts), ansV: a, ex }));
+      }
+      return it;
+    }
+    const GEN = { codigo: genCodigo, vars: genVars, sistema: genSistema };
+    function Quiz(p) {
+      const fin = useOnce(p);
+      const [it] = useState(() => GEN[p.id](p.tier, p.h).map(x => Object.assign({}, x, { ans: x.ansV != null ? x.opts.indexOf(x.ansV) : x.ans })));
+      const [n, setN] = useState(0), [c1, setC1] = useState(0), [c2, setC2] = useState(0), [res, setRes] = useState([]), [fb, setFb] = useState(null);
+      const q = it[Math.min(n, it.length - 1)], no = q.opts.length;
+      const sig = () => { setFb(null); if (n + 1 >= it.length) { const bien = res.filter(Boolean).length, r = bien / it.length; if (r >= 0.7) fin(true, r === 1 ? 1 : r >= 0.8 ? 0.75 : 0.5, bien + ' de ' + it.length + ' respuestas correctas.'); else fin(false, 0, 'Solo ' + bien + ' de ' + it.length + '. Necesitaban el 70 %.'); return; } setN(n + 1); setC1(0); setC2(0); };
+      const enviar = () => { if (p.fin) return; if (fb) { sig(); return; } if (c1 !== c2) { p.onErr('No están de acuerdo: J1 marcó «' + q.opts[c1] + '» y J2 «' + q.opts[c2] + '». Conversen y elijan la misma.', 0); return; } const ok = c1 === q.ans; p.snd(ok ? 'ok' : 'err'); setRes(res.concat([ok])); setFb({ ok, ex: q.ex }); };
+      const dual = useDual(enviar);
+      useKeys((c, dn) => { if (!dn || p.fin) return; if (fb) { if (c === 'KeyE' || c === 'Enter' || c === 'Space') sig(); return; }
+        if (c === 'KeyA' || c === 'KeyW') setC1((c1 + no - 1) % no); if (c === 'KeyD' || c === 'KeyS') setC1((c1 + 1) % no); if (c === 'ArrowLeft' || c === 'ArrowUp') setC2((c2 + no - 1) % no); if (c === 'ArrowRight' || c === 'ArrowDown') setC2((c2 + 1) % no);
+        if (c === 'KeyE') dual.press(0); if (c === 'Enter') dual.press(1); });
+      const intro = { codigo: ['Lean el código de Arduino y respondan. Los dos deben marcar ', B('la misma opción'), ': J1 con A · D y J2 con ← · →. Después, E + ENTER a la vez.'], vars: ['Sigan el valor de cada variable línea por línea, como lo haría el Arduino. Los dos deben marcar ', B('la misma opción'), ' y confirmar con E + ENTER.'], sistema: ['Planifiquen un sistema para el colegio: entradas, proceso y salidas. Los dos deben marcar ', B('la misma opción'), ' y confirmar con E + ENTER.'] }[p.id];
+      return Wrap(P(intro), Ctrls(Tag(1, 'A · D elegir · E confirmar'), Tag(2, '← · → elegir · ENTER confirmar')),
+        div({ display: 'flex', flexWrap: 'wrap', gap: 18 }, Stat('PREGUNTA ' + (Math.min(n, it.length - 1) + 1) + ' / ' + it.length), Stat('ACIERTOS ' + res.filter(Boolean).length, OK)),
+        Box({ fontFamily: MONO, fontSize: q.code.length === 1 ? 26 : 17, lineHeight: 1.6, color: TX, whiteSpace: 'pre-wrap', overflowX: 'auto' }, ...q.code.map((l, i) => div({ key: i, display: 'flex', gap: 14 }, q.code.length > 2 ? h('span', { style: { color: MU, minWidth: 22, textAlign: 'right' } }, String(i + 1)) : null, h('span', { style: { color: /\/\//.test(l) ? '#7fe0a0' : TX } }, l)))),
+        div({ fontFamily: HEAD, fontSize: 22, color: TX }, q.q),
+        div({ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,200px),1fr))', gap: 10 }, ...q.opts.map((o, i) => { const a1 = c1 === i, a2 = c2 === i, okc = fb && i === q.ans;
+          return h('button', { key: i, onClick: () => { setC1(i); setC2(i); }, style: { position: 'relative', textAlign: 'left', padding: '14px 16px', background: okc ? 'rgba(127,224,160,.18)' : BG, border: '2px solid ' + (okc ? OK : a1 && a2 ? '#ffffff' : LN), color: TX, fontSize: 17, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10 } },
+            div({ display: 'flex', gap: 4, flex: 'none' }, div({ width: 12, height: 12, background: a1 ? J1 : 'transparent', border: '2px solid ' + J1 }), div({ width: 12, height: 12, background: a2 ? J2 : 'transparent', border: '2px solid ' + J2 })), o); })),
+        fb ? Box({ border: '2px solid ' + (fb.ok ? OK : ER), display: 'flex', flexDirection: 'column', gap: 8 }, div({ fontFamily: HEAD, fontSize: 20, color: fb.ok ? OK : ER }, fb.ok ? '¡Correcto!' : 'No era esa.'), P(fb.ex), Stat('E o ENTER para seguir', MU)) : Dual(dual));
+    }
+    const MAP = { codigo: Quiz, vars: Quiz, sistema: Quiz, simon: Simon, calculo: Calculo, tangram: Tangram, sudoku: Sudoku, cubos: Cubos, cerillos: Cerillos, stroop: Stroop, tuberias: Tuberias, balanza: Balanza, cripto: Cripto, pares: Pares, laser: Laser };
     function Mente(p) {
       const C = MAP[p.id]; if (!C) return null;
       return div({ opacity: p.fin ? 0.6 : 1, pointerEvents: p.fin ? 'none' : 'auto', transition: 'opacity .3s' }, h(C, p));
