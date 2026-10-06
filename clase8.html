@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="./config.js"></script>
-<script src="./clase9.js"></script>
+<script src="./clase8.js"></script>
 <style>html,body{margin:0;background:#0b1218;color:#e8f1f2;font-family:'IBM Plex Sans',sans-serif}a{color:#3fd0b8}a:hover{color:#7fe8d6}*{box-sizing:border-box}input,textarea,select,button{font-family:inherit}body{background-image:linear-gradient(rgba(63,208,184,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(63,208,184,.05) 1px,transparent 1px);background-size:40px 40px}@keyframes c9float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes c9lock{0%,60%,100%{transform:rotate(0)}75%{transform:rotate(-8deg)}}@keyframes c9tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}@keyframes c9blink{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes c9flow{to{stroke-dashoffset:-22}}@keyframes c9in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes c9pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}</style>
 <script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
 </helmet>
@@ -21,8 +21,8 @@
 
 <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(16px,2.4vw,40px);border-bottom:3px solid #2c3e4a;background:#13202a">
 <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-<div style="font-family:'Archivo Black',sans-serif;font-size:20px;background:#070d12;color:#fff;padding:6px 12px">9no</div>
-<div style="font-family:'Archivo Black',sans-serif;font-size:clamp(16px,1.4vw,22px)">Clase interactiva · Variables y operadores</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:20px;background:#070d12;color:#fff;padding:6px 12px">8vo</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:clamp(16px,1.4vw,22px)">Clase interactiva · Del diagrama al código</div>
 </div>
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em">
 <div style="border:2px solid #2c3e4a;padding:5px 10px">{{ top.quien }}</div>
@@ -96,7 +96,7 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const KEY = 'clase9_v1', DKEY = 'clase9_demo';
+const KEY = 'clase8_v1', DKEY = 'clase8_demo';
 const ERRTXT = { sinbucle: 'El diagrama termina en lugar de repetirse', orden: 'Orden incorrecto de los pasos', sensor: 'Eligieron un sensor que no mide lo necesario', operador: 'Confundieron la comparación (< y >, Y y O)', umbral: 'Umbral mal elegido', accion: 'Acción del Sí y del No invertidas', angulos: 'Ángulos del servo', eps: 'Confundir entrada y salida', senal: 'Confundir digital y analógica', depura: 'No ubicaron el error', incompleto: 'Plan incompleto', entrada: 'Entrada incoherente con la necesidad', salida: 'Salida incoherente con la necesidad' };
 const SOL = { eps: 'Entradas: todos los sensores y el pulsador. Proceso: Arduino. Salidas: bomba, servo, LED, zumbador, LCD y ventilador.', senal: 'Digitales: pulsador, PIR, fin de carrera y sensor de lluvia (sí/no). Analógicas: luz, humedad, temperatura y potenciómetro.', semaforo: 'Verde 5 s → Amarillo 2 s → Rojo 5 s → Volver al inicio.', riego: 'Entrada: humedad del suelo. Condición: humedad < 35 %. Sí: encender bomba. No: apagar bomba.', depura: 'Las ramas estaban invertidas: si la humedad es baja (Sí) se ENCIENDE la bomba.', puerta: 'Abrir si la distancia es menor que unos 50 cm. Servo a 90° para abrir y a 0° para cerrar.', alarma: 'Se usa Y: suena solo si es de noche Y hay movimiento.', proyecto: 'Ejemplo: necesidad «calor en el aula» → sensor de temperatura → ¿temperatura > 28? → Sí: encender ventilador / No: apagarlo.' };
 class Component extends DCLogic {
@@ -108,16 +108,16 @@ class Component extends DCLogic {
   componentWillUnmount() { clearInterval(this._poll); window.removeEventListener('storage', this._st); }
   componentDidUpdate() { const s = this.state; try { localStorage.setItem(KEY, JSON.stringify({ rol: s.rol, fase: s.fase, ses: s.ses, mySlide: s.mySlide, mis: s.mis, retos: s.retos, pista: s.pista, entregado: s.entregado, nota: s.nota, clave: s.rol === 'doc' ? s.clave : undefined, f: Object.assign({}, s.f, { clave: '' }) })); } catch (e) {} }
   demo() { const c = window.MISION_CONFIG || {}; return !c.scriptUrl; }
-  C() { return window.CLASE9 ? window.CLASE9.make(React) : null; }
+  C() { return window.CLASE8 ? window.CLASE8.make(React) : null; }
   async api(accion, d) {
     if (this.demo()) return this.demoApi(accion, d);
-    const r = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion, curso: '9no' }, d)) }); return r.json();
+    const r = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion, curso: '8vo' }, d)) }); return r.json();
   }
   demoApi(accion, d) {
     const L = JSON.parse(localStorage.getItem(DKEY) || '{}'); L.resp = L.resp || {}; L.vivo = L.vivo || {};
     const save = () => localStorage.setItem(DKEY, JSON.stringify(L)), ok = o => Promise.resolve(Object.assign({ ok: true }, o));
     if (accion === 'estado') return ok(String(d.codigo) === '1234' ? { abierta: true, valido: true, sesionId: 'demo' } : { abierta: true, valido: false });
-    if (accion === 'sesiones') return d.clave === '1234' ? ok({ sesiones: { '9no': { abierta: true, codigo: '1234', id: 'demo' } } }) : ok({ ok: false, error: 'clave' });
+    if (accion === 'sesiones') return d.clave === '1234' ? ok({ sesiones: { '8vo': { abierta: true, codigo: '1234', id: 'demo' } } }) : ok({ ok: false, error: 'clave' });
     if (accion === 'abrir') return ok({ sesion: { codigo: '1234', id: 'demo' } });
     if (accion === 'claseSet') { L.clase = { slide: d.slide, fase: d.fase, libre: d.libre, ver: d.ver, t: Date.now() }; save(); return ok({}); }
     if (accion === 'claseGet') return ok({ clase: L.clase || null });
@@ -148,7 +148,7 @@ class Component extends DCLogic {
     if (!String(f.codigo).trim()) { this.setState({ f: Object.assign({}, f, { err: 'Falta el código de la sesión (lo muestra el docente).' }) }); return; }
     const pareja = nm(f.a) + ' / ' + nm(f.b);
     try { const r = await this.api('estado', { codigo: String(f.codigo).trim(), pareja });
-      if (!r.abierta) { this.setState({ f: Object.assign({}, f, { err: 'La sesión de 9no todavía no está abierta.' }) }); return; }
+      if (!r.abierta) { this.setState({ f: Object.assign({}, f, { err: 'La sesión de 8vo todavía no está abierta.' }) }); return; }
       if (!r.valido) { this.setState({ f: Object.assign({}, f, { err: 'El código no es correcto.' }) }); return; }
       this.setState({ rol: 'est', fase: 'clase', ses: { a: nm(f.a), b: nm(f.b), pareja, paralelo: (r.paralelo || f.paralelo || '').toUpperCase(), sesionId: r.sesionId, ad: !!f.ad, t0: Date.now() }, mis: {}, retos: {}, pista: {}, entregado: !!r.yaEntregado, nota: null }, () => this.arrancar());
     } catch (e) { this.setState({ f: Object.assign({}, f, { err: 'No hay conexión con el servidor. Revisen el internet.' }) }); }
@@ -156,7 +156,7 @@ class Component extends DCLogic {
   async docente() {
     const f = this.state.f;
     try { const r = await this.api('sesiones', { clave: f.clave }); if (!r.ok) { this.setState({ f: Object.assign({}, f, { errD: 'Clave incorrecta.' }) }); return; }
-      let s = r.sesiones && r.sesiones['9no'];
+      let s = r.sesiones && r.sesiones['8vo'];
       if (!s || !s.abierta) { const a = await this.api('abrir', { clave: f.clave, minutos: 80, paralelo: f.paralelo || '' }); s = a.sesion; }
       this.setState({ rol: 'doc', clave: f.clave, fase: 'clase', ses: { codigo: s.codigo, sesionId: s.id }, clase: { slide: 0, fase: 'clase', libre: false, ver: false } }, () => { this.pushClase(); this.arrancar(); });
     } catch (e) { this.setState({ f: Object.assign({}, f, { errD: 'No hay conexión con el servidor.' }) }); }
@@ -188,7 +188,7 @@ class Component extends DCLogic {
     this.api('progreso', this.payload('jugando')).catch(() => {});
     if (this.hechos().length >= this.lista().length) this.entregar();
   }
-  payload(estado) { const s = this.state, h = this.hechos(); return { sesionId: s.ses.sesionId, curso: '9no', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.pareja, nivel: h.length, niveles: this.lista().length, puntos: h.reduce((a, x) => a + s.retos[x.id].pts, 0), bonus: Math.max(0, h.length - this.req()), nota: this.calcNota(), salidas: 0, estado, duracionMin: Math.round((Date.now() - (s.ses.t0 || Date.now())) / 60000), insignias: s.ses.ad ? 'versión con apoyo' : '', detalle: 'CLASE 9no · ' + this.lista().map(x => { const r = s.retos[x.id]; return x.n + ': ' + (r && r.fin ? r.pts + (r.sol ? ' (solución)' : '') : '—'); }).join(' · ') }; }
+  payload(estado) { const s = this.state, h = this.hechos(); return { sesionId: s.ses.sesionId, curso: '8vo', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.pareja, nivel: h.length, niveles: this.lista().length, puntos: h.reduce((a, x) => a + s.retos[x.id].pts, 0), bonus: Math.max(0, h.length - this.req()), nota: this.calcNota(), salidas: 0, estado, duracionMin: Math.round((Date.now() - (s.ses.t0 || Date.now())) / 60000), insignias: s.ses.ad ? 'versión con apoyo' : '', detalle: 'CLASE 8vo · ' + this.lista().map(x => { const r = s.retos[x.id]; return x.n + ': ' + (r && r.fin ? r.pts + (r.sol ? ' (solución)' : '') : '—'); }).join(' · ') }; }
   entregar() { if (this.state.entregado) return; if (this.hechos().length < this.req()) { this.aviso('Les faltan ' + (this.req() - this.hechos().length) + ' retos para la nota.'); return; } const p = this.payload('terminado'); this.setState({ entregado: true, nota: p.nota }); this.api('entregar', p).then(() => this.aviso('Nota enviada al docente ✓')).catch(() => this.aviso('No se pudo enviar la nota. Avisen al docente.')); }
   salirSesion() { if (!window.confirm('¿Cerrar la sesión en esta computadora?')) return; clearInterval(this._poll); localStorage.removeItem(KEY); this.setState({ rol: null, fase: 'login', ses: null, mis: {}, retos: {}, pista: {}, cur: null, entregado: false, nota: null }); }
 

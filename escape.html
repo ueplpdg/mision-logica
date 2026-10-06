@@ -20,7 +20,7 @@
 <script src="./escape-retos.js"></script>
 <script src="./escape-mente.js"></script>
 <script src="./escape-flujo.js"></script>
-<script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
+<script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
 </helmet>
 
 <div style="position:fixed;inset:0;background:#05090e;color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none">
@@ -109,6 +109,7 @@
 <sc-for list="{{ cursosBtn }}" as="c" hint-placeholder-count="2"><button onClick="{{ c.onClick }}" style="background:{{ c.fondo }};border:2px solid {{ c.borde }};color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:700;padding:12px;cursor:pointer">{{ c.t }}</button></sc-for>
 </div>
 </div>
+<a href="clase8.html" style="display:block;border:2px solid #7fe0a0;color:#7fe0a0;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.08em;padding:10px 12px;text-decoration:none;text-align:center">8VO · ENTRAR A LA CLASE INTERACTIVA →</a>
 <a href="clase9.html" style="display:block;border:2px solid #7fe0a0;color:#7fe0a0;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.08em;padding:10px 12px;text-decoration:none;text-align:center">9NO · ENTRAR A LA CLASE INTERACTIVA →</a>
 <a href="clase.html" style="display:block;border:2px solid #7fe0a0;color:#7fe0a0;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.08em;padding:10px 12px;text-decoration:none;text-align:center">10MO · ENTRAR A LA CLASE INTERACTIVA →</a>
 <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 100px;gap:10px">
