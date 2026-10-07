@@ -12,112 +12,132 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="./config.js"></script>
+<script src="./clase-juegos.js"></script>
 <script src="./clase10.js"></script>
-<style>html,body{margin:0;background:#f6f4ef;color:#14181c;font-family:'IBM Plex Sans',sans-serif}a{color:#0f7b6c}a:hover{color:#0a5a4f}*{box-sizing:border-box}input,textarea,select,button{font-family:inherit}</style>
-<script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
+<style>html,body{margin:0;font-family:'IBM Plex Sans',sans-serif}a{color:#0b7d6e}a:hover{color:#075c51}*{box-sizing:border-box}input,textarea,select,button{font-family:inherit}@keyframes c9float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes c9lock{0%,60%,100%{transform:rotate(0)}75%{transform:rotate(-8deg)}}@keyframes c9tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}@keyframes c9blink{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes c9flow{to{stroke-dashoffset:-22}}@keyframes c9in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes c9pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}</style>
+<script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','clase3.html':'Clase Interactiva 3BGU.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
 </helmet>
 
-<div style="min-height:100vh;display:flex;flex-direction:column;background:#f6f4ef">
+<div style="min-height:100vh;display:flex;flex-direction:column;background:{{ th.bg }};color:{{ th.ink }}">
 
-<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(16px,2.4vw,40px);border-bottom:3px solid #14181c;background:#ffffff">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(16px,2.4vw,40px);border-bottom:3px solid {{ th.line }};background:{{ th.panel }}">
 <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-<div style="font-family:'Archivo Black',sans-serif;font-size:20px;background:#14181c;color:#fff;padding:6px 12px">10mo</div>
-<div style="font-family:'Archivo Black',sans-serif;font-size:clamp(16px,1.4vw,22px)">Clase interactiva · Pensar como ingenieros</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:20px;background:{{ th.acc }};color:{{ th.accInk }};padding:6px 12px">{{ cur.badge }}</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:clamp(16px,1.4vw,22px)">{{ cur.titulo }}</div>
 </div>
-<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em">
-<div style="border:2px solid #14181c;padding:5px 10px">{{ top.quien }}</div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em">
+<div style="border:2px solid {{ th.line }};padding:5px 10px">{{ top.quien }}</div>
 <div style="border:2px solid {{ top.faseColor }};color:{{ top.faseColor }};padding:5px 10px">{{ top.fase }}</div>
-<div style="border:2px solid #5b636b;color:#5b636b;padding:5px 10px">{{ top.sync }}</div>
+<div style="border:2px solid {{ th.line }};color:{{ th.mute }};padding:5px 10px">{{ top.sync }}</div>
+<sc-for list="{{ top.btns }}" as="b" hint-placeholder-count="4"><button onClick="{{ b.on }}" title="{{ b.tip }}" style="background:{{ b.bg }};color:{{ b.c }};border:2px solid {{ th.line }};font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;padding:6px 10px;cursor:pointer">{{ b.t }}</button></sc-for>
 </div>
 </div>
 
 <sc-if value="{{ v.login }}" hint-placeholder-val="{{ true }}">
 <div style="flex:1;display:flex;align-items:flex-start;justify-content:center;padding:clamp(20px,4vw,60px) 20px">
 <div style="width:100%;max-width:980px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:24px">
-<div style="background:#fff;border:3px solid #14181c;padding:26px;display:flex;flex-direction:column;gap:14px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;font-weight:700;color:#0f7b6c">ESTUDIANTES · EN PAREJA</div>
+<div style="background:{{ th.panel }};border:3px solid {{ th.line }};padding:26px;display:flex;flex-direction:column;gap:14px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;font-weight:700;color:{{ th.acc }}">ESTUDIANTES · EN PAREJA</div>
 <div style="font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1.05">Entrar a la clase</div>
-<input value="{{ f.a }}" onChange="{{ on.a }}" placeholder="Nombre y apellido · integrante 1" style="font-size:18px;padding:12px;border:2px solid #14181c">
-<input value="{{ f.b }}" onChange="{{ on.b }}" placeholder="Nombre y apellido · integrante 2" style="font-size:18px;padding:12px;border:2px solid #14181c">
+<input value="{{ f.a }}" onChange="{{ on.a }}" placeholder="Nombre y apellido · integrante 1" style="font-size:18px;padding:12px;border:2px solid {{ th.line }};background:{{ th.input }};color:{{ th.ink }}">
+<input value="{{ f.b }}" onChange="{{ on.b }}" placeholder="Nombre y apellido · integrante 2" style="font-size:18px;padding:12px;border:2px solid {{ th.line }};background:{{ th.input }};color:{{ th.ink }}">
 <div style="display:flex;gap:10px;flex-wrap:wrap">
-<input value="{{ f.paralelo }}" onChange="{{ on.paralelo }}" placeholder="Paralelo (A, B…)" style="flex:1 1 120px;min-width:0;font-size:18px;padding:12px;border:2px solid #14181c">
-<input value="{{ f.codigo }}" onChange="{{ on.codigo }}" placeholder="Código de la sesión" inputmode="numeric" style="flex:1 1 160px;min-width:0;font-size:18px;padding:12px;border:2px solid #14181c">
+<input value="{{ f.paralelo }}" onChange="{{ on.paralelo }}" placeholder="Paralelo (A, B…)" style="flex:1 1 120px;min-width:0;font-size:18px;padding:12px;border:2px solid {{ th.line }};background:{{ th.input }};color:{{ th.ink }}">
+<input value="{{ f.codigo }}" onChange="{{ on.codigo }}" placeholder="Código de la sesión" inputmode="numeric" style="flex:1 1 160px;min-width:0;font-size:18px;padding:12px;border:2px solid {{ th.line }};background:{{ th.input }};color:{{ th.ink }}">
 </div>
-<button onClick="{{ on.adapt }}" style="display:flex;gap:12px;align-items:flex-start;text-align:left;background:{{ f.adFondo }};border:2px solid #14181c;padding:12px 14px;cursor:pointer;font-size:16px;line-height:1.35;color:#14181c">
-<div style="flex:none;width:24px;height:24px;border:2px solid #14181c;background:{{ f.adCheck }};margin-top:1px"></div>
-<div><b>Versión con apoyo</b> · letra más grande, lectura en voz alta y retos adaptados. El docente indica quién la usa.</div>
+<button onClick="{{ on.adapt }}" style="display:flex;gap:12px;align-items:flex-start;text-align:left;background:{{ f.adFondo }};border:2px solid {{ th.line }};padding:12px 14px;cursor:pointer;font-size:16px;line-height:1.35;color:{{ th.ink }}">
+<div style="flex:none;width:24px;height:24px;border:2px solid {{ th.line }};background:{{ f.adCheck }};margin-top:1px"></div>
+<div><b>Versión con apoyo</b> · letra más grande, ruta Básica, lectura en voz alta y retos adaptados. El docente indica quién la usa.</div>
 </button>
-<button onClick="{{ on.entrar }}" style="background:#0f7b6c;color:#fff;border:none;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px;cursor:pointer">Entrar</button>
-<sc-if value="{{ f.hayErr }}" hint-placeholder-val="{{ false }}"><div style="color:#c8413a;font-weight:600;font-size:16px">{{ f.err }}</div></sc-if>
-<div style="font-size:14px;color:#5b636b">{{ f.demo }}</div>
+<button onClick="{{ on.entrar }}" style="background:{{ th.acc }};color:{{ th.accInk }};border:none;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px;cursor:pointer">Entrar</button>
+<sc-if value="{{ f.hayErr }}" hint-placeholder-val="{{ false }}"><div style="color:{{ th.red }};font-weight:600;font-size:16px">{{ f.err }}</div></sc-if>
+<div style="font-size:14px;color:{{ th.mute }}">{{ f.demo }}</div>
 </div>
-<div style="background:#14181c;color:#fff;border:3px solid #14181c;padding:26px;display:flex;flex-direction:column;gap:14px">
-<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;font-weight:700;color:#9fd8cf">DOCENTE</div>
-<div style="font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1.05;color:#fff">Dirigir la clase</div>
-<div style="font-size:16px;line-height:1.45;color:#d6dde2">Con su clave controla las diapositivas en todas las computadoras, ve las respuestas en vivo, abre los retos y proyecta los resultados.</div>
-<input type="password" value="{{ f.clave }}" onChange="{{ on.clave }}" placeholder="Clave docente" style="font-size:18px;padding:12px;border:2px solid #fff;background:#fff;color:#14181c">
-<button onClick="{{ on.docente }}" style="background:#fff;color:#14181c;border:none;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px;cursor:pointer">Entrar como docente</button>
+<div style="background:{{ th.bar }};color:{{ th.barInk }};border:3px solid {{ th.line }};padding:26px;display:flex;flex-direction:column;gap:14px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;font-weight:700;color:{{ th.barMute }}">DOCENTE</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1.05">Dirigir la clase</div>
+<div style="font-size:16px;line-height:1.45;color:{{ th.barMute }}">Con su clave controla las diapositivas en todas las computadoras, ve las respuestas en vivo, abre los retos y proyecta los resultados.</div>
+<input type="password" value="{{ f.clave }}" onChange="{{ on.clave }}" placeholder="Clave docente" style="font-size:18px;padding:12px;border:2px solid {{ th.barInk }};background:{{ th.bar }};color:{{ th.barInk }}">
+<button onClick="{{ on.docente }}" style="background:{{ th.barInk }};color:{{ th.bar }};border:none;font-family:'Archivo Black',sans-serif;font-size:20px;padding:16px;cursor:pointer">Entrar como docente</button>
 <sc-if value="{{ f.hayErrD }}" hint-placeholder-val="{{ false }}"><div style="color:#ffb3ab;font-weight:600;font-size:16px">{{ f.errD }}</div></sc-if>
-<a href="escape.html" style="color:#9fd8cf;font-size:15px">Ir al Escape del Laboratorio</a>
+<a href="escape.html" style="color:{{ th.barMute }};font-size:15px">Ir al Escape del Laboratorio</a>
 </div>
 </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ v.main }}" hint-placeholder-val="{{ false }}">
-<div style="flex:1;width:100%;max-width:1560px;margin:0 auto;padding:clamp(16px,2.4vw,40px) clamp(16px,2.4vw,40px) 120px;zoom:{{ v.zoom }}">{{ contenido }}</div>
+<div style="flex:1;width:100%;max-width:1600px;margin:0 auto;padding:clamp(16px,2.4vw,40px) clamp(16px,2.4vw,40px) 130px;zoom:{{ v.zoom }}">{{ contenido }}</div>
 </sc-if>
 
 <sc-if value="{{ v.barraEst }}" hint-placeholder-val="{{ false }}">
-<div style="position:fixed;left:0;right:0;bottom:0;background:#ffffff;border-top:3px solid #14181c;padding:10px clamp(16px,2.4vw,40px);display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:10;background:{{ th.panel }};border-top:3px solid {{ th.line }};padding:10px clamp(16px,2.4vw,40px);display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700">{{ be.txt }}</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<sc-for list="{{ be.btns }}" as="b" hint-placeholder-count="2"><button onClick="{{ b.on }}" style="background:{{ b.bg }};color:{{ b.c }};border:2px solid #14181c;font-family:'Archivo Black',sans-serif;font-size:16px;padding:10px 16px;cursor:pointer">{{ b.t }}</button></sc-for>
+<sc-for list="{{ be.btns }}" as="b" hint-placeholder-count="2"><button onClick="{{ b.on }}" style="background:{{ b.bg }};color:{{ b.c }};border:2px solid {{ th.line }};font-family:'Archivo Black',sans-serif;font-size:16px;padding:10px 16px;cursor:pointer;white-space:nowrap">{{ b.t }}</button></sc-for>
 </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ v.barraDoc }}" hint-placeholder-val="{{ false }}">
-<div style="position:fixed;left:0;right:0;bottom:0;background:#14181c;color:#fff;padding:10px clamp(12px,2vw,30px);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between">
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:10;background:{{ th.bar }};color:{{ th.barInk }};padding:10px clamp(12px,2vw,30px);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between">
 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-<button onClick="{{ bd.prev }}" style="background:#fff;color:#14181c;border:none;font-family:'Archivo Black',sans-serif;font-size:18px;padding:10px 16px;cursor:pointer">◀</button>
+<button onClick="{{ bd.prev }}" style="background:{{ th.barBtn }};color:{{ th.barInk }};border:none;font-family:'Archivo Black',sans-serif;font-size:18px;padding:10px 16px;cursor:pointer">◀</button>
 <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;min-width:180px">{{ bd.pos }}</div>
-<button onClick="{{ bd.next }}" style="background:#fff;color:#14181c;border:none;font-family:'Archivo Black',sans-serif;font-size:18px;padding:10px 16px;cursor:pointer">▶</button>
+<button onClick="{{ bd.next }}" style="background:{{ th.barBtn }};color:{{ th.barInk }};border:none;font-family:'Archivo Black',sans-serif;font-size:18px;padding:10px 16px;cursor:pointer">▶</button>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<sc-for list="{{ bd.btns }}" as="b" hint-placeholder-count="4"><button onClick="{{ b.on }}" style="background:{{ b.bg }};color:{{ b.c }};border:2px solid #fff;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.04em;padding:10px 12px;cursor:pointer">{{ b.t }}</button></sc-for>
+<sc-for list="{{ bd.btns }}" as="b" hint-placeholder-count="4"><button onClick="{{ b.on }}" style="background:{{ b.bg }};color:{{ b.c }};border:2px solid {{ th.barMute }};font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.04em;padding:10px 12px;cursor:pointer">{{ b.t }}</button></sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.glos }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:30;background:rgba(10,16,22,.55);display:flex;justify-content:flex-end">
+<div style="width:min(100%,560px);height:100%;overflow:auto;background:{{ th.panel }};color:{{ th.ink }};border-left:3px solid {{ th.acc }};padding:24px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+<div style="font-family:'Archivo Black',sans-serif;font-size:30px">Glosario</div>
+<button onClick="{{ on.cerrarGlos }}" style="background:{{ th.acc }};color:{{ th.accInk }};border:none;font-family:'Archivo Black',sans-serif;font-size:16px;padding:10px 16px;cursor:pointer">Cerrar ✕</button>
+</div>
+{{ glosario }}
 </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ v.toast }}" hint-placeholder-val="{{ false }}">
-<div style="position:fixed;left:50%;top:84px;transform:translateX(-50%);background:#14181c;color:#fff;padding:12px 20px;font-weight:600;font-size:17px;max-width:90vw;z-index:20">{{ toast }}</div>
+<div style="position:fixed;left:50%;top:84px;transform:translateX(-50%);background:{{ th.bar }};color:{{ th.barInk }};padding:12px 20px;font-weight:600;font-size:17px;max-width:90vw;z-index:40">{{ toast }}</div>
 </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const KEY = 'clase10_v1', DKEY = 'clase10_demo';
-const ERRTXT = { sinbucle: 'El diagrama termina en lugar de repetirse', orden: 'Orden incorrecto de los pasos', sensor: 'Eligieron un sensor que no mide lo necesario', operador: 'Confundieron la comparación (< y >, Y y O)', umbral: 'Umbral mal elegido', accion: 'Acción del Sí y del No invertidas', angulos: 'Ángulos del servo', eps: 'Confundir entrada y salida', senal: 'Confundir digital y analógica', depura: 'No ubicaron el error', incompleto: 'Plan incompleto', entrada: 'Entrada incoherente con la necesidad', salida: 'Salida incoherente con la necesidad' };
-const SOL = { eps: 'Entradas: todos los sensores y el pulsador. Proceso: Arduino. Salidas: bomba, servo, LED, zumbador, LCD y ventilador.', senal: 'Digitales: pulsador, PIR, fin de carrera y sensor de lluvia (sí/no). Analógicas: luz, humedad, temperatura y potenciómetro.', semaforo: 'Verde 5 s → Amarillo 2 s → Rojo 5 s → Volver al inicio.', riego: 'Entrada: humedad del suelo. Condición: humedad < 35 %. Sí: encender bomba. No: apagar bomba.', depura: 'Las ramas estaban invertidas: si la humedad es baja (Sí) se ENCIENDE la bomba.', puerta: 'Abrir si la distancia es menor que unos 50 cm. Servo a 90° para abrir y a 0° para cerrar.', alarma: 'Se usa Y: suena solo si es de noche Y hay movimiento.', proyecto: 'Ejemplo: necesidad «calor en el aula» → sensor de temperatura → ¿temperatura > 28? → Sí: encender ventilador / No: apagarlo.' };
+const CUR = { curso: '10mo', glob: 'CLASE10', key: 'clase10', badge: '10mo', titulo: 'Clase interactiva · Pensar como ingenieros' };
+const KEY = CUR.key + '_v2', DKEY = CUR.key + '_demo', TKEY = 'clase_tema';
+const TH = { claro: { bg: '#f4f6f7', panel: '#ffffff', ink: '#14181c', mute: '#4a5760', line: '#c3ced4', acc: '#0b7d6e', accInk: '#ffffff', red: '#c23b30', ok: '#1d7a44', blue: '#2456b8', amb: '#a86200', input: '#ffffff', bar: '#14181c', barInk: '#ffffff', barMute: '#b9c4ca', barBtn: '#2c3a43', card: '#ffffff', sunk: '#eef2f4', okBg: '#e3f4ea', errBg: '#fbe6e3' },
+  oscuro: { bg: '#0b1218', panel: '#13202a', ink: '#e8f1f2', mute: '#9fb0ba', line: '#2c3e4a', acc: '#3fd0b8', accInk: '#06121a', red: '#ff7b72', ok: '#7fe0a0', blue: '#6ea8ff', amb: '#f0a726', input: '#0a1016', bar: '#070d12', barInk: '#ffffff', barMute: '#9fb0ba', barBtn: '#13202a', card: '#13202a', sunk: '#0a1016', okBg: '#12301f', errBg: '#3a1a18' } };
+const ERRTXT = { tiempo: 'Se acabó el tiempo en la carrera', bug: 'Se les escaparon errores en «Atrapa el bug»', simon: 'Fallaron la secuencia del Simón', simonprog: 'Eligieron el programa equivocado en el Simón', circuito: 'Conexiones incorrectas', sinbucle: 'El diagrama termina en lugar de repetirse', orden: 'Orden incorrecto', sensor: 'Sensor que no mide lo necesario', operador: 'Confundieron la comparación', umbral: 'Umbral mal elegido', accion: 'Acciones del Sí y del No invertidas', eps: 'Confundir entrada y salida', senal: 'Confundir señales', depura: 'No ubicaron el error', incompleto: 'Plan incompleto', donde: 'Confundir setup() y loop()', partes: 'Partes del programa', tiempos: 'Cálculo del delay', sema: 'Orden o tiempos del semáforo', sint: 'Errores de sintaxis', diag: 'Traducción del diagrama', pred: 'Predicción del programa', tipos: 'Tipo de dato', const: 'Variable o constante', contador: 'Contador', arit: 'Operador aritmético', vent: 'Comparación del ventilador', lamp: 'Operadores lógicos', fuente: 'Selección de fuentes', url: 'Lectura de dominios', licencia: 'Licencias CC', uso: 'Usos permitidos', cita: 'Cita y plagio', contraste: 'Contraste de fuentes', matriz: 'Matriz de valoración' };
+const RUTAS = [['basico', 'Básico', 'Con ejemplo, mini prueba y versión más corta'], ['normal', 'Normal', 'El reto completo, con ayudas si las necesitan'], ['experto', 'Experto', 'Sin teoría ni pistas · a la primera = medalla']];
+const EMO = ['Lo entendí muy bien', 'Lo entendí bien', 'Más o menos', 'Necesito ayuda'];
 class Component extends DCLogic {
-  state = { rol: null, fase: 'login', f: { a: '', b: '', paralelo: '', codigo: '', clave: '', ad: false, err: '', errD: '' }, ses: null, clase: { slide: 0, fase: 'clase', libre: false, ver: false }, mySlide: 0, mis: {}, res: {}, vivo: [], retos: {}, cur: null, pista: {}, entregado: false, nota: null, toast: '', sync: '' };
+  state = { rol: null, fase: 'login', f: { a: '', b: '', paralelo: '', codigo: '', clave: '', ad: false, err: '', errD: '' }, ses: null, clase: { slide: 0, fase: 'clase', libre: false, ver: false }, mySlide: 0, mis: {}, res: {}, vivo: [], retos: {}, cur: null, pist: {}, ruta: {}, ejp: {}, mini: {}, entregado: false, nota: null, toast: '', sync: '', tema: 'claro', zoom: 1, glos: false };
   componentDidMount() {
+    let tema = 'claro'; try { tema = localStorage.getItem(TKEY) || 'claro'; } catch (e) {} window.__claseTema = tema; this.setState({ tema });
     try { const g = JSON.parse(localStorage.getItem(KEY) || 'null'); if (g && g.rol) this.setState(g, () => this.arrancar()); } catch (e) {}
     this._st = e => { if (e.key === DKEY && this.demo()) this.leerClase(); }; window.addEventListener('storage', this._st);
   }
   componentWillUnmount() { clearInterval(this._poll); window.removeEventListener('storage', this._st); }
-  componentDidUpdate() { const s = this.state; try { localStorage.setItem(KEY, JSON.stringify({ rol: s.rol, fase: s.fase, ses: s.ses, mySlide: s.mySlide, mis: s.mis, retos: s.retos, pista: s.pista, entregado: s.entregado, nota: s.nota, clave: s.rol === 'doc' ? s.clave : undefined, f: Object.assign({}, s.f, { clave: '' }) })); } catch (e) {} }
+  componentDidUpdate() { const s = this.state, t = TH[s.tema] || TH.claro; document.body.style.background = t.bg; document.body.style.color = t.ink;
+    try { localStorage.setItem(KEY, JSON.stringify({ rol: s.rol, fase: s.fase, ses: s.ses, mySlide: s.mySlide, mis: s.mis, retos: s.retos, pist: s.pist, ruta: s.ruta, entregado: s.entregado, nota: s.nota, zoom: s.zoom, clave: s.rol === 'doc' ? s.clave : undefined, f: Object.assign({}, s.f, { clave: '' }) })); } catch (e) {} }
   demo() { const c = window.MISION_CONFIG || {}; return !c.scriptUrl; }
-  C() { return window.CLASE10 ? window.CLASE10.make(React) : null; }
+  C() { window.__claseTema = this.state.tema; const G = window[CUR.glob]; return G ? G.make(React) : null; }
   async api(accion, d) {
     if (this.demo()) return this.demoApi(accion, d);
-    const r = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion, curso: '10mo' }, d)) }); return r.json();
+    const r = await fetch(window.MISION_CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ accion, curso: CUR.curso }, d)) }); return r.json();
   }
   demoApi(accion, d) {
     const L = JSON.parse(localStorage.getItem(DKEY) || '{}'); L.resp = L.resp || {}; L.vivo = L.vivo || {};
     const save = () => localStorage.setItem(DKEY, JSON.stringify(L)), ok = o => Promise.resolve(Object.assign({ ok: true }, o));
     if (accion === 'estado') return ok(String(d.codigo) === '1234' ? { abierta: true, valido: true, sesionId: 'demo' } : { abierta: true, valido: false });
-    if (accion === 'sesiones') return d.clave === '1234' ? ok({ sesiones: { '10mo': { abierta: true, codigo: '1234', id: 'demo' } } }) : ok({ ok: false, error: 'clave' });
+    if (accion === 'sesiones') return d.clave === '1234' ? ok({ sesiones: { [CUR.curso]: { abierta: true, codigo: '1234', id: 'demo' } } }) : ok({ ok: false, error: 'clave' });
     if (accion === 'abrir') return ok({ sesion: { codigo: '1234', id: 'demo' } });
     if (accion === 'claseSet') { L.clase = { slide: d.slide, fase: d.fase, libre: d.libre, ver: d.ver, t: Date.now() }; save(); return ok({}); }
     if (accion === 'claseGet') return ok({ clase: L.clase || null });
@@ -148,15 +168,15 @@ class Component extends DCLogic {
     if (!String(f.codigo).trim()) { this.setState({ f: Object.assign({}, f, { err: 'Falta el código de la sesión (lo muestra el docente).' }) }); return; }
     const pareja = nm(f.a) + ' / ' + nm(f.b);
     try { const r = await this.api('estado', { codigo: String(f.codigo).trim(), pareja });
-      if (!r.abierta) { this.setState({ f: Object.assign({}, f, { err: 'La sesión de 10mo todavía no está abierta.' }) }); return; }
+      if (!r.abierta) { this.setState({ f: Object.assign({}, f, { err: 'La sesión de ' + CUR.badge + ' todavía no está abierta.' }) }); return; }
       if (!r.valido) { this.setState({ f: Object.assign({}, f, { err: 'El código no es correcto.' }) }); return; }
-      this.setState({ rol: 'est', fase: 'clase', ses: { a: nm(f.a), b: nm(f.b), pareja, paralelo: (r.paralelo || f.paralelo || '').toUpperCase(), sesionId: r.sesionId, ad: !!f.ad, t0: Date.now() }, mis: {}, retos: {}, pista: {}, entregado: !!r.yaEntregado, nota: null }, () => this.arrancar());
+      this.setState({ rol: 'est', fase: 'clase', ses: { a: nm(f.a), b: nm(f.b), pareja, paralelo: (r.paralelo || f.paralelo || '').toUpperCase(), sesionId: r.sesionId, ad: !!f.ad, t0: Date.now() }, mis: {}, retos: {}, pist: {}, ruta: {}, ejp: {}, mini: {}, entregado: !!r.yaEntregado, nota: null }, () => this.arrancar());
     } catch (e) { this.setState({ f: Object.assign({}, f, { err: 'No hay conexión con el servidor. Revisen el internet.' }) }); }
   }
   async docente() {
     const f = this.state.f;
     try { const r = await this.api('sesiones', { clave: f.clave }); if (!r.ok) { this.setState({ f: Object.assign({}, f, { errD: 'Clave incorrecta.' }) }); return; }
-      let s = r.sesiones && r.sesiones['10mo'];
+      let s = r.sesiones && r.sesiones[CUR.curso];
       if (!s || !s.abierta) { const a = await this.api('abrir', { clave: f.clave, minutos: 80, paralelo: f.paralelo || '' }); s = a.sesion; }
       this.setState({ rol: 'doc', clave: f.clave, fase: 'clase', ses: { codigo: s.codigo, sesionId: s.id }, clase: { slide: 0, fase: 'clase', libre: false, ver: false } }, () => { this.pushClase(); this.arrancar(); });
     } catch (e) { this.setState({ f: Object.assign({}, f, { errD: 'No hay conexión con el servidor.' }) }); }
@@ -168,98 +188,138 @@ class Component extends DCLogic {
     this.api('claseResp', { sesionId: s.ses.sesionId, pareja: s.ses.pareja, q, resp: r, correcta: !!ok, adaptado: s.ses.ad }).catch(() => {});
   }
   say(t) { try { const u = new SpeechSynthesisUtterance(t); u.lang = 'es-ES'; u.rate = 0.95; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {} }
+  tema() { const t = this.state.tema === 'oscuro' ? 'claro' : 'oscuro'; try { localStorage.setItem(TKEY, t); } catch (e) {} window.__claseTema = t; this.setState({ tema: t }); }
   lista() { const C = this.C(); if (!C) return []; return this.state.ses && this.state.ses.ad ? C.RETOS.filter(r => r.ad) : C.RETOS; }
   req() { return this.state.ses && this.state.ses.ad ? 4 : 6; }
   hechos() { const r = this.state.retos; return this.lista().filter(x => r[x.id] && r[x.id].fin); }
   calcNota() { const p = this.hechos().map(x => this.state.retos[x.id].pts).sort((a, b) => b - a).slice(0, this.req()); return Math.round(p.reduce((a, b) => a + b, 0) / this.req() * 100) / 100; }
+  rutaDe(id) { const s = this.state; return s.ruta[id] || (s.ses && s.ses.ad ? 'basico' : 'normal'); }
+  beep(ok) { try { const A = this._ac || (this._ac = new (window.AudioContext || window.webkitAudioContext)()), o = A.createOscillator(), g = A.createGain(), t = A.currentTime; o.type = 'triangle'; o.frequency.setValueAtTime(ok ? 880 : 220, t); if (ok) o.frequency.setValueAtTime(1320, t + 0.09); g.gain.setValueAtTime(0.06, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3); o.connect(g); g.connect(A.destination); o.start(t); o.stop(t + 0.32); } catch (e) {} }
   check(id, ok, txt, err, extra) {
     const s = this.state, R = Object.assign({ int: 0, fails: 0, errs: [] }, s.retos[id]); if (R.fin) return;
-    R.int++; R.fb = { ok, txt };
-    if (ok) { R.fin = true; R.pts = Math.max(5, 10 - 2 * R.fails - (s.pista[id] ? 1 : 0)); if (extra) R.plan = extra; }
+    const ruta = this.rutaDe(id), pn = s.pist[id] || 0, pen = pn >= 3 ? 2 : pn >= 2 ? 1 : 0;
+    R.int++; R.fb = { ok, txt }; R.ruta = ruta; this.beep(ok);
+    if (ok) { R.fin = true; R.pts = Math.max(5, 10 - 2 * R.fails - pen); R.medalla = ruta === 'experto' && R.fails === 0; if (extra) R.plan = extra; }
     else { R.fails++; if (err) R.errs = R.errs.concat([err]); }
-    const retos = Object.assign({}, s.retos, { [id]: R }); this.setState({ retos }, () => { if (R.fin) this.cerrarReto(id, R); });
+    this.setState({ retos: Object.assign({}, s.retos, { [id]: R }) }, () => { if (R.fin) this.cerrarReto(id, R); });
   }
-  verSol(id) { const s = this.state, R = Object.assign({ int: 0, fails: 0, errs: [] }, s.retos[id]); R.fin = true; R.sol = true; R.pts = 4; R.fb = { ok: true, txt: 'Solución: ' + SOL[id] }; this.setState({ retos: Object.assign({}, s.retos, { [id]: R }) }, () => this.cerrarReto(id, R)); }
+  verSol(id, Rt) { const s = this.state, R = Object.assign({ int: 0, fails: 0, errs: [] }, s.retos[id]); R.fin = true; R.sol = true; R.pts = 4; R.fb = { ok: true, txt: 'Solución: ' + ((Rt.pistas && Rt.pistas[2]) || 'revísenla con el docente.') }; this.setState({ retos: Object.assign({}, s.retos, { [id]: R }) }, () => this.cerrarReto(id, R)); }
   cerrarReto(id, R) {
     const s = this.state;
-    this.api('claseResp', { sesionId: s.ses.sesionId, pareja: s.ses.pareja, q: 'reto:' + id, resp: R.int + '|' + (R.sol ? 'sol' : '') + '|' + R.errs.join(','), correcta: !R.sol, adaptado: s.ses.ad }).catch(() => {});
+    this.api('claseResp', { sesionId: s.ses.sesionId, pareja: s.ses.pareja, q: 'reto:' + id, resp: R.int + '|' + (R.sol ? 'sol' : '') + '|' + R.errs.join(',') + '|' + (R.medalla ? 'm' : '') + '|' + (R.ruta || ''), correcta: !R.sol, adaptado: s.ses.ad }).catch(() => {});
     if (R.plan) this.api('claseResp', { sesionId: s.ses.sesionId, pareja: s.ses.pareja, q: 'plan', resp: R.plan.necesidad + ' · ' + R.plan.entrada + ' → ' + R.plan.salida + ' · si ' + R.plan.condicion, correcta: true, adaptado: s.ses.ad }).catch(() => {});
     this.api('progreso', this.payload('jugando')).catch(() => {});
-    if (this.hechos().length >= this.lista().length) this.entregar();
+    if (R.medalla) this.aviso('¡Medalla de experto en «' + ((this.lista().find(x => x.id === id) || {}).n || id) + '»!');
   }
-  payload(estado) { const s = this.state, h = this.hechos(); return { sesionId: s.ses.sesionId, curso: '10mo', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.pareja, nivel: h.length, niveles: this.lista().length, puntos: h.reduce((a, x) => a + s.retos[x.id].pts, 0), bonus: Math.max(0, h.length - this.req()), nota: this.calcNota(), salidas: 0, estado, duracionMin: Math.round((Date.now() - (s.ses.t0 || Date.now())) / 60000), insignias: s.ses.ad ? 'versión con apoyo' : '', detalle: 'CLASE 10mo · ' + this.lista().map(x => { const r = s.retos[x.id]; return x.n + ': ' + (r && r.fin ? r.pts + (r.sol ? ' (solución)' : '') : '—'); }).join(' · ') }; }
+  medallas() { const r = this.state.retos; return this.lista().filter(x => r[x.id] && r[x.id].medalla); }
+  payload(estado) { const s = this.state, h = this.hechos(), md = this.medallas(); return { sesionId: s.ses.sesionId, curso: CUR.curso, paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.pareja, nivel: h.length, niveles: this.lista().length, puntos: h.reduce((a, x) => a + s.retos[x.id].pts, 0), bonus: Math.max(0, h.length - this.req()), nota: this.calcNota(), salidas: 0, estado, duracionMin: Math.round((Date.now() - (s.ses.t0 || Date.now())) / 60000), insignias: [s.ses.ad ? 'versión con apoyo' : '', md.length ? md.length + ' medallas: ' + md.map(x => x.n).join(', ') : ''].filter(Boolean).join(' · '), detalle: 'CLASE ' + CUR.badge + ' · ' + this.lista().map(x => { const r = s.retos[x.id]; return x.n + ': ' + (r && r.fin ? r.pts + (r.sol ? ' (solución)' : '') + (r.ruta ? ' [' + r.ruta + ']' : '') : '—'); }).join(' · ') }; }
   entregar() { if (this.state.entregado) return; if (this.hechos().length < this.req()) { this.aviso('Les faltan ' + (this.req() - this.hechos().length) + ' retos para la nota.'); return; } const p = this.payload('terminado'); this.setState({ entregado: true, nota: p.nota }); this.api('entregar', p).then(() => this.aviso('Nota enviada al docente ✓')).catch(() => this.aviso('No se pudo enviar la nota. Avisen al docente.')); }
-  salirSesion() { if (!window.confirm('¿Cerrar la sesión en esta computadora?')) return; clearInterval(this._poll); localStorage.removeItem(KEY); this.setState({ rol: null, fase: 'login', ses: null, mis: {}, retos: {}, pista: {}, cur: null, entregado: false, nota: null }); }
+  salirSesion() { if (!window.confirm('¿Cerrar la sesión en esta computadora?')) return; clearInterval(this._poll); localStorage.removeItem(KEY); this.setState({ rol: null, fase: 'login', ses: null, mis: {}, retos: {}, pist: {}, ruta: {}, ejp: {}, mini: {}, cur: null, entregado: false, nota: null }); }
 
-  vistaRetos(C) {
-    const s = this.state, h = React.createElement, lista = this.lista(), id = s.cur, Rt = lista.find(x => x.id === id);
-    if (Rt) { const R = s.retos[id] || {}, fb = R.fb;
-      return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
-        h('button', { onClick: () => this.setState({ cur: null }), style: { alignSelf: 'flex-start', background: '#fff', border: '2px solid #14181c', fontWeight: 700, fontSize: 16, padding: '8px 14px', cursor: 'pointer' } }, '← Volver a los retos'),
-        h('div', { key: id, style: { pointerEvents: R.fin ? 'none' : 'auto', opacity: R.fin ? 0.75 : 1 } }, h(Rt.C, { adaptado: s.ses.ad, intentos: R.int || 0, seed: (s.ses.pareja || '').length, say: t => this.say(t), verPista: !!s.pista[id], pedirPista: () => this.setState({ pista: Object.assign({}, s.pista, { [id]: true }) }), check: (ok, txt, err, extra) => this.check(id, ok, txt, err, extra) })),
-        fb ? h('div', { style: { border: '3px solid ' + (fb.ok ? '#1f8a4c' : '#c8413a'), background: fb.ok ? '#e6f4ea' : '#fbe9e7', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8 } },
-          h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 22, color: fb.ok ? '#1f8a4c' : '#c8413a' } }, R.fin ? (R.sol ? 'Solución explicada · 4 / 10' : '¡Reto superado! · ' + R.pts + ' / 10') : 'Intento ' + R.int + ': todavía no funciona'),
-          h('div', { style: { fontSize: 18, lineHeight: 1.45 } }, fb.txt),
-          !R.fin && R.fails >= 3 ? h('button', { onClick: () => this.verSol(id), style: { alignSelf: 'flex-start', background: '#fff', border: '2px solid #14181c', fontWeight: 700, padding: '8px 14px', cursor: 'pointer' } }, 'Ver la solución explicada (4 puntos)') : null,
-          R.fin ? h('button', { onClick: () => this.setState({ cur: null }), style: { alignSelf: 'flex-start', background: '#14181c', color: '#fff', border: 'none', fontFamily: "'Archivo Black',sans-serif", fontSize: 17, padding: '10px 18px', cursor: 'pointer' } }, 'Elegir otro reto →') : null) : null);
-    }
-    const hc = this.hechos().length, req = this.req();
-    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
-      h('div', { style: { fontFamily: "'IBM Plex Mono',monospace", fontSize: 14, letterSpacing: '.14em', fontWeight: 700, color: '#0f7b6c' } }, 'MODO RETO · ELIJAN EL ORDEN'),
-      h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 'clamp(28px,3vw,48px)', lineHeight: 1.05 } }, s.entregado ? 'Nota enviada: ' + (s.nota != null ? s.nota : this.calcNota()) + ' / 10' : 'Completen ' + req + ' de ' + lista.length + ' retos para obtener la nota'),
-      h('div', { style: { height: 14, background: '#e3dfd4', border: '2px solid #14181c' } }, h('div', { style: { width: Math.min(100, hc / req * 100) + '%', height: '100%', background: '#0f7b6c' } })),
-      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap: 16 } }, ...lista.map(x => { const R = s.retos[x.id] || {};
-        return h('button', { key: x.id, onClick: () => this.setState({ cur: x.id }), style: { textAlign: 'left', background: R.fin ? '#e6f4ea' : '#fff', border: '3px solid ' + (R.fin ? '#1f8a4c' : '#14181c'), padding: 18, cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 8, color: '#14181c' } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', fontFamily: "'IBM Plex Mono',monospace", fontSize: 13, fontWeight: 700, letterSpacing: '.08em', color: '#5b636b' } }, h('span', null, 'NIVEL ' + x.nivel), h('span', null, R.fin ? R.pts + ' / 10 ✓' : R.int ? R.int + ' intentos' : '')),
-          h('div', { style: { fontSize: 34 } }, x.ic), h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 21, lineHeight: 1.1 } }, x.n)); })),
-      !s.entregado && hc >= req ? h('button', { onClick: () => this.entregar(), style: { alignSelf: 'flex-start', background: '#0f7b6c', color: '#fff', border: 'none', fontFamily: "'Archivo Black',sans-serif", fontSize: 20, padding: '14px 22px', cursor: 'pointer' } }, 'Entregar la nota (' + this.calcNota() + ' / 10)') : null);
+  ui() { const t = TH[this.state.tema] || TH.claro, h = React.createElement, HD = "'Archivo Black',sans-serif", MO = "'IBM Plex Mono',monospace";
+    return { t, h, HD, MO, card: (st, ...ch) => h('div', { style: Object.assign({ background: t.card, border: '2px solid ' + t.line, borderRadius: 12, padding: 'clamp(14px,1.4vw,22px)', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }, st || {}) }, ...ch), kk: (s, c) => h('div', { style: { fontFamily: MO, fontSize: 13, letterSpacing: '.14em', fontWeight: 700, color: c || t.mute, textTransform: 'uppercase' } }, s), btn: (s, on, o) => { o = o || {}; return h('button', { onClick: on, disabled: o.dis, style: { alignSelf: o.self || 'flex-start', background: o.dis ? t.sunk : o.bg || t.acc, color: o.dis ? t.mute : o.c || t.accInk, border: '2px solid ' + (o.bd || (o.dis ? t.line : o.bg || t.acc)), fontFamily: o.mono ? MO : HD, fontWeight: 700, fontSize: o.fs || 17, padding: o.pad || '10px 16px', cursor: o.dis ? 'default' : 'pointer', borderRadius: 8, textAlign: 'left', lineHeight: 1.2 } }, s); }, txt: (s, st) => h('div', { style: Object.assign({ fontSize: 'clamp(17px,1.5vw,24px)', lineHeight: 1.45, color: t.ink }, st || {}) }, s) }; }
+  glosario(C) { const { t, h, HD, MO, card } = this.ui(); const I = C.Icon;
+    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 12 } }, ...(C.GLOS || []).map((g, i) => card({ key: i, flexDirection: 'row', gap: 14, alignItems: 'flex-start' }, I ? h('div', { style: { flex: 'none' } }, h(I, { k: g[3], s: 48 })) : null, h('div', { style: { display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 } }, h('div', { style: { fontFamily: HD, fontSize: 21 } }, g[0]), h('div', { style: { fontSize: 17, lineHeight: 1.4 } }, g[1]), h('div', { style: { fontFamily: MO, fontSize: 15, color: t.acc, overflowWrap: 'anywhere' } }, g[2]))))); }
+
+  vistaReto(C, Rt) {
+    const s = this.state, { t, h, HD, MO, card, kk, btn, txt } = this.ui(), id = Rt.id, R = s.retos[id] || {}, fb = R.fb, ruta = this.rutaDe(id), exp = ruta === 'experto', pn = s.pist[id] || 0, ej = s.ejp[id] == null ? (ruta === 'basico' ? 1 : 0) : s.ejp[id], mi = s.mini[id];
+    const setR = r => { if (R.fin) return; this.setState({ ruta: Object.assign({}, s.ruta, { [id]: r }) }); };
+    const panelEj = Rt.ej && !exp ? card({ borderColor: t.blue }, h('div', { style: { display: 'flex', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap', alignItems: 'center' } }, kk('1 · Mira cómo se hace · ejemplo resuelto', t.blue), ej === 0 ? btn('Ver el ejemplo', () => this.setState({ ejp: Object.assign({}, s.ejp, { [id]: 1 }) }), { bg: t.blue, c: '#fff', fs: 15 }) : null),
+      ej > 0 ? h('div', { style: { fontFamily: HD, fontSize: 'clamp(19px,1.7vw,28px)' } }, Rt.ej.t) : null,
+      ...(ej > 0 ? Rt.ej.pasos.slice(0, ej).map((p, i) => h('div', { key: i, style: { display: 'flex', gap: 12, alignItems: 'flex-start', animation: 'c9in .35s ease-out' } }, h('div', { style: { flex: 'none', width: 34, height: 34, borderRadius: 17, background: t.blue, color: '#fff', fontFamily: HD, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, String(i + 1)), txt(p))) : []),
+      ej > 0 && Rt.ej.code ? h('div', { style: { background: '#10161c', color: '#e8f1f2', fontFamily: MO, fontSize: 'clamp(14px,1.2vw,19px)', padding: '12px 16px', borderRadius: 8, whiteSpace: 'pre', overflowX: 'auto' } }, Rt.ej.code.join('\n')) : null,
+      ej > 0 && ej < Rt.ej.pasos.length ? btn('Siguiente paso ▶', () => this.setState({ ejp: Object.assign({}, s.ejp, { [id]: ej + 1 }) }), { bg: t.blue, c: '#fff', fs: 15 }) : null) : null;
+    const panelMini = Rt.mini && !exp ? card({ borderColor: t.amb }, kk('2 · Mini prueba · no cuenta para la nota', t.amb), txt(Rt.mini[0], { fontWeight: 700 }),
+      h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } }, ...Rt.mini[1].map((o, i) => h('button', { key: i, onClick: () => mi == null && this.setState({ mini: Object.assign({}, s.mini, { [id]: i }) }), style: { padding: '10px 14px', borderRadius: 8, fontSize: 17, fontWeight: 600, cursor: mi == null ? 'pointer' : 'default', background: mi == null ? t.card : i === Rt.mini[2] ? t.okBg : mi === i ? t.errBg : t.card, color: t.ink, border: '2px solid ' + (mi == null ? t.line : i === Rt.mini[2] ? t.ok : mi === i ? t.red : t.line) } }, o))),
+      mi != null ? txt((mi === Rt.mini[2] ? '¡Bien! ' : 'Casi. ') + Rt.mini[3], { color: mi === Rt.mini[2] ? t.ok : t.red, fontWeight: 600, fontSize: 18 }) : null) : null;
+    const NIV = ['Empujoncito', 'Pista clara (−1)', 'Casi la respuesta (−2)'];
+    const panelPist = Rt.pistas && !exp && !R.fin ? card({ borderColor: t.amb, gap: 8 }, kk('Pistas en 3 niveles', t.amb), ...Rt.pistas.slice(0, pn).map((p, i) => h('div', { key: i, style: { display: 'flex', gap: 10, alignItems: 'flex-start' } }, h('div', { style: { fontFamily: MO, fontWeight: 700, color: t.amb, flex: 'none', fontSize: 14, paddingTop: 4 } }, 'NIVEL ' + (i + 1)), txt(p, { fontSize: 18 }))),
+      pn < 3 ? btn('Pedir ' + NIV[pn], () => this.setState({ pist: Object.assign({}, s.pist, { [id]: pn + 1 }) }), { bg: t.card, c: t.amb, bd: t.amb, fs: 15 }) : null) : null;
+    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+      h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', justifyContent: 'space-between' } }, btn('← Volver a los retos', () => this.setState({ cur: null }), { bg: t.card, c: t.ink, bd: t.line, fs: 15 }),
+        h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' } }, kk('Ruta'), ...RUTAS.map(([k, n, d]) => h('button', { key: k, title: d, onClick: () => setR(k), style: { padding: '8px 14px', borderRadius: 999, fontWeight: 700, fontSize: 15, cursor: R.fin ? 'default' : 'pointer', background: ruta === k ? (k === 'experto' ? t.amb : k === 'basico' ? t.blue : t.acc) : t.card, color: ruta === k ? '#fff' : t.ink, border: '2px solid ' + (ruta === k ? 'transparent' : t.line) } }, n)))),
+      txt(RUTAS.find(r => r[0] === ruta)[2], { color: t.mute, fontSize: 16 }),
+      !R.fin ? panelEj : null, !R.fin ? panelMini : null,
+      h('div', { key: id + ruta, style: { pointerEvents: R.fin ? 'none' : 'auto', opacity: R.fin ? 0.75 : 1, display: 'flex', flexDirection: 'column', gap: 8 } }, Rt.ej || Rt.mini ? kk(exp ? 'Reto experto' : '3 · Ahora ustedes', t.acc) : null, h(Rt.C, { adaptado: ruta === 'basico', ruta, experto: exp, intentos: exp ? 1 : R.int || 0, seed: (s.ses.pareja || '').length, say: x => this.say(x), sinAyuda: !!Rt.pistas, verPista: pn >= 2, pedirPista: () => this.setState({ pist: Object.assign({}, s.pist, { [id]: Math.max(2, pn) }) }), check: (ok, tx, err, extra) => this.check(id, ok, tx, err, extra) })),
+      panelPist,
+      fb ? h('div', { style: { border: '3px solid ' + (fb.ok ? t.ok : t.red), background: fb.ok ? t.okBg : t.errBg, borderRadius: 12, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 8 } },
+        h('div', { style: { fontFamily: HD, fontSize: 24, color: fb.ok ? t.ok : t.red } }, R.fin ? (R.sol ? 'Solución explicada · 4 / 10' : (R.medalla ? '★ MEDALLA DE EXPERTO · ' : '¡Reto superado! · ') + R.pts + ' / 10') : 'Intento ' + R.int + ': todavía no funciona'),
+        txt(fb.txt, { fontSize: 19 }), !R.fin && R.fails >= 2 && ruta !== 'basico' && !exp ? txt('Consejo: prueben la ruta Básico o miren el ejemplo resuelto.', { color: t.mute, fontSize: 16 }) : null,
+        !R.fin && R.fails >= 3 ? btn('Ver la solución explicada (4 puntos)', () => this.verSol(id, Rt), { bg: t.card, c: t.ink, bd: t.line, fs: 15 }) : null,
+        R.fin ? btn('Elegir otro reto →', () => this.setState({ cur: null })) : null) : null);
   }
-  vistaDocRetos(C, cierre) {
-    const s = this.state, h = React.createElement, res = s.res || {}, M = C.META, filas = s.vivo || [];
-    const stats = C.RETOS.map(x => { const r = res['reto:' + x.id] || {}, v = Object.values(r), n = v.length, logr = v.filter(e => e.ok).length, ints = v.map(e => Number(String(e.r).split('|')[0]) || 1), errs = {};
-      v.forEach(e => String(e.r).split('|')[2].split(',').filter(Boolean).forEach(k => { errs[k] = (errs[k] || 0) + 1; })); const top = Object.keys(errs).sort((a, b) => errs[b] - errs[a])[0];
-      return { x, n, logr, prom: n ? (ints.reduce((a, b) => a + b, 0) / n).toFixed(1) : '—', top: top ? (ERRTXT[top] || top) + ' (' + errs[top] + ')' : '—' }; });
-    const meta = res.meta || {}, mt = Object.keys(meta).length, planes = Object.keys(res.plan || {}).map(k => k + ': ' + res.plan[k].r);
-    const card = (...ch) => h('div', { style: { background: '#fff', border: '2px solid #14181c', padding: 18, display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 } }, ...ch), kk = t => h('div', { style: { fontFamily: "'IBM Plex Mono',monospace", fontSize: 13, letterSpacing: '.14em', fontWeight: 700, color: '#5b636b' } }, t);
+  vistaRetos(C) {
+    const s = this.state, { t, h, HD, MO, card, kk, btn, txt } = this.ui(), lista = this.lista(), Rt = lista.find(x => x.id === s.cur);
+    if (Rt) return this.vistaReto(C, Rt);
+    const hc = this.hechos().length, req = this.req(), md = this.medallas().length, grupos = [[1, 'Nivel 1 · para empezar'], [2, 'Nivel 2 · un poco más'], [3, 'Nivel 3 · desafío'], ['JUEGO', 'Minijuegos']];
+    const tarjeta = x => { const R = s.retos[x.id] || {}; return h('button', { key: x.id, onClick: () => this.setState({ cur: x.id }), style: { textAlign: 'left', background: R.fin ? t.okBg : t.card, borderRadius: 12, color: t.ink, border: '2px solid ' + (R.fin ? t.ok : t.line), padding: 16, cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 8 } },
+      h('div', { style: { display: 'flex', justifyContent: 'space-between', gap: 8, fontFamily: MO, fontSize: 13, fontWeight: 700, letterSpacing: '.06em', color: t.mute } }, h('span', null, x.juego ? 'MINIJUEGO' : 'NIVEL ' + x.nivel), h('span', { style: { whiteSpace: 'nowrap', color: R.medalla ? t.amb : R.fin ? t.ok : t.mute } }, R.medalla ? '★ MEDALLA' : R.fin ? R.pts + ' / 10 ✓' : R.int ? R.int + ' intentos' : '')),
+      h('div', null, x.ic), h('div', { style: { fontFamily: HD, fontSize: 20, lineHeight: 1.1 } }, x.n), R.ruta ? h('div', { style: { fontFamily: MO, fontSize: 12, color: t.mute } }, 'RUTA ' + R.ruta.toUpperCase()) : null); };
     return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
-      h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 'clamp(28px,3vw,50px)', lineHeight: 1.05 } }, cierre ? 'Lo que aprendimos hoy' : 'Retos en marcha · código ' + (s.ses && s.ses.codigo)),
-      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap: 16, alignItems: 'start' } },
-        card(kk('RESULTADO POR RETO'), ...stats.map(st => h('div', { key: st.x.id, style: { borderTop: '2px solid #e3dfd4', paddingTop: 8, display: 'flex', flexDirection: 'column', gap: 4 } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', gap: 10, fontWeight: 700, fontSize: 17 } }, h('span', null, st.x.ic + ' ' + st.x.n), h('span', { style: { fontFamily: "'IBM Plex Mono',monospace" } }, st.logr + '/' + st.n + ' solos · ' + st.prom + ' int.')),
-          h('div', { style: { height: 8, background: '#e3dfd4' } }, h('div', { style: { height: '100%', width: (st.n ? st.logr / st.n * 100 : 0) + '%', background: '#0f7b6c' } })),
-          h('div', { style: { fontSize: 15, color: '#c8413a' } }, 'Error más común: ' + st.top)))),
-        cierre ? card(kk('REFLEXIÓN · ' + mt + ' RESPUESTAS'), h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 24 } }, M.q), ...M.o.map((o, i) => { const c = Object.values(meta).filter(v => v.r === String(i)).length; return h('div', { key: i, style: { display: 'flex', flexDirection: 'column', gap: 4 } }, h('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 17, fontWeight: 600 } }, h('span', null, o), h('span', null, String(c))), h('div', { style: { height: 8, background: '#e3dfd4' } }, h('div', { style: { height: '100%', width: (mt ? c / mt * 100 : 0) + '%', background: '#2f6fd0' } }))); }),
-          h('div', { style: { fontSize: 17, lineHeight: 1.45, borderTop: '2px solid #e3dfd4', paddingTop: 10 } }, 'Para conversar: ¿qué hicieron cuando la simulación falló? ¿Dónde más del colegio usarían este proceso?')) :
-          card(kk('PAREJAS · ' + filas.length), ...filas.map((f, i) => h('div', { key: i, style: { display: 'flex', justifyContent: 'space-between', gap: 10, fontSize: 16, borderTop: '1px solid #e3dfd4', paddingTop: 6 } }, h('span', { style: { fontWeight: 600 } }, f.pareja), h('span', { style: { fontFamily: "'IBM Plex Mono',monospace" } }, f.nivel + '/' + f.niveles + ' · ' + (f.estado === 'terminado' ? 'nota ' + f.nota : 'jugando'))))),
-        planes.length ? card(kk('PLANES SMART CAMPUS'), ...planes.map((t, i) => h('div', { key: i, style: { fontSize: 16, borderTop: '1px solid #e3dfd4', paddingTop: 6 } }, t))) : null));
+      kk('Modo reto · elijan el orden y la ruta', t.acc),
+      h('div', { style: { fontFamily: HD, fontSize: 'clamp(28px,3vw,48px)', lineHeight: 1.05 } }, s.entregado ? 'Nota enviada: ' + (s.nota != null ? s.nota : this.calcNota()) + ' / 10' : 'Completen ' + req + ' retos para obtener la nota'),
+      h('div', { style: { display: 'flex', alignItems: 'center', gap: 6 } }, h('div', { style: { flex: 1, display: 'flex', gap: 5, padding: 5, border: '2px solid ' + t.acc, borderRadius: 8 } }, ...[...Array(req)].map((_, i) => h('div', { key: i, style: { flex: 1, height: 22, borderRadius: 4, background: i < hc ? t.acc : t.sunk, transition: 'all .4s' } }))), h('div', { style: { width: 8, height: 18, background: t.acc, borderRadius: 2 } }), h('div', { style: { fontFamily: MO, fontWeight: 700, color: t.amb, marginLeft: 10, whiteSpace: 'nowrap' } }, '★ ' + md + ' medallas')),
+      hc >= req ? h('div', { style: { animation: 'c9pop .7s ease-out', border: '3px solid ' + t.ok, borderRadius: 12, padding: '16px 20px', background: t.okBg, fontFamily: HD, fontSize: 'clamp(22px,2.4vw,34px)', color: t.ok } }, 'MISIÓN CUMPLIDA · pueden entregar o seguir por medallas') : null,
+      card({ borderColor: t.line, gap: 6 }, txt([h('b', { key: 1 }, 'Rutas: '), 'Básico (con ejemplo y versión corta) · Normal · Experto (sin ayudas; a la primera ganan medalla). Las tres valen lo mismo para la nota. Usen el botón GLOSARIO cuando no recuerden una palabra.'], { fontSize: 17 })),
+      ...grupos.map(([nv, tit]) => { const L = lista.filter(x => x.nivel === nv); return L.length ? h('div', { key: nv, style: { display: 'flex', flexDirection: 'column', gap: 10 } }, kk(tit), h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,240px),1fr))', gap: 14 } }, ...L.map(tarjeta))) : null; }),
+      !s.entregado && hc >= req ? btn('Entregar la nota (' + this.calcNota() + ' / 10)', () => this.entregar(), { fs: 20, pad: '14px 22px' }) : null);
+  }
+  dist(q, n) { const v = Object.values((this.state.res || {})[q] || {}); return { tot: v.length, c: [...Array(n)].map((_, i) => v.filter(e => e.r === String(i)).length), ok: v.filter(e => e.ok).length }; }
+  vistaDocRetos(C, cierre) {
+    const s = this.state, { t, h, HD, MO, card, kk, txt } = this.ui(), res = s.res || {}, M = C.META, filas = s.vivo || [];
+    const barra = (lab, n, tot, col) => h('div', { key: lab, style: { display: 'flex', flexDirection: 'column', gap: 4 } }, h('div', { style: { display: 'flex', justifyContent: 'space-between', gap: 10, fontSize: 17, fontWeight: 600 } }, h('span', null, lab), h('span', { style: { fontFamily: MO } }, String(n))), h('div', { style: { height: 10, background: t.sunk, borderRadius: 5 } }, h('div', { style: { height: '100%', borderRadius: 5, width: (tot ? n / tot * 100 : 0) + '%', background: col || t.acc } })));
+    const stats = C.RETOS.map(x => { const r = res['reto:' + x.id] || {}, v = Object.values(r), n = v.length, logr = v.filter(e => e.ok).length, med = v.filter(e => String(e.r).split('|')[3] === 'm').length, ints = v.map(e => Number(String(e.r).split('|')[0]) || 1), errs = {};
+      v.forEach(e => (String(e.r).split('|')[2] || '').split(',').filter(Boolean).forEach(k => { errs[k] = (errs[k] || 0) + 1; })); const top = Object.keys(errs).sort((a, b) => errs[b] - errs[a])[0];
+      return { x, n, logr, med, prom: n ? (ints.reduce((a, b) => a + b, 0) / n).toFixed(1) : '—', top: top ? (ERRTXT[top] || top) + ' (' + errs[top] + ')' : '—' }; });
+    const retoCard = card({}, kk('Resultado por reto'), ...stats.map(st => h('div', { key: st.x.id, style: { borderTop: '2px solid ' + t.line, paddingTop: 8, display: 'flex', flexDirection: 'column', gap: 4 } },
+      h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, fontWeight: 700, fontSize: 17, lineHeight: 1.3 } }, h('span', { style: { flex: 1, minWidth: 0 } }, st.x.n), h('span', { style: { flex: 'none', fontFamily: MO, whiteSpace: 'nowrap' } }, st.logr + '/' + st.n + ' · ' + st.prom + ' int.' + (st.med ? ' · ★' + st.med : ''))),
+      h('div', { style: { height: 8, background: t.sunk, borderRadius: 4 } }, h('div', { style: { height: '100%', borderRadius: 4, width: (st.n ? st.logr / st.n * 100 : 0) + '%', background: t.acc } })), st.top !== '—' ? h('div', { style: { fontSize: 15, color: t.red } }, 'Error más común: ' + st.top) : null)));
+    const tk = C.TICKET || [], ticket = card({ borderColor: t.blue }, kk('Ticket de salida', t.blue), ...tk.map((q, i) => { const d = this.dist('t' + i, q[1].length); return h('div', { key: i, style: { display: 'flex', flexDirection: 'column', gap: 4 } }, txt(q[0], { fontWeight: 700, fontSize: 18 }), h('div', { style: { fontFamily: MO, fontSize: 15, color: d.tot && d.ok / d.tot < 0.6 ? t.red : t.ok } }, d.tot ? Math.round(d.ok / d.tot * 100) + ' % correcto · ' + d.tot + ' parejas' + (d.tot && d.ok / d.tot < 0.6 ? ' · REPASAR' : '') : 'sin respuestas')); }));
+    const emo = this.dist('emo', EMO.length), estr = this.dist('estr', (C.ESTR || []).length), mt = this.dist('meta', M.o.length);
+    const sentir = card({}, kk('¿Cómo se sintieron? · ' + emo.tot), ...EMO.map((o, i) => barra(o, emo.c[i], emo.tot, [t.ok, t.acc, t.amb, t.red][i])));
+    const estrat = card({}, kk('Estrategias que usaron · ' + estr.tot), ...(C.ESTR || []).map((o, i) => barra(o, estr.c[i], estr.tot, t.blue)), txt('Pregunta para todos: ¿qué hicieron cuando algo no funcionó?', { fontSize: 17, borderTop: '2px solid ' + t.line, paddingTop: 10 }));
+    const meta = card({}, kk('Lo más difícil · ' + mt.tot), txt(M.q, { fontFamily: HD, fontSize: 20 }), ...M.o.map((o, i) => barra(o, mt.c[i], mt.tot, t.amb)));
+    const parejas = card({}, kk('Parejas · ' + filas.length), ...filas.map((f, i) => h('div', { key: i, style: { display: 'flex', justifyContent: 'space-between', gap: 10, fontSize: 16, borderTop: '1px solid ' + t.line, paddingTop: 6, flexWrap: 'wrap' } }, h('span', { style: { fontWeight: 600 } }, f.pareja), h('span', { style: { display: 'flex', alignItems: 'center', gap: 8, fontFamily: MO } }, h('span', { style: { display: 'flex', gap: 3 } }, ...[...Array(Number(f.niveles) || 8)].map((_, k) => h('span', { key: k, style: { width: 10, height: 10, borderRadius: 5, background: k < f.nivel ? t.acc : t.sunk, border: '1px solid ' + t.line } }))), f.estado === 'terminado' ? 'nota ' + f.nota : 'jugando'))));
+    const planes = Object.keys(res.plan || {}).map(k => k + ': ' + res.plan[k].r);
+    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
+      h('div', { style: { fontFamily: HD, fontSize: 'clamp(28px,3vw,50px)', lineHeight: 1.05 } }, cierre ? 'Lo que aprendimos hoy' : 'Retos en marcha · código ' + (s.ses && s.ses.codigo)),
+      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,400px),1fr))', gap: 16, alignItems: 'start' } }, ...(cierre ? [ticket, retoCard, sentir, estrat, meta] : [parejas, retoCard]), planes.length ? card({}, kk('Planes de las parejas'), ...planes.map((x, i) => h('div', { key: i, style: { fontSize: 16, borderTop: '1px solid ' + t.line, paddingTop: 6 } }, x))) : null));
   }
   vistaCierreEst(C) {
-    const s = this.state, h = React.createElement, M = C.META, mia = s.mis.meta;
-    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 1000 } },
-      h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 'clamp(28px,3vw,48px)', lineHeight: 1.05 } }, s.entregado ? 'Su nota: ' + s.nota + ' / 10' : 'Cierre de la clase'),
-      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap: 10 } }, ...this.lista().map(x => { const r = s.retos[x.id]; return h('div', { key: x.id, style: { background: '#fff', border: '2px solid ' + (r && r.fin ? '#1f8a4c' : '#d9d4c7'), padding: 12, fontSize: 16 } }, h('b', null, x.ic + ' ' + x.n), h('div', null, r && r.fin ? r.pts + ' / 10' + (r.fails ? ' · ' + r.fails + ' intentos fallidos' : ' · a la primera') : 'No realizado')); })),
-      h('div', { style: { background: '#fff', border: '3px solid #2f6fd0', padding: 20, display: 'flex', flexDirection: 'column', gap: 12 } }, h('div', { style: { fontFamily: "'IBM Plex Mono',monospace", fontSize: 13, letterSpacing: '.14em', fontWeight: 700, color: '#2f6fd0' } }, 'REFLEXIÓN'), h('div', { style: { fontFamily: "'Archivo Black',sans-serif", fontSize: 24 } }, M.q),
-        ...M.o.map((o, i) => h('button', { key: i, onClick: () => this.resp('meta', String(i), true), style: { textAlign: 'left', padding: '12px 16px', fontSize: 18, fontWeight: 600, background: mia === String(i) ? '#14181c' : '#fff', color: mia === String(i) ? '#fff' : '#14181c', border: '2px solid #14181c', cursor: mia != null ? 'default' : 'pointer' } }, o)),
-        mia != null ? h('div', { style: { fontSize: 17, color: '#1f8a4c', fontWeight: 600 } }, 'Gracias. Ahora conversen: ¿qué harían diferente la próxima vez?') : null));
+    const s = this.state, { t, h, HD, MO, card, kk, txt } = this.ui(), M = C.META, hech = this.hechos().map(x => x.id), tk = C.TICKET || [];
+    const opc = (q, opts, ok, col) => h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } }, ...opts.map((o, i) => { const mia = s.mis[q], sel = mia === String(i), cor = ok != null && mia != null && i === ok;
+      return h('button', { key: i, onClick: () => this.resp(q, String(i), ok == null ? true : i === ok), style: { textAlign: 'left', padding: '12px 16px', borderRadius: 8, fontSize: 18, fontWeight: 600, background: cor ? t.okBg : sel ? (ok != null ? t.errBg : col || t.acc) : t.card, color: sel && ok == null ? '#fff' : t.ink, border: '2px solid ' + (cor ? t.ok : sel ? (ok != null ? t.red : col || t.acc) : t.line), cursor: mia != null ? 'default' : 'pointer' } }, o); }));
+    return h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 1100 } },
+      h('div', { style: { fontFamily: HD, fontSize: 'clamp(28px,3vw,48px)', lineHeight: 1.05 } }, s.entregado ? 'Su nota: ' + s.nota + ' / 10' : 'Cierre de la clase'),
+      card({ borderColor: t.acc }, kk('Rúbrica · lo que lograron y lo que falta', t.acc), ...(C.LOGROS || []).map(([l, ids], i) => { const ok = ids.some(x => hech.includes(x)); return h('div', { key: i, style: { display: 'flex', gap: 12, alignItems: 'flex-start', borderTop: '2px solid ' + t.line, paddingTop: 10 } }, h('div', { style: { flex: 'none', fontFamily: HD, fontSize: 20, color: ok ? t.ok : t.amb, minWidth: 110 } }, ok ? '✓ LOGRADO' : '○ EN PROCESO'), h('div', { style: { display: 'flex', flexDirection: 'column', gap: 2 } }, txt(l, { fontWeight: 600, fontSize: 19 }), ok ? null : txt('Para practicar: ' + ids.map(x => (C.RETOS.find(r => r.id === x) || {}).n).filter(Boolean).join(' · '), { color: t.mute, fontSize: 16 }))); }),
+        this.medallas().length ? txt('★ Medallas de experto: ' + this.medallas().map(x => x.n).join(', '), { color: t.amb, fontWeight: 700, fontSize: 18 }) : null),
+      card({ borderColor: t.blue }, kk('Ticket de salida · 3 preguntas', t.blue), ...tk.map((q, i) => h('div', { key: i, style: { display: 'flex', flexDirection: 'column', gap: 8 } }, txt((i + 1) + '. ' + q[0], { fontWeight: 700 }), opc('t' + i, q[1], q[2])))),
+      card({}, kk('¿Cómo me sentí hoy?'), opc('emo', EMO, null, t.acc)),
+      C.ESTR ? card({}, kk('Metacognición · ¿qué estrategia nos ayudó más?'), opc('estr', C.ESTR, null, t.blue)) : null,
+      card({}, kk('Reflexión'), txt(M.q, { fontFamily: HD, fontSize: 22 }), opc('meta', M.o, null, t.amb), s.mis.meta != null ? txt('Gracias. Conversen: ¿qué harían diferente la próxima vez?', { color: t.ok, fontWeight: 600 }) : null));
   }
   renderVals() {
-    const s = this.state, C = this.C(), f = s.f, set = k => e => this.setState({ f: Object.assign({}, this.state.f, { [k]: e.target.value, err: '', errD: '' }) }), doc = s.rol === 'doc', est = s.rol === 'est';
+    const s = this.state, C = this.C(), f = s.f, t = TH[s.tema] || TH.claro, set = k => e => this.setState({ f: Object.assign({}, this.state.f, { [k]: e.target.value, err: '', errD: '' }) }), doc = s.rol === 'doc', est = s.rol === 'est';
     const fase = doc ? s.clase.fase : s.fase, nS = C ? C.S.length : 0, idx = Math.max(0, Math.min(nS - 1, doc ? s.clase.slide : s.mySlide));
     let contenido = null;
     if (C && s.rol) {
-      if (fase === 'clase' || (est && fase === 'clase')) { const sl = C.S[idx]; contenido = React.createElement('div', { key: sl.id }, sl.r({ docente: doc, ver: doc ? s.clase.ver : s.clase.ver, codigo: doc ? s.ses.codigo : null, mis: s.mis, res: s.res, adaptado: est && s.ses.ad, say: t => this.say(t), onResp: (q, r, ok) => this.resp(q, r, ok) })); }
-      else if (fase === 'retos') contenido = doc ? this.vistaDocRetos(C, false) : this.vistaRetos(C);
-      else if (fase === 'cierre') contenido = doc ? this.vistaDocRetos(C, true) : this.vistaCierreEst(C);
+      if (fase === 'clase') { const sl = C.S[idx]; contenido = React.createElement('div', { key: sl.id + s.tema, style: { animation: 'c9in .45s ease-out' } }, sl.r({ docente: doc, ver: s.clase.ver, codigo: doc ? s.ses.codigo : null, mis: s.mis, res: s.res, adaptado: est && s.ses.ad, say: x => this.say(x), onResp: (q, r, ok) => this.resp(q, r, ok) })); }
+      else if (fase === 'retos') contenido = React.createElement('div', { key: 'r' + s.tema }, doc ? this.vistaDocRetos(C, false) : this.vistaRetos(C));
+      else if (fase === 'cierre') contenido = React.createElement('div', { key: 'c' + s.tema }, doc ? this.vistaDocRetos(C, true) : this.vistaCierreEst(C));
     }
     const nombres = { clase: 'CLASE', retos: 'MODO RETO', cierre: 'CIERRE' };
-    const bdBtn = (t, on, act) => ({ t, on, bg: act ? '#ffd166' : 'transparent', c: act ? '#14181c' : '#fff' });
+    const bdBtn = (x, on, act) => ({ t: x, on, bg: act ? '#ffd166' : 'transparent', c: act ? '#06121a' : t.barInk });
+    const tb = (x, on, tip, act) => ({ t: x, on, tip, bg: act ? t.acc : t.panel, c: act ? t.accInk : t.ink });
+    const z = Math.round(s.zoom * 100) / 100;
     return {
-      top: { quien: doc ? 'DOCENTE · CÓDIGO ' + (s.ses ? s.ses.codigo : '') : est ? s.ses.a.split(' ')[0] + ' y ' + s.ses.b.split(' ')[0] + (s.ses.ad ? ' · CON APOYO' : '') : 'SIN SESIÓN', fase: s.rol ? nombres[fase] || '' : 'INICIO', faseColor: fase === 'retos' ? '#0f7b6c' : fase === 'cierre' ? '#2f6fd0' : '#14181c', sync: this.demo() ? 'MODO DEMO' : s.sync || '…' },
-      v: { login: !s.rol, main: !!s.rol, barraEst: est, barraDoc: doc, toast: !!s.toast, zoom: est && s.ses.ad ? '1.12' : '1' },
-      f: { a: f.a, b: f.b, paralelo: f.paralelo, codigo: f.codigo, clave: f.clave, adFondo: f.ad ? '#e6f4ea' : '#fff', adCheck: f.ad ? '#0f7b6c' : '#fff', hayErr: !!f.err, err: f.err, hayErrD: !!f.errD, errD: f.errD, demo: this.demo() ? 'Modo demostración: código 1234 · clave docente 1234.' : 'El código lo proyecta el docente.' },
-      on: { a: set('a'), b: set('b'), paralelo: set('paralelo'), codigo: set('codigo'), clave: set('clave'), adapt: () => this.setState({ f: Object.assign({}, f, { ad: !f.ad }) }), entrar: () => this.entrar(), docente: () => this.docente() },
-      contenido, toast: s.toast,
-      be: est ? { txt: fase === 'clase' ? (s.clase.libre ? 'Navegación libre · ' : 'Siguiendo al docente · ') + (idx + 1) + ' / ' + nS : fase === 'retos' ? this.hechos().length + ' de ' + this.req() + ' retos para la nota' : 'Cierre', btns: (fase === 'clase' && s.clase.libre ? [{ t: '◀', on: () => this.setState({ mySlide: Math.max(0, idx - 1) }), bg: '#fff', c: '#14181c' }, { t: '▶', on: () => this.setState({ mySlide: Math.min(nS - 1, Math.max(idx + 1, 0)) }), bg: '#fff', c: '#14181c' }] : []).concat([{ t: 'Salir', on: () => this.salirSesion(), bg: '#fff', c: '#c8413a' }]) } : { txt: '', btns: [] },
+      th: t, cur: { badge: CUR.badge, titulo: (C && C.titulo ? 'Clase interactiva · ' + C.titulo : CUR.titulo) },
+      top: { quien: doc ? 'DOCENTE · CÓDIGO ' + (s.ses ? s.ses.codigo : '') : est ? s.ses.a.split(' ')[0] + ' y ' + s.ses.b.split(' ')[0] + (s.ses.ad ? ' · CON APOYO' : '') : 'SIN SESIÓN', fase: s.rol ? nombres[fase] || '' : 'INICIO', faseColor: fase === 'retos' ? t.acc : fase === 'cierre' ? t.blue : t.mute, sync: this.demo() ? 'MODO DEMO' : s.sync || '…',
+        btns: [tb('GLOSARIO', () => this.setState({ glos: true }), 'Palabras clave de la clase', false), tb('A−', () => this.setState({ zoom: Math.max(0.8, s.zoom - 0.1) }), 'Letra más pequeña', false), tb('A+ ' + Math.round(z * 100) + '%', () => this.setState({ zoom: Math.min(1.6, s.zoom + 0.1) }), 'Letra más grande', false), tb(s.tema === 'oscuro' ? 'MODO PROYECTOR' : 'MODO OSCURO', () => this.tema(), 'Cambiar colores', false)] },
+      v: { login: !s.rol, main: !!s.rol, barraEst: est, barraDoc: doc, toast: !!s.toast, glos: !!s.glos && !!C, zoom: String(z * (est && s.ses.ad ? 1.1 : 1)) },
+      f: { a: f.a, b: f.b, paralelo: f.paralelo, codigo: f.codigo, clave: f.clave, adFondo: f.ad ? t.okBg : t.panel, adCheck: f.ad ? t.acc : t.input, hayErr: !!f.err, err: f.err, hayErrD: !!f.errD, errD: f.errD, demo: this.demo() ? 'Modo demostración: código 1234 · clave docente 1234.' : 'El código lo proyecta el docente.' },
+      on: { a: set('a'), b: set('b'), paralelo: set('paralelo'), codigo: set('codigo'), clave: set('clave'), adapt: () => this.setState({ f: Object.assign({}, f, { ad: !f.ad }) }), entrar: () => this.entrar(), docente: () => this.docente(), cerrarGlos: () => this.setState({ glos: false }) },
+      contenido, toast: s.toast, glosario: s.glos && C ? this.glosario(C) : null,
+      be: est ? { txt: fase === 'clase' ? (s.clase.libre ? 'Navegación libre · ' : 'Siguiendo al docente · ') + (idx + 1) + ' / ' + nS : fase === 'retos' ? this.hechos().length + ' de ' + this.req() + ' retos · ★ ' + this.medallas().length : 'Cierre', btns: (fase === 'clase' && s.clase.libre ? [{ t: '◀', on: () => this.setState({ mySlide: Math.max(0, idx - 1) }), bg: t.panel, c: t.ink }, { t: '▶', on: () => this.setState({ mySlide: Math.min(nS - 1, idx + 1) }), bg: t.panel, c: t.ink }] : []).concat([{ t: 'Salir', on: () => this.salirSesion(), bg: t.panel, c: t.red }]) } : { txt: '', btns: [] },
       bd: doc ? { pos: (idx + 1) + ' / ' + nS + ' · ' + (C ? C.S[idx].t : ''), prev: () => this.pushClase({ slide: Math.max(0, idx - 1), fase: 'clase', ver: false }), next: () => this.pushClase({ slide: Math.min(nS - 1, idx + 1), fase: 'clase', ver: false }),
         btns: [bdBtn(s.clase.ver ? 'OCULTAR RESPUESTAS' : 'MOSTRAR RESPUESTAS', () => this.pushClase({ ver: !s.clase.ver }), s.clase.ver), bdBtn(s.clase.libre ? 'LIBRE ✓' : 'TODOS ME SIGUEN', () => this.pushClase({ libre: !s.clase.libre }), s.clase.libre), bdBtn('CLASE', () => this.pushClase({ fase: 'clase' }), fase === 'clase'), bdBtn('INICIAR RETOS', () => this.pushClase({ fase: 'retos' }), fase === 'retos'), bdBtn('CIERRE', () => this.pushClase({ fase: 'cierre' }), fase === 'cierre'), bdBtn('SALIR', () => this.salirSesion(), false)] } : { pos: '', prev: () => {}, next: () => {}, btns: [] }
     };

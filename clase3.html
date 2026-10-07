@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="./config.js"></script>
 <script src="./clase-juegos.js"></script>
-<script src="./clase9.js"></script>
+<script src="./clase3.js"></script>
 <style>html,body{margin:0;font-family:'IBM Plex Sans',sans-serif}a{color:#0b7d6e}a:hover{color:#075c51}*{box-sizing:border-box}input,textarea,select,button{font-family:inherit}@keyframes c9float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes c9lock{0%,60%,100%{transform:rotate(0)}75%{transform:rotate(-8deg)}}@keyframes c9tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}@keyframes c9blink{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes c9flow{to{stroke-dashoffset:-22}}@keyframes c9in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes c9pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}</style>
 <script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','clase3.html':'Clase Interactiva 3BGU.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
 </helmet>
@@ -110,7 +110,7 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const CUR = { curso: '9no', glob: 'CLASE9', key: 'clase9', badge: '9no', titulo: 'Clase interactiva · Variables y operadores' };
+const CUR = { curso: '3BGU', glob: 'CLASE3', key: 'clase3', badge: '3ro BGU', titulo: 'Clase interactiva · Fuentes confiables y uso ético' };
 const KEY = CUR.key + '_v2', DKEY = CUR.key + '_demo', TKEY = 'clase_tema';
 const TH = { claro: { bg: '#f4f6f7', panel: '#ffffff', ink: '#14181c', mute: '#4a5760', line: '#c3ced4', acc: '#0b7d6e', accInk: '#ffffff', red: '#c23b30', ok: '#1d7a44', blue: '#2456b8', amb: '#a86200', input: '#ffffff', bar: '#14181c', barInk: '#ffffff', barMute: '#b9c4ca', barBtn: '#2c3a43', card: '#ffffff', sunk: '#eef2f4', okBg: '#e3f4ea', errBg: '#fbe6e3' },
   oscuro: { bg: '#0b1218', panel: '#13202a', ink: '#e8f1f2', mute: '#9fb0ba', line: '#2c3e4a', acc: '#3fd0b8', accInk: '#06121a', red: '#ff7b72', ok: '#7fe0a0', blue: '#6ea8ff', amb: '#f0a726', input: '#0a1016', bar: '#070d12', barInk: '#ffffff', barMute: '#9fb0ba', barBtn: '#13202a', card: '#13202a', sunk: '#0a1016', okBg: '#12301f', errBg: '#3a1a18' } };
