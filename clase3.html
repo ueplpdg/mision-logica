@@ -14,6 +14,7 @@
 <script src="./config.js"></script>
 <script src="./clase-juegos.js"></script>
 <script src="./clase3.js"></script>
+<script src="./clase3-invest.js"></script>
 <style>html,body{margin:0;font-family:'IBM Plex Sans',sans-serif}a{color:#0b7d6e}a:hover{color:#075c51}*{box-sizing:border-box}input,textarea,select,button{font-family:inherit}@keyframes c9float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}@keyframes c9lock{0%,60%,100%{transform:rotate(0)}75%{transform:rotate(-8deg)}}@keyframes c9tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}@keyframes c9blink{0%{opacity:1}50%{opacity:.2}100%{opacity:1}}@keyframes c9flow{to{stroke-dashoffset:-22}}@keyframes c9in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes c9pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}</style>
 <script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','clase3.html':'Clase Interactiva 3BGU.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
 </helmet>
@@ -126,7 +127,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { clearInterval(this._poll); window.removeEventListener('storage', this._st); }
   componentDidUpdate() { const s = this.state, t = TH[s.tema] || TH.claro; document.body.style.background = t.bg; document.body.style.color = t.ink;
-    try { localStorage.setItem(KEY, JSON.stringify({ rol: s.rol, fase: s.fase, ses: s.ses, mySlide: s.mySlide, mis: s.mis, retos: s.retos, pist: s.pist, ruta: s.ruta, entregado: s.entregado, nota: s.nota, zoom: s.zoom, clave: s.rol === 'doc' ? s.clave : undefined, f: Object.assign({}, s.f, { clave: '' }) })); } catch (e) {} }
+    try { localStorage.setItem(KEY, JSON.stringify({ rol: s.rol, fase: s.fase, ses: s.ses, mySlide: s.mySlide, mis: s.mis, retos: s.retos, pist: s.pist, ruta: s.ruta, entregado: s.entregado, nota: s.nota, zoom: s.zoom, inv: s.inv, clave: s.rol === 'doc' ? s.clave : undefined, f: Object.assign({}, s.f, { clave: '' }) })); } catch (e) {} }
   demo() { const c = window.MISION_CONFIG || {}; return !c.scriptUrl; }
   C() { window.__claseTema = this.state.tema; const G = window[CUR.glob]; return G ? G.make(React) : null; }
   async api(accion, d) {
@@ -155,7 +156,7 @@ class Component extends DCLogic {
   }
   async leerClase() {
     try { const r = await this.api('claseGet', {}); if (r && r.ok && r.clase) { const c = r.clase, s = this.state; const st = { clase: c, sync: 'EN VIVO ✓' };
-      if (s.fase !== 'final') st.fase = c.fase === 'retos' ? 'retos' : c.fase === 'cierre' ? 'cierre' : 'clase';
+      if (s.fase !== 'final') st.fase = ['retos', 'cierre', 'invest'].includes(c.fase) ? c.fase : 'clase';
       if (!c.libre) st.mySlide = c.slide; this.setState(st); } else this.setState({ sync: 'ESPERANDO AL DOCENTE' }); } catch (e) { this.setState({ sync: 'SIN CONEXIÓN · REINTENTANDO' }); }
   }
   async leerResumen() {
@@ -214,6 +215,12 @@ class Component extends DCLogic {
   medallas() { const r = this.state.retos; return this.lista().filter(x => r[x.id] && r[x.id].medalla); }
   payload(estado) { const s = this.state, h = this.hechos(), md = this.medallas(); return { sesionId: s.ses.sesionId, curso: CUR.curso, paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.pareja, nivel: h.length, niveles: this.lista().length, puntos: h.reduce((a, x) => a + s.retos[x.id].pts, 0), bonus: Math.max(0, h.length - this.req()), nota: this.calcNota(), salidas: 0, estado, duracionMin: Math.round((Date.now() - (s.ses.t0 || Date.now())) / 60000), insignias: [s.ses.ad ? 'versión con apoyo' : '', md.length ? md.length + ' medallas: ' + md.map(x => x.n).join(', ') : ''].filter(Boolean).join(' · '), detalle: 'CLASE ' + CUR.badge + ' · ' + this.lista().map(x => { const r = s.retos[x.id]; return x.n + ': ' + (r && r.fin ? r.pts + (r.sol ? ' (solución)' : '') + (r.ruta ? ' [' + r.ruta + ']' : '') : '—'); }).join(' · ') }; }
   entregar() { if (this.state.entregado) return; if (this.hechos().length < this.req()) { this.aviso('Les faltan ' + (this.req() - this.hechos().length) + ' retos para la nota.'); return; } const p = this.payload('terminado'); this.setState({ entregado: true, nota: p.nota }); this.api('entregar', p).then(() => this.aviso('Nota enviada al docente ✓')).catch(() => this.aviso('No se pudo enviar la nota. Avisen al docente.')); }
+  enviarInv(inv, ev) { const s = this.state; if (!s.ses || s.rol !== 'est') return; const j = JSON.stringify({ nombres: s.ses.pareja, tema: inv.tema, arts: inv.arts, mejor: inv.mejor, expo: inv.expo, nota: ev.nota, entregado: !!inv.entregado }); if (j === this._lastInv) return; this._lastInv = j;
+    this.api('claseResp', { sesionId: s.ses.sesionId, pareja: s.ses.pareja, q: 'inv', resp: j, correcta: true, adaptado: s.ses.ad }).then(() => this.setState({ sync: 'TABLA GUARDADA ✓' })).catch(() => this.setState({ sync: 'SIN CONEXIÓN · SE REINTENTARÁ' })); }
+  entregarInv(inv, ev) { const s = this.state; this._lastInv = null; this.enviarInv(Object.assign({}, inv, { entregado: true }), ev);
+    const p = this.payload('terminado'), nr = this.calcNota(), T = window.CLASE3_INV ? window.CLASE3_INV.TEMAS.find(x => x[0] === inv.tema) : null;
+    p.nota = Math.round((nr + ev.nota) / 2 * 100) / 100; p.detalle = 'NOTA FINAL = (retos ' + nr + ' + investigación ' + ev.nota + ') / 2 · TEMA: ' + (T ? T[1] : inv.tema) + ' · ' + ev.n + ' artículos · ' + ev.R.map(r => r[0] + ' ' + r[2] + '/' + r[1]).join(' · ') + ' || ' + p.detalle;
+    this.setState({ entregado: true, nota: p.nota }); this.api('entregar', p).then(() => this.aviso('Investigación entregada ✓ · nota final ' + p.nota + ' / 10')).catch(() => this.aviso('No se pudo enviar. Avisen al docente.')); }
   salirSesion() { if (!window.confirm('¿Cerrar la sesión en esta computadora?')) return; clearInterval(this._poll); localStorage.removeItem(KEY); this.setState({ rol: null, fase: 'login', ses: null, mis: {}, retos: {}, pist: {}, ruta: {}, ejp: {}, mini: {}, cur: null, entregado: false, nota: null }); }
 
   ui() { const t = TH[this.state.tema] || TH.claro, h = React.createElement, HD = "'Archivo Black',sans-serif", MO = "'IBM Plex Mono',monospace";
@@ -305,9 +312,10 @@ class Component extends DCLogic {
     if (C && s.rol) {
       if (fase === 'clase') { const sl = C.S[idx]; contenido = React.createElement('div', { key: sl.id + s.tema, style: { animation: 'c9in .45s ease-out' } }, sl.r({ docente: doc, ver: s.clase.ver, codigo: doc ? s.ses.codigo : null, mis: s.mis, res: s.res, adaptado: est && s.ses.ad, say: x => this.say(x), onResp: (q, r, ok) => this.resp(q, r, ok) })); }
       else if (fase === 'retos') contenido = React.createElement('div', { key: 'r' + s.tema }, doc ? this.vistaDocRetos(C, false) : this.vistaRetos(C));
+      else if (fase === 'invest') { const IV = window.CLASE3_INV ? window.CLASE3_INV.make(React, { t }) : null; contenido = !IV ? React.createElement('div', null, 'Cargando la investigación…') : React.createElement('div', { key: 'i' + s.tema }, doc ? React.createElement(IV.Docente, { res: s.res }) : React.createElement(IV.Estudiante, { inv: s.inv, adaptado: s.ses.ad, nombres: s.ses.pareja, setInv: x => this.setState({ inv: x }), send: (inv, ev) => this.enviarInv(inv, ev), entregar: (inv, ev) => this.entregarInv(inv, ev) })); }
       else if (fase === 'cierre') contenido = React.createElement('div', { key: 'c' + s.tema }, doc ? this.vistaDocRetos(C, true) : this.vistaCierreEst(C));
     }
-    const nombres = { clase: 'CLASE', retos: 'MODO RETO', cierre: 'CIERRE' };
+    const nombres = { clase: 'CLASE', retos: 'MODO RETO', invest: 'INVESTIGACIÓN · SCHOLAR ABIERTO', cierre: 'CIERRE' };
     const bdBtn = (x, on, act) => ({ t: x, on, bg: act ? '#ffd166' : 'transparent', c: act ? '#06121a' : t.barInk });
     const tb = (x, on, tip, act) => ({ t: x, on, tip, bg: act ? t.acc : t.panel, c: act ? t.accInk : t.ink });
     const z = Math.round(s.zoom * 100) / 100;
@@ -319,9 +327,9 @@ class Component extends DCLogic {
       f: { a: f.a, b: f.b, paralelo: f.paralelo, codigo: f.codigo, clave: f.clave, adFondo: f.ad ? t.okBg : t.panel, adCheck: f.ad ? t.acc : t.input, hayErr: !!f.err, err: f.err, hayErrD: !!f.errD, errD: f.errD, demo: this.demo() ? 'Modo demostración: código 1234 · clave docente 1234.' : 'El código lo proyecta el docente.' },
       on: { a: set('a'), b: set('b'), paralelo: set('paralelo'), codigo: set('codigo'), clave: set('clave'), adapt: () => this.setState({ f: Object.assign({}, f, { ad: !f.ad }) }), entrar: () => this.entrar(), docente: () => this.docente(), cerrarGlos: () => this.setState({ glos: false }) },
       contenido, toast: s.toast, glosario: s.glos && C ? this.glosario(C) : null,
-      be: est ? { txt: fase === 'clase' ? (s.clase.libre ? 'Navegación libre · ' : 'Siguiendo al docente · ') + (idx + 1) + ' / ' + nS : fase === 'retos' ? this.hechos().length + ' de ' + this.req() + ' retos · ★ ' + this.medallas().length : 'Cierre', btns: (fase === 'clase' && s.clase.libre ? [{ t: '◀', on: () => this.setState({ mySlide: Math.max(0, idx - 1) }), bg: t.panel, c: t.ink }, { t: '▶', on: () => this.setState({ mySlide: Math.min(nS - 1, idx + 1) }), bg: t.panel, c: t.ink }] : []).concat([{ t: 'Salir', on: () => this.salirSesion(), bg: t.panel, c: t.red }]) } : { txt: '', btns: [] },
+      be: est ? { txt: fase === 'clase' ? (s.clase.libre ? 'Navegación libre · ' : 'Siguiendo al docente · ') + (idx + 1) + ' / ' + nS : fase === 'retos' ? this.hechos().length + ' de ' + this.req() + ' retos · ★ ' + this.medallas().length : fase === 'invest' ? 'Investigación · pueden usar Google Académico' : 'Cierre', btns: (fase === 'clase' && s.clase.libre ? [{ t: '◀', on: () => this.setState({ mySlide: Math.max(0, idx - 1) }), bg: t.panel, c: t.ink }, { t: '▶', on: () => this.setState({ mySlide: Math.min(nS - 1, idx + 1) }), bg: t.panel, c: t.ink }] : []).concat([{ t: 'Salir', on: () => this.salirSesion(), bg: t.panel, c: t.red }]) } : { txt: '', btns: [] },
       bd: doc ? { pos: (idx + 1) + ' / ' + nS + ' · ' + (C ? C.S[idx].t : ''), prev: () => this.pushClase({ slide: Math.max(0, idx - 1), fase: 'clase', ver: false }), next: () => this.pushClase({ slide: Math.min(nS - 1, idx + 1), fase: 'clase', ver: false }),
-        btns: [bdBtn(s.clase.ver ? 'OCULTAR RESPUESTAS' : 'MOSTRAR RESPUESTAS', () => this.pushClase({ ver: !s.clase.ver }), s.clase.ver), bdBtn(s.clase.libre ? 'LIBRE ✓' : 'TODOS ME SIGUEN', () => this.pushClase({ libre: !s.clase.libre }), s.clase.libre), bdBtn('CLASE', () => this.pushClase({ fase: 'clase' }), fase === 'clase'), bdBtn('INICIAR RETOS', () => this.pushClase({ fase: 'retos' }), fase === 'retos'), bdBtn('CIERRE', () => this.pushClase({ fase: 'cierre' }), fase === 'cierre'), bdBtn('SALIR', () => this.salirSesion(), false)] } : { pos: '', prev: () => {}, next: () => {}, btns: [] }
+        btns: [bdBtn(s.clase.ver ? 'OCULTAR RESPUESTAS' : 'MOSTRAR RESPUESTAS', () => this.pushClase({ ver: !s.clase.ver }), s.clase.ver), bdBtn(s.clase.libre ? 'LIBRE ✓' : 'TODOS ME SIGUEN', () => this.pushClase({ libre: !s.clase.libre }), s.clase.libre), bdBtn('CLASE', () => this.pushClase({ fase: 'clase' }), fase === 'clase'), bdBtn('INICIAR RETOS', () => this.pushClase({ fase: 'retos' }), fase === 'retos'), bdBtn('INVESTIGACIÓN', () => this.pushClase({ fase: 'invest' }), fase === 'invest'), bdBtn('CIERRE', () => this.pushClase({ fase: 'cierre' }), fase === 'cierre'), bdBtn('SALIR', () => this.salirSesion(), false)] } : { pos: '', prev: () => {}, next: () => {}, btns: [] }
     };
   }
 }
