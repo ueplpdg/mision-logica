@@ -84,24 +84,25 @@
     function Calculo(p) {
       const T = p.tier, fin = useOnce(p), lim = [100, 90, 80][T - 1];
       const [it] = useState(() => genCalc(T, p.h));
-      const [n, setN] = useState(0), [cA, setCA] = useState(0), [cB, setCB] = useState(0), [lA, setLA] = useState(null), [lB, setLB] = useState(null), [cT, setCT] = useState(0), [res, setRes] = useState([]), [t0] = useState(Date.now()), [, tick] = useState(0);
+      const [n, setN] = useState(0), [cA, setCA] = useState(0), [cB, setCB] = useState(0), [lA, setLA] = useState(null), [lB, setLB] = useState(null), [cT, setCT] = useState(0), [eA, setEA] = useState(false), [eB, setEB] = useState(false), [res, setRes] = useState([]), [t0] = useState(Date.now()), [, tick] = useState(0);
       useEffect(() => { const t = setInterval(() => tick(x => x + 1), 250); return () => clearInterval(t); }, []);
       const queda = Math.max(0, lim - Math.floor((Date.now() - t0) / 1000));
       const cerrar = r => { const bien = r.filter(Boolean).length; if (bien >= 3) fin(true, bien === 4 ? 1 : 0.75, bien + ' de 4 cálculos correctos en ' + (lim - queda) + ' s.'); else fin(false, 0, 'Solo ' + bien + ' de 4 correctos. Necesitaban 3.'); };
       useEffect(() => { if (queda <= 0 && !p.fin) cerrar(res.concat(Array(4 - res.length).fill(false))); });
       const q = it[Math.min(n, 3)], fase2 = lA != null && lB != null;
-      const final = () => { const r = res.concat([q.oT[cT] === q.tot]); p.snd(q.oT[cT] === q.tot ? 'ok' : 'err'); setRes(r); if (r.length >= 4) { cerrar(r); return; } setN(n + 1); setCA(0); setCB(0); setLA(null); setLB(null); setCT(0); };
+      const fijar = (j, v) => { const ok = v === (j === 1 ? q.A.v : q.B.v); if (ok) { (j === 1 ? setLA : setLB)(v); p.snd('click'); } else { (j === 1 ? setEA : setEB)(true); p.snd('err'); p.onErr('J' + j + ': ' + (j === 1 ? q.A.t : q.B.t) + ' no da ' + v + '. Vuelvan a calcular (este cálculo ya no suma punto).', 0); } };
+      const final = () => { const okT = q.oT[cT] === q.tot, r = res.concat([okT && !eA && !eB]); p.snd(okT ? 'ok' : 'err'); if (!okT) p.onErr('El total era ' + q.tot + '.', 0); setRes(r); if (r.length >= 4) { cerrar(r); return; } setN(n + 1); setCA(0); setCB(0); setLA(null); setLB(null); setCT(0); setEA(false); setEB(false); };
       useKeys((c, dn) => {
         if (!dn || p.fin) return;
-        if (!fase2) { if (lA == null) { if (c === 'KeyA') setCA((cA + 3) % 4); if (c === 'KeyD') setCA((cA + 1) % 4); if (c === 'KeyE') { setLA(q.oA[cA]); p.snd('click'); } }
-          if (lB == null) { if (c === 'ArrowLeft') setCB((cB + 3) % 4); if (c === 'ArrowRight') setCB((cB + 1) % 4); if (c === 'Enter') { setLB(q.oB[cB]); p.snd('click'); } } }
+        if (!fase2) { if (lA == null) { if (c === 'KeyA') setCA((cA + 3) % 4); if (c === 'KeyD') setCA((cA + 1) % 4); if (c === 'KeyE') fijar(1, q.oA[cA]); }
+          if (lB == null) { if (c === 'ArrowLeft') setCB((cB + 3) % 4); if (c === 'ArrowRight') setCB((cB + 1) % 4); if (c === 'Enter') fijar(2, q.oB[cB]); } }
         else { if (c === 'KeyA') setCT((cT + 3) % 4); if (c === 'KeyD') setCT((cT + 1) % 4); if (c === 'Enter') final(); }
       });
       const fila = (ops, cur, lock, col, onPick) => div({ display: 'grid', gridTemplateColumns: 'repeat(4,minmax(0,1fr))', gap: 8 }, ...ops.map((v, i) => h('button', { key: i, onClick: () => onPick(i), style: { border: '2px solid ' + (i === cur ? col : LN), background: lock != null && v === lock ? col : i === cur ? 'rgba(255,255,255,.06)' : BG, color: lock != null && v === lock ? '#081018' : TX, fontFamily: HEAD, fontSize: 22, padding: '12px 4px', cursor: 'pointer' } }, String(v))));
       const half = (j, part, ops, cur, lock, setC, setL) => Box({ border: '2px solid ' + (j === 1 ? J1 : J2), display: 'flex', flexDirection: 'column', gap: 12 },
         Stat('PARTE DE J' + j + (lock != null ? ' · LISTO ✓' : ''), j === 1 ? J1 : J2), div({ fontFamily: HEAD, fontSize: 34, color: TX }, part.t + ' = ?'),
-        fila(ops, cur, lock, j === 1 ? J1 : J2, i => { if (lock == null && !fase2) { setC(i); setL(ops[i]); } }));
-      return Wrap(P(['Cada uno calcula ', B('su mitad'), ' de cabeza. Cuando los dos tengan su parte, juntan los resultados: ', B('J1 propone'), ' el total y ', B('J2 lo aprueba'), '. Necesitan 3 de 4.']),
+        fila(ops, cur, lock, j === 1 ? J1 : J2, i => { if (lock == null && !fase2) { setC(i); fijar(j, ops[i]); } }), (j === 1 ? eA : eB) && lock == null ? Stat('✗ Revisen su cálculo', ER) : null);
+      return Wrap(P(['Cada uno calcula ', B('su mitad'), ' de cabeza. Cuando los dos tengan su parte, juntan los resultados: ', B('J1 propone'), ' el total y ', B('J2 lo aprueba'), '. Si una parte está mal, el juego avisa y la pueden corregir, pero ese cálculo ya no suma. Necesitan 3 de 4.']),
         Ctrls(Tag(1, 'A · D elegir · E fijar · total: A · D'), Tag(2, '← · → elegir · ENTER fijar · aprobar total: ENTER')),
         div({ display: 'flex', flexWrap: 'wrap', gap: 18 }, Stat('CÁLCULO ' + (Math.min(n, 3) + 1) + ' / 4'), Stat('TIEMPO ' + queda + ' s', queda < 15 ? ER : MU), Stat('ACIERTOS ' + res.filter(Boolean).length, OK)),
         div({ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))', gap: 14 }, half(1, q.A, q.oA, cA, lA, setCA, setLA), half(2, q.B, q.oB, cB, lB, setCB, setLB)),
@@ -353,8 +354,8 @@
       const n = [4, 5, 6][T - 1];
       for (let it = 0; it < 500; it++) {
         const sr = H.int(0, n - 1), er = H.int(0, n - 1), path = [[0, sr]], vis = { ['0,' + sr]: 1 };
-        let ok = false;
-        const dfs = (x, y, dep) => { if (x === n - 1 && y === er && dep >= n + 1) return true; if (dep > n * n) return false;
+        let ok = false, pasos = 0;
+        const dfs = (x, y, dep) => { if (x === n - 1 && y === er && dep >= n + 1) return true; if (dep > n * n || ++pasos > 3000) return false;
           const opts = H.shuffle(DIRS.slice()).sort((a, b) => (b[1] - a[1]) * (H.int(0, 99) < 55 ? 1 : 0));
           for (const [, dx, dy] of opts) { const nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= n || ny >= n || vis[nx + ',' + ny]) continue; vis[nx + ',' + ny] = 1; path.push([nx, ny]); if (dfs(nx, ny, dep + 1)) return true; path.pop(); delete vis[nx + ',' + ny]; }
           return false; };
@@ -429,20 +430,20 @@
       useKeys((c, dn) => {
         if (!dn || p.fin) return; const cols = Math.min(9, N);
         if (c === 'KeyA') setC1((c1 + N - 1) % N); if (c === 'KeyD') setC1((c1 + 1) % N); if (c === 'ArrowLeft') setC2((c2 + N - 1) % N); if (c === 'ArrowRight') setC2((c2 + 1) % N);
-        if (c === 'KeyE') { const n = lado.slice(); n[c1] = n[c1] === 1 ? 0 : 1; setLado(n); } if (c === 'Enter') { const n = lado.slice(); n[c2] = n[c2] === 2 ? 0 : 2; setLado(n); }
-        if (c === 'KeyW') dP.press(0); if (c === 'ArrowUp') dP.press(1); if (c === 'KeyS') dE.press(0); if (c === 'ArrowDown') dE.press(1);
+        if (c === 'KeyW') { const n = lado.slice(); n[c1] = n[c1] === 1 ? 0 : 1; setLado(n); } if (c === 'ArrowUp') { const n = lado.slice(); n[c2] = n[c2] === 2 ? 0 : 2; setLado(n); }
+        if (c === 'KeyE') dP.press(0); if (c === 'Enter') dP.press(1); if (c === 'KeyS') dE.press(0); if (c === 'ArrowDown') dE.press(1);
       });
       const ang = tilt * 9, pan = (xs, col, items) => h('g', null, h('line', { x1: xs, y1: 0, x2: xs - 50, y2: 60, stroke: MU }), h('line', { x1: xs, y1: 0, x2: xs + 50, y2: 60, stroke: MU }), h('rect', { x: xs - 60, y: 60, width: 120, height: 6, fill: col }), h('text', { x: xs, y: 52, fill: TX, fontSize: 15, textAnchor: 'middle', fontFamily: 'IBM Plex Mono' }, items));
       return Wrap(P(['Una de las ' + N + ' cajas pesa más que las demás. Encuéntrenla usando la balanza ', B('como máximo ' + maxP + ' vez' + (maxP > 1 ? 'es' : '')), '. Ojo: no basta con adivinar, deben poder demostrarlo. ', B('J1'), ' pone cajas a la izquierda y ', B('J2'), ' a la derecha.']),
-        Ctrls(Tag(1, 'A · D caja · E platillo izq.'), Tag(2, '← · → caja · ENTER platillo der.')),
-        div({ display: 'flex', flexWrap: 'wrap', gap: 10 }, Tag(1, 'W pesar · S elegir caja'), Tag(2, '↑ pesar · ↓ elegir caja')),
+        Ctrls(Tag(1, 'A · D caja · W poner/quitar (izq.)'), Tag(2, '← · → caja · ↑ poner/quitar (der.)')),
+        div({ display: 'flex', flexWrap: 'wrap', gap: 10 }, Tag(1, 'E pesar · S elegir caja'), Tag(2, 'ENTER pesar · ↓ elegir caja')),
         Box({ display: 'flex', justifyContent: 'center' }, h('svg', { viewBox: '-220 -40 440 170', style: { width: '100%', maxWidth: 520, height: 'auto' } },
           h('rect', { x: -6, y: 0, width: 12, height: 120, fill: '#4d6674' }), h('rect', { x: -60, y: 120, width: 120, height: 8, fill: '#4d6674' }),
           h('g', { transform: 'rotate(' + ang + ')', style: { transition: 'transform .6s' } }, h('rect', { x: -170, y: -4, width: 340, height: 8, fill: TX }),
             h('g', { transform: 'translate(-160,0) rotate(' + (-ang) + ')' }, pan(0, J1, L.length ? L.map(i => i + 1).join(',') : '—')),
             h('g', { transform: 'translate(160,0) rotate(' + (-ang) + ')' }, pan(0, J2, R.length ? R.map(i => i + 1).join(',') : '—'))))),
         div({ display: 'grid', gridTemplateColumns: 'repeat(' + Math.min(9, N) + ',minmax(0,52px))', gap: 6 }, ...lado.map((v, i) => h('button', { key: i, onClick: () => { const n = lado.slice(); n[i] = (n[i] + 1) % 3; setLado(n); }, style: { height: 50, fontFamily: HEAD, fontSize: 18, color: v ? '#081018' : TX, background: v === 1 ? J1 : v === 2 ? J2 : BG, border: '2px solid ' + LN, outline: c1 === i && c2 === i ? '3px solid ' + OK : c1 === i ? '3px solid ' + J1 : c2 === i ? '3px solid ' + J2 : 'none', outlineOffset: 2, cursor: 'pointer' } }, String(i + 1)))),
-        div({ display: 'flex', flexWrap: 'wrap', gap: 18, alignItems: 'center' }, Stat('PESADAS ' + hist.length + ' / ' + maxP, hist.length >= maxP ? J2 : MU), Dual(dP, 'J1 W + J2 ↑ = pesar'), Dual(dE, 'J1 S + J2 ↓ = elegir')),
+        div({ display: 'flex', flexWrap: 'wrap', gap: 18, alignItems: 'center' }, Stat('PESADAS ' + hist.length + ' / ' + maxP, hist.length >= maxP ? J2 : MU), Dual(dP, 'J1 E + J2 ENTER = pesar'), Dual(dE, 'J1 S + J2 ↓ = elegir')),
         hist.length ? div({ display: 'flex', flexDirection: 'column', gap: 4 }, ...hist.map((x, i) => Stat((i + 1) + '. [' + x.L.join(',') + '] vs [' + x.R.join(',') + '] → ' + (x.r < 0 ? 'baja la izquierda' : x.r > 0 ? 'baja la derecha' : 'equilibrio'), TX))) : null);
     }
 
@@ -665,6 +666,9 @@
         fb ? Box({ border: '2px solid ' + (fb.ok ? OK : ER), display: 'flex', flexDirection: 'column', gap: 8 }, div({ fontFamily: HEAD, fontSize: 20, color: fb.ok ? OK : ER }, fb.ok ? '¡Correcto!' : 'No era esa.'), P(fb.ex), Stat('E o ENTER para seguir', MU)) : Dual(dual));
     }
     const MAP = { codigo: Quiz, vars: Quiz, sistema: Quiz, simon: Simon, calculo: Calculo, tangram: Tangram, sudoku: Sudoku, cubos: Cubos, cerillos: Cerillos, stroop: Stroop, tuberias: Tuberias, balanza: Balanza, cripto: Cripto, pares: Pares, laser: Laser };
+    const UIX = { div, P, B, Tag, Ctrls, Stat, Box, Wrap, useKeys, useDual, Dual, useOnce, C: { J1, J2, OK, ER, TX, MU, PAN, BG, LN, MONO, HEAD } };
+    if (window.ESC_CASINO) Object.assign(MAP, window.ESC_CASINO.make(React, UIX));
+    if (window.ESC_MESA) Object.assign(MAP, window.ESC_MESA.make(React, UIX));
     function Mente(p) {
       const C = MAP[p.id]; if (!C) return null;
       return div({ opacity: p.fin ? 0.6 : 1, pointerEvents: p.fin ? 'none' : 'auto', transition: 'opacity .3s' }, h(C, p));
