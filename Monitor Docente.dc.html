@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script src="./config.js"></script>
+<script src="./escape-red.js"></script>
+<style>html,body{margin:0;background:#0a141d;color:#e8f4f8;font-family:'IBM Plex Sans',sans-serif}a{color:#5fd0e8}a:hover{color:#9fe6f5}input,select,button{font-family:inherit}</style>
+</helmet>
+<div style="min-height:100vh;padding:24px clamp(14px,3vw,36px);box-sizing:border-box;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px">
+<div style="display:flex;flex-direction:column;gap:4px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:#5fd0e8;font-weight:600">ESCAPE DEL LABORATORIO · MONITOR DOCENTE</div><div style="font-family:'Archivo Black',sans-serif;font-size:clamp(26px,3vw,40px);line-height:1.05">Curso en vivo</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<select value="{{ curso }}" onChange="{{ setCurso }}" style="background:#0e1a24;color:#e8f4f8;border:1px solid #3a5160;padding:9px 10px;font-size:15px"><option value="8vo">8vo</option><option value="9no">9no</option><option value="10mo">10mo</option><option value="3BGU">3BGU</option></select>
+<select value="{{ paralelo }}" onChange="{{ setPar }}" style="background:#0e1a24;color:#e8f4f8;border:1px solid #3a5160;padding:9px 10px;font-size:15px"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select>
+<input type="password" value="{{ clave }}" onChange="{{ setClave }}" placeholder="Clave docente" style="background:#0e1a24;color:#e8f4f8;border:1px solid #3a5160;padding:9px 10px;font-size:15px;width:140px">
+<button onClick="{{ conectar }}" style="background:#5fd0e8;border:none;color:#06121a;font-weight:700;font-size:15px;padding:10px 16px;cursor:pointer">{{ btnTxt }}</button>
+</div>
+</div>
+<div style="font-size:14px;color:{{ estadoCol }}">{{ estado }}</div>
+<sc-if value="{{ on }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<button onClick="{{ tChat }}" style="background:{{ chatBg }};border:2px solid #5fd0e8;color:#e8f4f8;font-weight:700;padding:10px 14px;cursor:pointer">{{ chatTxt }}</button>
+<button onClick="{{ tDuelos }}" style="background:{{ duBg }};border:2px solid #ffd166;color:#e8f4f8;font-weight:700;padding:10px 14px;cursor:pointer">{{ duTxt }}</button>
+<button onClick="{{ borrar }}" style="background:transparent;border:2px solid #ff7b72;color:#ff7b72;font-weight:700;padding:10px 14px;cursor:pointer">Borrar el chat visible</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;align-items:start">
+<div style="background:#0e1a24;border:1px solid #26343e;padding:14px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600">MAPA DEL PATIO · {{ nPatio }} PAREJAS AQUÍ</div>
+<canvas ref="{{ mapRef }}" width="560" height="320" style="width:100%;height:auto;background:#07111a;display:block"></canvas>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600;margin-top:6px">RÉCORDS DEL CURSO EN VIVO · {{ nTot }} PAREJAS</div>
+<sc-for list="{{ parejas }}" as="q" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #1d2b35;padding-top:8px;font-size:15px">
+<div style="display:flex;flex-direction:column;gap:2px;min-width:0"><b style="color:{{ q.col }};overflow-wrap:anywhere">{{ q.n }}</b><span style="font-size:13px;color:#9fb6c0">{{ q.info }}</span></div>
+<button onClick="{{ q.mute }}" style="flex:none;background:{{ q.muteBg }};border:1px solid #ff7b72;color:#e8f4f8;font-size:13px;font-weight:700;padding:6px 10px;cursor:pointer">{{ q.muteTxt }}</button>
+</div>
+</sc-for>
+</div>
+<div style="background:#0e1a24;border:1px solid #26343e;padding:14px;display:flex;flex-direction:column;gap:8px;max-height:72vh;overflow:auto">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600">REGISTRO DEL CHAT · TEXTO ORIGINAL · {{ nBad }} CON PALABRAS FILTRADAS</div>
+<sc-for list="{{ log }}" as="m" hint-placeholder-count="4">
+<div style="font-size:14px;line-height:1.4;padding:6px 8px;background:{{ m.bg }};border-left:3px solid {{ m.bd }};overflow-wrap:anywhere"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9fb6c0">{{ m.h }}</span> <b>{{ m.de }}:</b> {{ m.txt }}</div>
+</sc-for>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#9fb6c0;font-weight:600;margin-top:10px">DUELOS · {{ nDu }}</div>
+<sc-for list="{{ duelos }}" as="x" hint-placeholder-count="2"><div style="font-size:14px;color:#dce9ee">{{ x.t }}</div></sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { curso: '10mo', paralelo: 'A', clave: '', on: false, estado: 'Elijan el curso, escriban la clave docente y conecten.', err: false, jug: {}, log: [], ctl: {}, duelos: [] };
+  mapRef = React.createRef();
+  componentWillUnmount() { try { this.m && this.m.salir(); } catch (e) {} }
+  componentDidUpdate() { this.dibujar(); }
+  async conectar() {
+    const cfg = (window.MISION_CONFIG || {}).firebase;
+    if (!cfg) { this.setState({ estado: 'Falta la configuración de Firebase en config.js.', err: true }); return; }
+    const ok = (window.MISION_CONFIG.claveDocente || '1234') === this.state.clave;
+    if (!ok) { this.setState({ estado: 'Clave docente incorrecta.', err: true }); return; }
+    try { if (this.m) this.m.salir(); const sala = window.ESC_RED.salaId(this.state.curso, this.state.paralelo);
+      this.m = await window.ESC_RED.monitor(cfg, sala, { jug: j => this.setState({ jug: j }), log: l => this.setState({ log: l }), ctl: c => this.setState({ ctl: c }), duelos: d => this.setState({ duelos: d }) });
+      this.setState({ on: true, err: false, estado: 'Conectado a ' + sala + '. Los datos se actualizan solos.' }); } catch (e) { this.setState({ estado: 'No se pudo conectar: ' + (e && e.message || e), err: true }); }
+  }
+  col(k) { const h = Array.from(k).reduce((a, c) => a * 31 + c.charCodeAt(0) >>> 0, 7); return 'hsl(' + (h % 360) + ',65%,62%)'; }
+  dibujar() { const cv = this.mapRef.current; if (!cv) return; const x = cv.getContext('2d'), W = cv.width, H = cv.height; x.clearRect(0, 0, W, H);
+    const X = v => (v + 28) / 56 * W, Z = v => (v + 19) / 32 * H; x.fillStyle = '#2f8fc0'; x.fillRect(X(-27), Z(-18), 7.5 / 56 * W, 30 / 32 * H); x.fillStyle = '#d6c79e'; x.fillRect(X(20), Z(-10), 7 / 56 * W, 22 / 32 * H); x.strokeStyle = '#5fd0e8'; x.strokeRect(X(-16), Z(-8.8), 32 / 56 * W, 17 / 32 * H);
+    const J = this.state.jug, now = Date.now(); Object.keys(J).forEach(k => { const o = J[k]; if (o.esc !== 'patio' || now - (o.t || 0) > 30000) return; x.fillStyle = this.col(k); [[o.x1, o.z1], [o.x2, o.z2]].forEach(([a, b]) => { x.beginPath(); x.arc(X(a || 0), Z(b || 0), 6, 0, 7); x.fill(); }); x.fillStyle = '#fff'; x.font = '600 11px sans-serif'; x.fillText(String(o.n || '').slice(0, 24), X(o.x1 || 0) + 8, Z(o.z1 || 0) - 6); }); }
+  renderVals() {
+    const s = this.state, c = s.ctl || {}, now = Date.now(), J = s.jug || {}, act = Object.keys(J).filter(k => now - (J[k].t || 0) < 30000), mute = c.mute || {};
+    return {
+      curso: s.curso, paralelo: s.paralelo, clave: s.clave, setCurso: e => this.setState({ curso: e.target.value }), setPar: e => this.setState({ paralelo: e.target.value }), setClave: e => this.setState({ clave: e.target.value }),
+      conectar: () => this.conectar(), btnTxt: s.on ? 'Reconectar' : 'Conectar', estado: s.estado, estadoCol: s.err ? '#ff7b72' : '#9fb6c0', on: s.on, mapRef: this.mapRef,
+      chatTxt: c.chat === false ? 'Chat APAGADO · encender' : 'Chat ENCENDIDO · apagar', chatBg: c.chat === false ? 'transparent' : 'rgba(95,208,232,.25)', tChat: () => this.m && this.m.set('chat', c.chat === false),
+      duTxt: c.duelos === false ? 'Duelos APAGADOS · encender' : 'Duelos ENCENDIDOS · apagar', duBg: c.duelos === false ? 'transparent' : 'rgba(255,209,102,.25)', tDuelos: () => this.m && this.m.set('duelos', c.duelos === false),
+      borrar: () => { if (this.m && window.confirm('¿Borrar los mensajes que ven los estudiantes? El registro para usted se mantiene.')) this.m.borrarChat(); },
+      nTot: act.length, nPatio: act.filter(k => J[k].esc === 'patio').length,
+      parejas: act.slice().sort((a, b) => (J[b].nota || 0) - (J[a].nota || 0)).map((k, i) => ({ n: (i + 1) + '. ' + J[k].n, col: this.col(k), info: 'Nota ' + (J[k].nota != null ? J[k].nota : '—') + ' · ★ ' + (J[k].st || 0) + ' · retos: ' + (J[k].h || 0) + ' · en: ' + (J[k].esc || '—'), muteTxt: mute[k] ? 'Quitar silencio' : 'Silenciar', muteBg: mute[k] ? 'rgba(255,123,114,.3)' : 'transparent', mute: () => this.m && this.m.mute(k, !mute[k]) })),
+      log: (s.log || []).slice().reverse().map(m => ({ h: new Date(m.t).toTimeString().slice(0, 5), de: m.de, txt: m.txt, bg: m.bad ? 'rgba(255,123,114,.15)' : 'transparent', bd: m.bad ? '#ff7b72' : '#26343e' })), nBad: (s.log || []).filter(m => m.bad).length,
+      duelos: (s.duelos || []).slice(-15).reverse().map(d => ({ t: d.an + ' vs ' + d.bn + ' · ' + (d.juego === 'nim' ? ' [Nim] ' : ' [3 en raya] ') + (d.est === 'fin' ? (d.gan === 'e' ? 'empate' : 'ganó ' + (d.gan === 'a' ? d.an : d.bn)) : d.est === 'juego' ? 'jugando' : d.est === 'rech' ? 'rechazado' : 'pendiente') })), nDu: (s.duelos || []).length
+    };
+  }
+}
+</script>
+</body>
+</html>
