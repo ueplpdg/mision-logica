@@ -669,9 +669,12 @@
     const UIX = { div, P, B, Tag, Ctrls, Stat, Box, Wrap, useKeys, useDual, Dual, useOnce, C: { J1, J2, OK, ER, TX, MU, PAN, BG, LN, MONO, HEAD } };
     if (window.ESC_CASINO) Object.assign(MAP, window.ESC_CASINO.make(React, UIX));
     if (window.ESC_MESA) Object.assign(MAP, window.ESC_MESA.make(React, UIX));
+    if (window.ESC_ARCADE) Object.assign(MAP, window.ESC_ARCADE.make(React, UIX));
+    if (window.ESC_ARCADE2) Object.assign(MAP, window.ESC_ARCADE2.make(React, UIX));
+    if (window.ESC_INVENTOS) Object.assign(MAP, window.ESC_INVENTOS.make(React, UIX));
     function Mente(p) {
-      if (!MAP[p.id]) { if (window.ESC_CASINO) Object.assign(MAP, window.ESC_CASINO.make(React, UIX)); if (window.ESC_MESA) Object.assign(MAP, window.ESC_MESA.make(React, UIX)); }
-      const C = MAP[p.id]; if (!C) return div({ padding: 20, border: '2px solid ' + ER, color: TX, fontSize: 18 }, 'Este reto no cargó. Falta subir a GitHub el archivo ' + (/^(tragamonedas|ruleta|esperado|cromos|apuestas|trucos|veintiuno|intermedia|poker|cuarenta|rummy|cuarteto)$/.test(p.id) ? 'escape-casino.js' : 'escape-mesa.js') + '. Súbanlo y recarguen con Ctrl + F5.');
+      if (!MAP[p.id]) { if (window.ESC_CASINO) Object.assign(MAP, window.ESC_CASINO.make(React, UIX)); if (window.ESC_MESA) Object.assign(MAP, window.ESC_MESA.make(React, UIX)); if (window.ESC_ARCADE) Object.assign(MAP, window.ESC_ARCADE.make(React, UIX)); if (window.ESC_ARCADE2) Object.assign(MAP, window.ESC_ARCADE2.make(React, UIX)); if (window.ESC_INVENTOS) Object.assign(MAP, window.ESC_INVENTOS.make(React, UIX)); }
+      const C = MAP[p.id]; if (!C) return div({ padding: 20, border: '2px solid ' + ER, color: TX, fontSize: 18 }, 'Este reto no cargó. Falta subir a GitHub el archivo ' + (/^(tragamonedas|ruleta|esperado|cromos|apuestas|trucos|veintiuno|intermedia|poker|cuarenta|rummy|cuarteto)$/.test(p.id) ? 'escape-casino.js' : /^(tetris|pacman|snake|dosmil|minas|sokoban)$/.test(p.id) ? 'escape-arcade.js' : /^(flappy|breakout|pong|wordle|deslizante|tuberias|intruso|kenken)$/.test(p.id) ? 'escape-arcade2.js' : /^(circuitos|robots2|bar|codigos|ritmo|torre)$/.test(p.id) ? 'escape-inventos.js' : 'escape-mesa.js') + '. Súbanlo y recarguen con Ctrl + F5.');
       return div({ opacity: p.fin ? 0.6 : 1, pointerEvents: p.fin ? 'none' : 'auto', transition: 'opacity .3s' }, h(C, p));
     }
     make.c = Mente; make.map = MAP; return Mente;

@@ -21,6 +21,10 @@
 <script src="./escape-aprende.js"></script>
 <script src="./escape-casino.js"></script>
 <script src="./escape-mesa.js"></script>
+<script src="./escape-arcade.js"></script>
+<script src="./escape-arcade2.js"></script>
+<script src="./escape-inventos.js"></script>
+<script src="./escape-red.js"></script>
 <script src="./escape-mente.js"></script>
 <script src="./escape-flujo.js"></script>
 <script>document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href]');if(!a||!/\.dc\.html/i.test(location.pathname))return;var m={'clase.html':'Clase Interactiva 10mo.dc.html','clase9.html':'Clase Interactiva 9no.dc.html','clase8.html':'Clase Interactiva 8vo.dc.html','clase3.html':'Clase Interactiva 3BGU.dc.html','escape.html':'Escape del Laboratorio.dc.html'}[a.getAttribute('href')];if(m){ev.preventDefault();location.href=m;}},true);</script>
@@ -208,9 +212,22 @@
 <div style="border:1px solid rgba(232,244,248,.25);padding:6px 10px;color:#c9dbe2;white-space:nowrap">{{ pz.ronda }}</div>
 <div style="display:flex;align-items:center;gap:5px;border:1px solid rgba(232,244,248,.25);padding:6px 10px;color:#c9dbe2">NIVEL<sc-for list="{{ pz.dots }}" as="d" hint-placeholder-count="3"><div style="width:10px;height:10px;background:{{ d.c }};transform:rotate(45deg)"></div></sc-for></div>
 <div style="border:1px solid {{ pz.opColor }};color:{{ pz.opColor }};padding:6px 10px;white-space:nowrap">OPERA: {{ pz.operador }}</div>
+<button onClick="{{ pz.pista }}" style="background:transparent;border:2px solid #ffd166;color:#ffd166;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer;white-space:nowrap">{{ pz.pistaTxt }}</button>
 <button onClick="{{ pz.salir }}" style="background:transparent;border:2px solid rgba(232,244,248,.45);color:#e8f4f8;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer;white-space:nowrap" style-hover="background:rgba(232,244,248,.1)">{{ pz.salirTxt }}</button>
 </div>
 </div>
+<sc-if value="{{ pz.elegir }}" hint-placeholder-val="{{ false }}">
+<div style="padding:22px;display:flex;flex-direction:column;gap:16px;border-bottom:1px solid rgba(232,244,248,.12)">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:{{ pz.color }};font-weight:600">ELIJAN LA DIFICULTAD</div>
+<div style="font-size:17px;color:#c9dbe2">{{ pz.mejor }}</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px">
+<button onClick="{{ pz.modoF }}" style="text-align:left;background:#0d1c26;border:2px solid #7fe0a0;color:#e8f4f8;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px" style-hover="background:#13303a"><span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#7fe0a0">1 · Fácil</span><span style="font-size:15px;line-height:1.4">Empiezan en el nivel 1. Puntos ×0,8.</span></button>
+<button onClick="{{ pz.modoN }}" style="text-align:left;background:#0d1c26;border:2px solid #5fd0e8;color:#e8f4f8;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px" style-hover="background:#13303a"><span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#5fd0e8">2 · Normal</span><span style="font-size:15px;line-height:1.4">Empiezan en el nivel 2. Puntos ×1.</span></button>
+<button onClick="{{ pz.modoE }}" style="text-align:left;background:#0d1c26;border:2px solid #ffd166;color:#e8f4f8;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:6px" style-hover="background:#13303a"><span style="font-family:'Archivo Black',sans-serif;font-size:24px;color:#ffd166">3 · Experto</span><span style="font-size:15px;line-height:1.4">Nivel 3 desde el inicio. Puntos ×1,3 y medalla Experto.</span></button>
+</div>
+<div style="font-size:14px;color:#9fb6c0">Pulsen 1, 2 o 3. Tres aciertos seguidos dan +1 punto por racha. Pueden repetir el reto después: cuenta su mejor marca.</div>
+</div>
+</sc-if>
 <sc-if value="{{ pz.verIntro }}" hint-placeholder-val="{{ false }}">
 <div style="padding:22px;display:flex;flex-direction:column;gap:16px;border-bottom:1px solid rgba(232,244,248,.12);background:linear-gradient(180deg,rgba(95,208,232,.08),transparent)">
 <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.16em;color:{{ pz.color }};font-weight:600">APRENDE · 20 SEGUNDOS</div>
@@ -225,6 +242,7 @@
 <div style="flex:1;min-width:240px;font-size:14px;line-height:1.4;color:#dce9ee">{{ pz.tec }}</div>
 </div>
 
+<sc-if value="{{ pz.verPistas }}" hint-placeholder-val="{{ false }}"><div style="padding:12px 22px;border-bottom:1px solid rgba(255,209,102,.3);background:rgba(255,209,102,.07);display:flex;flex-direction:column;gap:6px"><sc-for list="{{ pz.pistas }}" as="x" hint-placeholder-count="1"><div style="font-size:16px;line-height:1.45;color:#ffe9b0">💡 {{ x }}</div></sc-for></div></sc-if>
 <div style="padding:22px">
 
 <sc-if value="{{ pz.esReglas }}" hint-placeholder-val="{{ false }}">
@@ -685,6 +703,43 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ vRed }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:14px;bottom:14px;z-index:30;width:min(360px,calc(100vw - 28px));display:flex;flex-direction:column;gap:6px">
+<button onClick="{{ red.toggle }}" style="align-self:flex-start;background:rgba(5,9,14,.88);border:1px solid #5fd0e8;color:#e8f4f8;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:8px 12px;cursor:pointer">{{ red.boton }}</button>
+<sc-if value="{{ red.abierto }}" hint-placeholder-val="{{ false }}">
+<div style="background:rgba(5,9,14,.94);border:1px solid rgba(95,208,232,.45);display:flex;flex-direction:column;max-height:52vh">
+<div style="padding:8px 10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9fb6c0;border-bottom:1px solid rgba(232,244,248,.12)">{{ red.titulo }}</div>
+<div style="overflow:auto;flex:1;min-height:70px;padding:8px 10px;display:flex;flex-direction:column;gap:4px">
+<sc-for list="{{ red.msgs }}" as="m" hint-placeholder-count="2"><div style="font-size:14px;line-height:1.35;color:#dce9ee;overflow-wrap:anywhere"><b style="color:{{ m.col }}">{{ m.de }}:</b> {{ m.txt }}</div></sc-for>
+</div>
+<div style="display:flex;gap:6px;padding:8px;border-top:1px solid rgba(232,244,248,.12)">
+<input data-chat="1" value="{{ red.txt }}" onChange="{{ red.onTxt }}" placeholder="{{ red.ph }}" disabled="{{ red.mudo }}" style="flex:1;min-width:0;background:#0e1a24;border:1px solid #3a5160;color:#e8f4f8;font-size:14px;padding:8px">
+<button onClick="{{ red.enviar }}" disabled="{{ red.mudo }}" style="background:#5fd0e8;border:none;color:#06121a;font-weight:700;padding:8px 12px;cursor:pointer">Enviar</button>
+</div>
+<div style="padding:8px 10px;border-top:1px solid rgba(232,244,248,.12);display:flex;flex-direction:column;gap:6px;overflow:auto;max-height:160px">
+<div style="font-size:12px;line-height:1.4;color:#ffd166">{{ red.duInfo }}</div>
+<sc-for list="{{ red.parejas }}" as="q" hint-placeholder-count="2"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:#c9dbe2"><span style="min-width:0;overflow-wrap:anywhere">{{ q.n }} · {{ q.lugar }}</span><sc-if value="{{ q.puede }}" hint-placeholder-val="{{ false }}"><span style="display:flex;gap:4px;flex:none"><button onClick="{{ q.retar }}" style="background:#ffd166;border:none;color:#1a1004;font-weight:700;font-size:12px;padding:5px 8px;cursor:pointer">3 en raya</button><button onClick="{{ q.retarNim }}" style="background:#7fe0a0;border:none;color:#06121a;font-weight:700;font-size:12px;padding:5px 8px;cursor:pointer">Nim</button></span></sc-if></div></sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ vDuelo }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;z-index:46;background:rgba(3,7,11,.88);display:flex;align-items:center;justify-content:center;padding:20px">
+<div style="background:#0a141d;border:2px solid #ffd166;box-shadow:0 0 40px rgba(255,209,102,.3);max-width:520px;width:100%;padding:24px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.16em;color:#ffd166;font-weight:600">{{ du.titulo }}</div>
+<div style="font-family:'Archivo Black',sans-serif;font-size:24px;line-height:1.2;color:#fff">{{ du.txt }}</div>
+<sc-if value="{{ du.verTab }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:repeat(3,92px);gap:8px"><sc-for list="{{ du.celdas }}" as="c" hint-placeholder-count="9"><button onClick="{{ c.jugar }}" style="height:92px;font-family:'Archivo Black',sans-serif;font-size:52px;background:#07111a;color:{{ c.col }};border:3px solid #26343e;cursor:pointer">{{ c.v }}</button></sc-for></div></sc-if>
+<sc-if value="{{ du.esNim }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:8px;width:100%"><sc-for list="{{ du.montones }}" as="mo" hint-placeholder-count="3"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #26343e;padding:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#ffe9b0;text-align:left">{{ mo.txt }}</span><span style="display:flex;gap:4px"><button onClick="{{ mo.b1 }}" style="background:#7fe0a0;border:none;font-weight:700;padding:6px 10px;cursor:pointer">−1</button><button onClick="{{ mo.b2 }}" style="background:#7fe0a0;border:none;font-weight:700;padding:6px 10px;cursor:pointer">−2</button><button onClick="{{ mo.b3 }}" style="background:#7fe0a0;border:none;font-weight:700;padding:6px 10px;cursor:pointer">−3</button></span></div></sc-for></div></sc-if>
+<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+<sc-if value="{{ du.verAceptar }}" hint-placeholder-val="{{ false }}"><button onClick="{{ du.aceptar }}" style="background:#7fe0a0;border:none;color:#06121a;font-family:'Archivo Black',sans-serif;font-size:18px;padding:12px 22px;cursor:pointer">Aceptar</button><button onClick="{{ du.rechazar }}" style="background:transparent;border:2px solid #ff7b72;color:#ff7b72;font-family:'Archivo Black',sans-serif;font-size:18px;padding:12px 22px;cursor:pointer">Rechazar</button></sc-if>
+<sc-if value="{{ du.verCerrar }}" hint-placeholder-val="{{ false }}"><button onClick="{{ du.cerrar }}" style="background:#ffd166;border:none;color:#1a1004;font-family:'Archivo Black',sans-serif;font-size:18px;padding:12px 22px;cursor:pointer">{{ du.cerrarTxt }}</button></sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
 <sc-if value="{{ vPausa }}" hint-placeholder-val="{{ false }}">
 <div style="position:absolute;inset:0;z-index:49;background:rgba(6,14,22,.95);display:flex;align-items:center;justify-content:center;padding:30px">
 <div style="max-width:620px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
@@ -753,6 +808,26 @@ const EST = [
   { id: 'diferencias', nombre: 'Las 7 diferencias', corto: 'DIFERENCIAS', hab: 'OBSERVACIÓN METÓDICA', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: 5.2, z: -4.9, face: [0, 1], esc: 'juegos' },
   { id: 'laberinto', nombre: 'Laberinto coordinado', corto: 'LABERINTO', hab: 'COORDINACIÓN Y ORIENTACIÓN', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: -5.2, z: 4.9, face: [0, -1], esc: 'juegos' },
   { id: 'esferos', nombre: 'Carrera de esferos', corto: 'ESFEROS', hab: 'ÁNGULO Y FUERZA', color: '#7fe0a0', glow: 'rgba(127,224,160,.25)', x: 5.2, z: 4.9, face: [0, -1], esc: 'juegos' },
+  { id: 'tetris', nombre: 'Tetris en equipo', corto: 'TETRIS', hab: 'PLANIFICACIÓN ESPACIAL', color: '#5fd0e8', glow: 'rgba(95,208,232,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'arcade' },
+  { id: 'pacman', nombre: 'Pac-Man programable', corto: 'PAC-MAN', hab: 'PENSAMIENTO COMPUTACIONAL', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'arcade' },
+  { id: 'snake', nombre: 'Snake matemático', corto: 'SNAKE', hab: 'DIVISIBILIDAD Y REFLEJOS', color: '#7fe0a0', glow: 'rgba(127,224,160,.25)', x: -7.9, z: 2, face: [1, 0], esc: 'arcade' },
+  { id: 'dosmil', nombre: '2048', corto: '2048', hab: 'ESTRATEGIA', color: '#ff9f6b', glow: 'rgba(255,159,107,.25)', x: 7.9, z: 2, face: [-1, 0], esc: 'arcade' },
+  { id: 'minas', nombre: 'Buscaminas', corto: 'BUSCAMINAS', hab: 'DEDUCCIÓN LÓGICA', color: '#ff7b72', glow: 'rgba(255,123,114,.25)', x: -5.2, z: -4.9, face: [0, 1], esc: 'arcade' },
+  { id: 'sokoban', nombre: 'Sokoban', corto: 'SOKOBAN', hab: 'PLANIFICAR SIN TRABARSE', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: 5.2, z: -4.9, face: [0, 1], esc: 'arcade' },
+  { id: 'flappy', nombre: 'Flappy de condiciones', corto: 'FLAPPY', hab: 'EVALUAR CONDICIONES', color: '#5fd0e8', glow: 'rgba(95,208,232,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'arcade2' },
+  { id: 'breakout', nombre: 'Breakout de fracciones', corto: 'BREAKOUT', hab: 'SUMAR FRACCIONES', color: '#ff7b72', glow: 'rgba(255,123,114,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'arcade2' },
+  { id: 'pong', nombre: 'Pong con preguntas', corto: 'PONG', hab: 'REFLEJOS Y CÁLCULO', color: '#7fe0a0', glow: 'rgba(127,224,160,.25)', x: -7.9, z: 2, face: [1, 0], esc: 'arcade2' },
+  { id: 'wordle', nombre: 'Wordle de Robótica', corto: 'WORDLE', hab: 'VOCABULARIO Y DEDUCCIÓN', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: 7.9, z: 2, face: [-1, 0], esc: 'arcade2' },
+  { id: 'deslizante', nombre: 'Rompecabezas del colegio', corto: 'DESLIZANTE', hab: 'PLANIFICACIÓN', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: -5.2, z: -4.9, face: [0, 1], esc: 'arcade2' },
+  { id: 'tuberias', nombre: 'Tuberías del riego', corto: 'TUBERÍAS', hab: 'SEGUIR EL FLUJO', color: '#66e0d2', glow: 'rgba(102,224,210,.25)', x: 5.2, z: -4.9, face: [0, 1], esc: 'arcade2' },
+  { id: 'intruso', nombre: 'Encuentra el intruso', corto: 'INTRUSO', hab: 'RAZONAMIENTO ABSTRACTO', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: -5.2, z: 4.9, face: [0, -1], esc: 'arcade2' },
+  { id: 'kenken', nombre: 'KenKen de sumas', corto: 'KENKEN', hab: 'LÓGICA NUMÉRICA', color: '#ff9f6b', glow: 'rgba(255,159,107,.25)', x: 5.2, z: 4.9, face: [0, -1], esc: 'arcade2' },
+  { id: 'circuitos', nombre: 'Banco de circuitos Arduino', corto: 'CIRCUITOS', hab: 'ENTRADAS, SALIDAS Y PWM', color: '#5fd0e8', glow: 'rgba(95,208,232,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'inventos' },
+  { id: 'robots2', nombre: 'Dos robots coordinados', corto: '2 ROBOTS', hab: 'PROGRAMACIÓN EN PARALELO', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'inventos' },
+  { id: 'bar', nombre: 'El bar del colegio', corto: 'EL BAR', hab: 'MATEMÁTICA DIARIA', color: '#7fe0a0', glow: 'rgba(127,224,160,.25)', x: -7.9, z: 2, face: [1, 0], esc: 'inventos' },
+  { id: 'codigos', nombre: 'Códigos secretos', corto: 'CÓDIGOS', hab: 'BINARIO Y CÉSAR', color: '#c58cf0', glow: 'rgba(197,140,240,.25)', x: 7.9, z: 2, face: [-1, 0], esc: 'inventos' },
+  { id: 'ritmo', nombre: 'Ritmo y patrones', corto: 'RITMO', hab: 'MEMORIA AUDITIVA', color: '#ff7b72', glow: 'rgba(255,123,114,.25)', x: -5.2, z: -4.9, face: [0, 1], esc: 'inventos' },
+  { id: 'torre', nombre: 'Torre de bloques', corto: 'TORRE', hab: 'EQUILIBRIO', color: '#ff9f6b', glow: 'rgba(255,159,107,.25)', x: 5.2, z: -4.9, face: [0, 1], esc: 'inventos' },
   { id: 'simon', nombre: 'Memoria de luces', corto: 'MEMORIA', hab: 'MEMORIA DE TRABAJO', color: '#ff8fd0', glow: 'rgba(255,143,208,.25)', x: -7.9, z: -2.4, face: [1, 0], esc: 'biblio' },
   { id: 'sudoku', nombre: 'Sudoku en equipo', corto: 'SUDOKU', hab: 'LÓGICA DE REGLAS', color: '#7fd1ff', glow: 'rgba(127,209,255,.25)', x: 7.9, z: -2.4, face: [-1, 0], esc: 'biblio' },
   { id: 'pares', nombre: 'Pares divididos', corto: 'PARES', hab: 'MEMORIA Y ASOCIACIÓN', color: '#ffd166', glow: 'rgba(255,209,102,.25)', x: -7.9, z: 2.0, face: [1, 0], esc: 'biblio' },
@@ -769,8 +844,9 @@ const EST = [
 EST.forEach(e => { e.lado = e.face[0]; });
 const MODO_CLASE = !!(window.MISION_CONFIG && window.MISION_CONFIG.modoClase);
 const REQ = MODO_CLASE ? 6 : 10;
-const MENTE = { tresenraya: 1, nim: 1, ajedrez: 1, galleta: 1, crucigrama: 1, diferencias: 1, laberinto: 1, esferos: 1, tragamonedas: 1, ruleta: 1, esperado: 1, cromos: 1, apuestas: 1, trucos: 1, veintiuno: 1, intermedia: 1, poker: 1, cuarenta: 1, rummy: 1, cuarteto: 1, codigo: 1, vars: 1, sistema: 1, simon: 1, sudoku: 1, pares: 1, cripto: 1, tangram: 1, tuberias: 1, laser: 1, calculo: 1, balanza: 1, cerillos: 1, stroop: 1, cubos: 1 };
-const SCN = { juegos: 'Sala de juegos', casino: 'Casino de la Ciencia', cartas: 'Sala de cartas', patio: 'Patio', lab: 'Laboratorio', aula1: 'Aula de diagramas (2.º piso)', aula2: 'Aula de diagramas (3.er piso)', biblio: 'Biblioteca', taller: 'Taller maker', comedor: 'Comedor', azotea: 'Azotea' };
+const GEMAS = [['patio', 0, 0, 'P'], ['lab', 3.5, 4.4, 'I'], ['aula1', 3.5, 4.4, 'E'], ['biblio', 3.5, 4.4, 'N'], ['comedor', 3.5, 4.4, 'S'], ['azotea', 3.5, 4.4, 'A']];
+const MENTE = { flappy: 1, breakout: 1, pong: 1, wordle: 1, deslizante: 1, tuberias: 1, intruso: 1, kenken: 1, circuitos: 1, robots2: 1, bar: 1, codigos: 1, ritmo: 1, torre: 1, tetris: 1, pacman: 1, snake: 1, dosmil: 1, minas: 1, sokoban: 1, tresenraya: 1, nim: 1, ajedrez: 1, galleta: 1, crucigrama: 1, diferencias: 1, laberinto: 1, esferos: 1, tragamonedas: 1, ruleta: 1, esperado: 1, cromos: 1, apuestas: 1, trucos: 1, veintiuno: 1, intermedia: 1, poker: 1, cuarenta: 1, rummy: 1, cuarteto: 1, codigo: 1, vars: 1, sistema: 1, simon: 1, sudoku: 1, pares: 1, cripto: 1, tangram: 1, tuberias: 1, laser: 1, calculo: 1, balanza: 1, cerillos: 1, stroop: 1, cubos: 1 };
+const SCN = { arcade2: 'Sala Arcade 2', inventos: 'Laboratorio de inventos', arcade: 'Sala Arcade', juegos: 'Sala de juegos', casino: 'Casino de la Ciencia', cartas: 'Sala de cartas', patio: 'Patio', lab: 'Laboratorio', aula1: 'Aula de diagramas (2.º piso)', aula2: 'Aula de diagramas (3.er piso)', biblio: 'Biblioteca', taller: 'Taller maker', comedor: 'Comedor', azotea: 'Azotea' };
 const DEP = [
   { id: 'futbol', n: 'FÚTBOL 1 VS 1', c: '#ffffff', x: -5, z: -3.5 }, { id: 'basket', n: 'BÁSQUET 1 VS 1', c: '#ff9f43', x: 5, z: -3.5 },
   { id: 'penales', n: 'PENALES', c: '#7fe0a0', x: -9.5, z: -1.0 }, { id: 'voley', n: 'VÓLEY 1 VS 1', c: '#ffe9a8', x: 9.5, z: -1.0 },
@@ -812,6 +888,26 @@ const PISTA_TEC = {
   cuarenta: 'J1 elige la carta de su mano con A · D. J2 recorre la mesa con ← · → y marca con ↑. Jugar: E + ENTER a la vez.',
   rummy: 'J1 mueve con A · D y marca con W. J2 mueve con ← · → y marca con ↑. Bajar la combinación: E + ENTER a la vez.',
   cuarteto: 'J1 se mueve con W A S D y voltea con E. J2 se mueve con las flechas y voltea con ENTER.',
+  flappy: 'Cualquiera aletea: J1 con W, J2 con ↑. Pasen por la condición verdadera.',
+  breakout: 'Los dos mueven la paleta: J1 A · D, J2 ← · →.',
+  pong: 'J1 sube la paleta (W) y J2 la baja (↓). En las preguntas: J1 A · D, J2 ← · →, E + ENTER.',
+  wordle: 'Escriban con el teclado, ⌫ borra y ENTER envía. Uno propone y el otro revisa los colores.',
+  deslizante: 'J1 mueve piezas a los lados (A · D). J2 arriba y abajo (↑ · ↓). También con clic.',
+  tuberias: 'J1: W A S D mover y E girar. J2: flechas mover y ENTER girar. También con clic.',
+  intruso: 'J1 elige con A · D y J2 con ← · →. Marquen la misma y confirmen con E + ENTER.',
+  kenken: 'Muevan con flechas o W A S D, escriban el número y ENTER comprueba.',
+  circuitos: 'J1 elige el componente con A · D. J2 toca el pin con el mouse. Probar: E + ENTER a la vez.',
+  robots2: 'J1 programa el robot azul con W A S D (Q borra). J2 el naranja con flechas (⌫ borra). Ejecutar: E + ENTER.',
+  bar: 'J1 elige con A · D y J2 con ← · →. Marquen la misma y confirmen con E + ENTER.',
+  codigos: 'J1 elige con A · D y J2 con ← · →. Marquen la misma y confirmen con E + ENTER.',
+  ritmo: 'J1 toca rojo y verde (A · D). J2 azul y amarillo (← · →).',
+  torre: 'Por turnos: J1 suelta con E y J2 con ENTER.',
+  tetris: 'J1 mueve con A · D y baja con S. J2 gira con ↑ y suelta con ↓.',
+  pacman: 'J1 agrega ← (A) y → (D), borra con S. J2 agrega ↑ y ↓. Ejecutar: E + ENTER a la vez.',
+  snake: 'J1 gira a los lados (A · D). J2 gira arriba y abajo (↑ · ↓).',
+  dosmil: 'J1 mueve a los lados (A · D). J2 mueve arriba y abajo (↑ · ↓).',
+  minas: 'J1 se mueve con W A S D y abre con E. J2 se mueve con las flechas y pone banderas con ENTER. También con clic.',
+  sokoban: 'J1 mueve a los lados (A · D) y deshace con S. J2 mueve arriba y abajo (↑ · ↓). R reinicia.',
   tresenraya: 'J1 mueve con W A S D y J2 con las flechas. Cuando los dos estén en la misma casilla, juegan con E + ENTER (o clic).',
   nim: 'J1 elige el montón con A · D. J2 elige cuántos sacar con ← · →. Sacar: E + ENTER a la vez.',
   ajedrez: 'J1 elige la pieza (W A S D + E). J2 elige el destino (flechas + ENTER). También con clic: pieza y luego casilla.',
@@ -827,7 +923,7 @@ const PISTA_TEC = {
   cerillos: 'J1 levanta un fósforo (A · D + E). J2 lo suelta en un espacio (← · → + ENTER).', stroop: 'J1: A rojo, D verde. J2: ← azul, → amarillo.', cubos: 'J1 gira la torre (A · D). J2 escribe la respuesta (↑ ↓ ← →). Para enviar: E + ENTER.'
 };
 const SUB = { armar: 1, orden: 1, decision: 1, sigue: 1, error: 1, aparato: 1, reglas: 1, interrog: 1, master: 1, compuertas: 1, robot: 1, raven: 1, einstein: 1, estim: 1, rutas: 1 };
-const BASICO = ['tresenraya', 'nim', 'ajedrez', 'galleta', 'crucigrama', 'diferencias', 'laberinto', 'esferos', 'tragamonedas', 'ruleta', 'esperado', 'cromos', 'apuestas', 'trucos', 'veintiuno', 'intermedia', 'poker', 'cuarenta', 'rummy', 'cuarteto', 'codigo', 'vars', 'sistema', 'simon', 'sudoku', 'pares', 'cripto', 'tangram', 'tuberias', 'laser', 'calculo', 'balanza', 'cerillos', 'stroop', 'cubos', 'armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
+const BASICO = ['flappy', 'breakout', 'pong', 'wordle', 'deslizante', 'tuberias', 'intruso', 'kenken', 'circuitos', 'robots2', 'bar', 'codigos', 'ritmo', 'torre', 'tetris', 'pacman', 'snake', 'dosmil', 'minas', 'sokoban', 'tresenraya', 'nim', 'ajedrez', 'galleta', 'crucigrama', 'diferencias', 'laberinto', 'esferos', 'tragamonedas', 'ruleta', 'esperado', 'cromos', 'apuestas', 'trucos', 'veintiuno', 'intermedia', 'poker', 'cuarenta', 'rummy', 'cuarteto', 'codigo', 'vars', 'sistema', 'simon', 'sudoku', 'pares', 'cripto', 'tangram', 'tuberias', 'laser', 'calculo', 'balanza', 'cerillos', 'stroop', 'cubos', 'armar', 'orden', 'decision', 'sigue', 'error', 'aparato', 'reglas', 'torre', 'robot', 'master', 'raven', 'rutas'];
 const CLASE = { '8vo': ['codigo', 'orden', 'armar', 'decision', 'sigue', 'error', 'aparato'], '9no': ['vars', 'compuertas', 'calculo', 'decision', 'sigue', 'error', 'aparato'], '10mo': ['sistema', 'armar', 'decision', 'error', 'aparato', 'robot', 'tuberias'] };
 const CURSO_CFG = { '8vo': { nombre: '8vo EGB', inicio: 1, retos: MODO_CLASE ? CLASE['8vo'] : BASICO }, '9no': { nombre: '9no EGB', inicio: 1, retos: MODO_CLASE ? CLASE['9no'] : BASICO }, '10mo': { nombre: '10mo EGB', inicio: 1, retos: MODO_CLASE ? CLASE['10mo'] : undefined }, '3BGU': { nombre: '3ro BGU', inicio: 2 } };
 function maxEst(inicio) { let t = inicio, s = 0; for (let i = 0; i < 3; i++) { s += BASE_T[t]; t = Math.min(3, t + 1); } return s; }
@@ -873,6 +969,26 @@ ESTR.poker = ['Pensamos qué mano es más difícil de conseguir','Contamos las c
 ESTR.cuarenta = ['Buscamos caídas primero','Probamos sumas hasta 7','Revisamos si había escalera','Elegimos al azar'];
 ESTR.rummy = ['Buscamos primero las escaleras','Agrupamos por número','Probamos y corregimos','Elegimos al azar'];
 ESTR.cuarteto = ['Nos dijimos en voz alta dónde estaba cada número','Uno recordaba la izquierda y otro la derecha','Volteamos al azar','Nos turnamos'];
+ESTR.flappy = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.breakout = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.pong = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.wordle = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.deslizante = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.tuberias = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.intruso = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.kenken = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.circuitos = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.robots2 = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.bar = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.codigos = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.ritmo = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.torre = ['Nos dividimos el trabajo','Pensamos antes de actuar','Probamos y corregimos','Elegimos al azar'];
+ESTR.tetris = ['Nos avisábamos antes de girar','Dejábamos un hueco para la pieza larga','Llenábamos de abajo hacia arriba','Jugamos rápido sin hablar'];
+ESTR.pacman = ['Recorrimos el camino con el dedo antes','Probamos y corregimos el programa','Buscamos la ruta más corta','Probamos al azar'];
+ESTR.snake = ['Revisábamos la regla antes de comer','Uno miraba los números y otro el camino','Evitábamos las paredes','Jugamos rápido'];
+ESTR.dosmil = ['Mantuvimos el número grande en una esquina','Pensábamos dos jugadas adelante','Unimos los pequeños primero','Movimos al azar'];
+ESTR.minas = ['Empezamos por los números 1','Marcamos las minas seguras primero','Contamos vecinos','Abrimos al azar'];
+ESTR.sokoban = ['Pensamos el orden de las cajas antes de empujar','Evitamos las esquinas','Usamos deshacer para probar','Movimos al azar'];
 ESTR.tresenraya = ['Primero buscamos ganar, después bloquear','Tomamos el centro y las esquinas','Jugamos por intuición','Elegimos al azar'];
 ESTR.nim = ['Buscamos un patrón en las partidas que perdimos','Usamos múltiplos de 4 o el binario','Probamos y corregimos','Elegimos al azar'];
 ESTR.ajedrez = ['Buscamos jaques que no dejan escape','Contamos las casillas libres del rey','Probamos movimientos','Elegimos al azar'];
@@ -1015,6 +1131,7 @@ class Component extends DCLogic {
     this.init3D();
   }
   componentWillUnmount() {
+    try { if (this._red) this._red.salir(); } catch (e) {}
     this.muerto = true; clearInterval(this.tick); cancelAnimationFrame(this.raf);
     document.removeEventListener('keydown', this.h.down, true); document.removeEventListener('keyup', this.h.up, true);
     document.removeEventListener('visibilitychange', this.h.vis); window.removeEventListener('blur', this.h.blur); window.removeEventListener('focus', this.h.focus); clearInterval(this._incT);
@@ -1034,6 +1151,8 @@ class Component extends DCLogic {
   norm(t) { return String(t || '').trim().toLowerCase().replace(/\s+/g, ' '); }
 
   teclaAbajo(e) {
+    if (e.target && e.target.dataset && e.target.dataset.chat) { if (e.code === 'Enter') { e.preventDefault(); this.enviarChat(); } if (e.code === 'Escape') e.target.blur(); return; }
+    if (this._duelVis) return;
     const s = this.state, code = e.code, k = (e.key || '').toLowerCase();
     if (this.enJuego()) {
       if ((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a', 'p', 's', 'u', 'f', 'r', 'j', 'i', 'g', 'h', 'o', 'n', 't', 'w'].includes(k)) e.preventDefault();
@@ -1043,6 +1162,7 @@ class Component extends DCLogic {
     if (s.pausa || s.bloq) { this.keys = {}; return; }
     this.keys[code] = true;
     if (s.fase === 'mundo' && s.dep && !s.bloq && (code === 'KeyE' || code === 'Enter')) { e.preventDefault(); if (!e.repeat) this.accionDep(code === 'KeyE' ? 0 : 1); }
+    if (s.fase === 'puzzle' && s.pz && s.pz.elegir) { this.keys = {}; const m = { Digit1: 'facil', Digit2: 'normal', Digit3: 'experto', Numpad1: 'facil', Numpad2: 'normal', Numpad3: 'experto' }[code]; if (m) { e.preventDefault(); this.elegirModo(m); } return; }
     if (s.fase === 'puzzle' && s.introPend) { this.keys = {}; if (code === 'KeyE' || code === 'Enter' || code === 'Space') { e.preventDefault(); this.setState({ introPend: null, introV: Object.assign({}, s.introV, { [s.introPend]: true }) }); } return; }
     if (s.fase === 'puzzle' && s.pz && !s.bloq) {
       if (s.pz.est !== 'crucigrama' && ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyE', 'KeyQ', 'KeyP', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Space'].includes(code)) { e.preventDefault(); if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); }
@@ -1087,11 +1207,11 @@ class Component extends DCLogic {
     sc.add(dl); sc.add(dl.target);
     g.patio = new T.Group(); g.lab = new T.Group(); g.aula1 = new T.Group(); g.aula2 = new T.Group(); [g.patio, g.lab, g.aula1, g.aula2].forEach(x => sc.add(x)); this.coll = this.coll || {};
     this.construirPatio(); this.construirLab(); this.coll.aula1 = []; this.coll.aula2 = []; this.construirAula('aula1', 'AULA DE DIAGRAMAS · 2.º PISO', true); this.construirAula('aula2', 'AULA DE DIAGRAMAS · 3.er PISO', false); this.anilloTxt(g.aula2, -7.0, 4.6, 'BIBLIOTECA', '#ffd166'); this.anilloTxt(g.aula1, -7.0, 4.6, 'SALA DE JUEGOS', '#5fd0e8'); this.anilloTxt(g.aula2, 7.0, 4.6, 'SUBIR A LA AZOTEA', '#a9cbe6');
-    const coll0 = this.coll; ['biblio', 'taller', 'comedor', 'azotea', 'casino', 'cartas', 'juegos'].forEach(k => this.construirSala(k)); this.coll = Object.assign(coll0, this.coll); this.construirExtrasPatio(); try { this.construirGente(); } catch (e) {}
+    const coll0 = this.coll; ['biblio', 'taller', 'comedor', 'azotea', 'casino', 'cartas', 'juegos', 'arcade', 'arcade2', 'inventos'].forEach(k => this.construirSala(k)); this.coll = Object.assign(coll0, this.coll); this.construirExtrasPatio(); try { this.construirGente(); } catch (e) {}
     EST.filter(e => e.esc && e.esc !== 'lab').forEach(e => this.construirTerminal(e));
     g.stats = { macetas: 13, columnas: 10, postes: 14, ventanas: 32, pcs: 8, escalones: 6, casas: this._casas || 120 };
     this.construirJugadores();
-    this.posP = { patio: [[-2, 5], [2, 5]], lab: [[-0.9, 3.9], [0.9, 3.9]], aula1: [[-0.9, 3.9], [0.9, 3.9]], aula2: [[-0.9, 3.9], [0.9, 3.9]], biblio: [[-0.9, 3.9], [0.9, 3.9]], taller: [[-0.9, 3.9], [0.9, 3.9]], comedor: [[-0.9, 3.9], [0.9, 3.9]], azotea: [[-0.9, 3.9], [0.9, 3.9]], casino: [[-0.9, 3.9], [0.9, 3.9]], cartas: [[-0.9, 3.9], [0.9, 3.9]], juegos: [[-0.9, 3.4], [0.9, 3.4]] };
+    this.posP = { patio: [[-2, 5], [2, 5]], lab: [[-0.9, 3.9], [0.9, 3.9]], aula1: [[-0.9, 3.9], [0.9, 3.9]], aula2: [[-0.9, 3.9], [0.9, 3.9]], biblio: [[-0.9, 3.9], [0.9, 3.9]], taller: [[-0.9, 3.9], [0.9, 3.9]], comedor: [[-0.9, 3.9], [0.9, 3.9]], azotea: [[-0.9, 3.9], [0.9, 3.9]], casino: [[-0.9, 3.9], [0.9, 3.9]], cartas: [[-0.9, 3.9], [0.9, 3.9]], juegos: [[-0.9, 3.4], [0.9, 3.4]], arcade: [[-0.9, 3.4], [0.9, 3.4]], arcade2: [[-0.9, 3.4], [0.9, 3.4]], inventos: [[-0.9, 3.4], [0.9, 3.4]] };
     this.camPos = null; this.aplicarEscena(); this.resize();
     this.setState({ c3d: false });
     let last = performance.now();
@@ -1282,7 +1402,7 @@ class Component extends DCLogic {
   }
   paso(dt, t) {
     const g = this.g, s = this.state, esc = s.escena;
-    const mover = s.fase === 'mundo' && !s.bloq && !s.pausa && !this.transicion;
+    const mover = s.fase === 'mundo' && !s.bloq && !s.pausa && !this.transicion && !this._duelVis;
     g.jug.forEach((j, i) => {
       const k = this.keys, up = i ? k.ArrowUp : k.KeyW, dn = i ? k.ArrowDown : k.KeyS, lf = i ? k.ArrowLeft : k.KeyA, rt = i ? k.ArrowRight : k.KeyD;
       let dx = (rt ? 1 : 0) - (lf ? 1 : 0), dz = (dn ? 1 : 0) - (up ? 1 : 0);
@@ -1316,10 +1436,12 @@ class Component extends DCLogic {
     EST.forEach(e => { const tm = g.term[e.id]; if (!tm) return; if (this.hecha(e.id) && !tm.beam) { tm.beam = this.rayo(tm, e); tm.burst = 0; } if (tm.burst != null && tm.burst < 1.4) { tm.burst += dt; const k = tm.burst / 1.4; tm.anillo.visible = true; tm.anillo.scale.setScalar(1 + k * 6); tm.anillo.material.opacity = 0.9 * (1 - k); } else tm.anillo.visible = false; if (tm.beam) tm.beam.material.opacity = 0.35 + Math.sin(t * 4 + e.x) * 0.15; });
     if (g.monitores) g.monitores.forEach((m, i) => { m.material.color.setHSL(0.55, 0.6, 0.16 + 0.05 * Math.sin(t * 2 + i)); });
     try { this.ambiente(dt, t); } catch (e) {}
+    try { this.redPaso(dt); } catch (e) {}
+    try { this.gemasPaso(dt); } catch (e) {}
     this.interacciones(dt);
     g.r.render(g.sc, g.cam);
   }
-  hecha(id) { const e = this.state.est[id]; return !!(e && e.rondas && e.rondas.length >= 3); }
+  hecha(id) { const e = this.state.est[id]; return !!(e && ((e.rondas && e.rondas.length >= 3) || e.best != null)); }
   activo(id) { const r = this.cfg().retos; return !r || r.includes(id); }
   activos() { return EST.filter(e => this.activo(e.id)); }
   nHechas() { return this.activos().filter(e => this.hecha(e.id)).length; }
@@ -1335,8 +1457,9 @@ class Component extends DCLogic {
       tm.pm.color.copy(hecho ? new g.T.Color('#7fe0a0') : tm.col).multiplyScalar(hecho ? 0.9 : 0.5 + Math.sin(performance.now() / 300) * 0.15);
       tm.luz.color.set(hecho ? '#7fe0a0' : e.color);
       if (id) return;
-      if (ep.alguno && hecho) { pr = e.nombre + ' ya está resuelto'; col = '#7fe0a0'; }
-      else if (ep.ambos) { id = e.id; pr = (gd ? 'Retomando ' : 'Sincronizando ') + e.nombre; col = e.color; accion = () => this.abrirPuzzle(e.id); }
+      const ee = s.est[e.id] || {};
+      if (ep.ambos) { id = e.id; pr = (hecho && !gd ? 'Repetir para mejorar (' + '★'.repeat(ee.stars || 1) + ') · ' : gd ? 'Retomando ' : 'Sincronizando ') + e.nombre; col = hecho ? '#7fe0a0' : e.color; accion = () => this.abrirPuzzle(e.id); }
+      else if (ep.alguno && hecho) { pr = e.nombre + ' · ' + '★'.repeat(ee.stars || 1) + '☆'.repeat(3 - (ee.stars || 1)) + ' · súbanse los dos para repetir y mejorar'; col = '#7fe0a0'; }
       else if (ep.alguno) { pr = e.nombre + ' · falta el otro jugador en la segunda placa'; col = e.color; }
     });
     const dd = (x, z) => g.jug.map(q => Math.hypot(q.x - x, q.z - z));
@@ -1374,7 +1497,16 @@ class Component extends DCLogic {
       portal(7.0, 4.6, 0.95, 'azotea', 'Subiendo a la azotea', '#a9cbe6', () => this.irA('azotea'));
     } else if (esc === 'biblio' || esc === 'azotea') {
       portal(0, 5.2, 0.95, 'bajar', 'Volviendo al 3.er piso', '#66e0d2', () => this.irA('aula2', esc === 'biblio' ? [[-7.8, 3.4], [-6.2, 3.4]] : [[6.2, 3.4], [7.8, 3.4]]));
+    } else if (esc === 'arcade') {
+      portal(0, 5.2, 0.95, 'bajar', 'Volviendo a la sala de juegos', '#66e0d2', () => this.irA('juegos', [[-7.8, 3.4], [-6.2, 3.4]]));
+      portal(7.0, 4.6, 0.95, 'arcade2', 'Entrando a la Sala Arcade 2', '#5fd0e8', () => this.irA('arcade2'));
+    } else if (esc === 'arcade2') {
+      portal(0, 5.2, 0.95, 'bajar', 'Volviendo a la Sala Arcade', '#66e0d2', () => this.irA('arcade', [[6.2, 3.4], [7.8, 3.4]]));
+      portal(7.0, 4.6, 0.95, 'inventos', 'Entrando al Laboratorio de inventos', '#9ae66e', () => this.irA('inventos'));
+    } else if (esc === 'inventos') {
+      portal(0, 5.2, 0.95, 'bajar', 'Volviendo a la Sala Arcade 2', '#66e0d2', () => this.irA('arcade2', [[6.2, 3.4], [7.8, 3.4]]));
     } else if (esc === 'juegos') {
+      portal(-7.0, 4.6, 0.95, 'arcade', 'Entrando a la Sala Arcade', '#ff3d7f', () => this.irA('arcade'));
       portal(0, 5.2, 0.95, 'bajar', 'Volviendo al 2.º piso', '#66e0d2', () => this.irA('aula1', [[-7.8, 3.4], [-6.2, 3.4]]));
     } else if (esc === 'casino' || esc === 'cartas') {
       portal(0, 5.2, 0.95, 'bajar', 'Volviendo al comedor', '#66e0d2', () => this.irA('comedor', esc === 'casino' ? [[-7.8, 3.4], [-6.2, 3.4]] : [[6.2, 3.4], [7.8, 3.4]]));
@@ -1424,7 +1556,7 @@ class Component extends DCLogic {
   construirSala(key) {
     const T = this.g.T, g = this.g; g[key] = new T.Group(); g.sc.add(g[key]); this.coll[key] = [];
     const G = g[key], M = c => this.M(c), box = (w, hh, d, m, x, y, z) => this.box(w, hh, d, m, x, y, z, G), C = (a, b, c, d) => this.coll[key].push([a, b, c, d]);
-    const cfg = { biblio: ['#7a5a3a', '#efe6d2', '#8b3a3a', 'BIBLIOTECA · 3.er PISO'], taller: ['#59636b', '#d9dde0', '#2f8f5b', 'TALLER MAKER'], comedor: ['#c9b48a', '#f3ead6', '#d07a2e', 'COMEDOR · BAR'], azotea: ['#9aa0a6', null, '#2f8fc0', 'AZOTEA'], casino: ['#3a0f1e', '#2a0d18', '#ffd166', 'CASINO DE LA CIENCIA · LA CASA SIEMPRE GANA'], cartas: ['#0f3d27', '#1d2a22', '#ffd166', 'SALA DE CARTAS'], juegos: ['#6b4a2e', '#e7d9bf', '#5fd0e8', 'SALA DE JUEGOS · 2.º PISO'] }[key];
+    const cfg = { biblio: ['#7a5a3a', '#efe6d2', '#8b3a3a', 'BIBLIOTECA · 3.er PISO'], taller: ['#59636b', '#d9dde0', '#2f8f5b', 'TALLER MAKER'], comedor: ['#c9b48a', '#f3ead6', '#d07a2e', 'COMEDOR · BAR'], azotea: ['#9aa0a6', null, '#2f8fc0', 'AZOTEA'], casino: ['#3a0f1e', '#2a0d18', '#ffd166', 'CASINO DE LA CIENCIA · LA CASA SIEMPRE GANA'], cartas: ['#0f3d27', '#1d2a22', '#ffd166', 'SALA DE CARTAS'], juegos: ['#6b4a2e', '#e7d9bf', '#5fd0e8', 'SALA DE JUEGOS · 2.º PISO'], arcade: ['#120a24', '#1b1030', '#ff3d7f', 'SALA ARCADE'], arcade2: ['#0a1a24', '#10202c', '#5fd0e8', 'SALA ARCADE 2'], inventos: ['#2a3340', '#d8d2c4', '#9ae66e', 'LABORATORIO DE INVENTOS'] }[key];
     const piso = new T.Mesh(new T.PlaneGeometry(18, 12), new T.MeshLambertMaterial({ map: this.tex(256, 256, (c, w, hh) => { c.fillStyle = cfg[0]; c.fillRect(0, 0, w, hh); c.strokeStyle = 'rgba(0,0,0,.18)'; c.lineWidth = 3; for (let y = 0; y <= hh; y += 64) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); } for (let x = 0; x <= w; x += 64) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, hh); c.stroke(); } }, 4) }));
     piso.rotation.x = -Math.PI / 2; piso.receiveShadow = true; G.add(piso);
     const suelo = new T.Mesh(new T.PlaneGeometry(200, 200), M(key === 'azotea' ? '#7d8a6a' : '#0b1117')); suelo.rotation.x = -Math.PI / 2; suelo.position.y = key === 'azotea' ? -11 : -0.05; G.add(suelo);
@@ -1452,6 +1584,12 @@ class Component extends DCLogic {
       const disco = new T.Mesh(new T.CylinderGeometry(1.1, 1.1, 0.08, 37), new T.MeshBasicMaterial({ map: this.tex(256, 256, (c, w, hh) => { for (let i = 0; i < 37; i++) { c.beginPath(); c.moveTo(128, 128); c.arc(128, 128, 126, i / 37 * Math.PI * 2, (i + 1) / 37 * Math.PI * 2); c.fillStyle = i === 0 ? '#1d7a44' : i % 2 ? '#c62828' : '#111'; c.fill(); } c.fillStyle = '#d4af37'; c.beginPath(); c.arc(128, 128, 30, 0, 7); c.fill(); }) })); disco.position.set(0, 0.95, 0.3); G.add(disco); this.g.ruletaDisco = disco;
       [-3.4, 3.4].forEach(x => { box(1.0, 1.9, 0.8, M('#7a1f1f'), x, 0, 3.2); box(0.8, 0.5, 0.05, new T.MeshBasicMaterial({ color: '#ffd166' }), x, 1.2, 3.62); C(x - 0.55, x + 0.55, 2.75, 3.65); });
       [-6, -2, 2, 6].forEach(x => { const l = new T.PointLight('#ff3d7f', 0.7, 7, 2); l.position.set(x, 2.8, -3); G.add(l); });
+    } else if (key === 'arcade2' || key === 'inventos') {
+      [-3, 3].forEach(x => { box(2.4, 0.08, 1.4, M(key === 'inventos' ? '#b9a27c' : '#1d1636'), x, 0.76, 0.4); box(0.12, 0.76, 0.12, M('#333'), x, 0, 0.4); C(x - 1.3, x + 1.3, -0.4, 1.2); });
+      const lz = new T.PointLight(key === 'inventos' ? '#fff1c2' : '#5fd0e8', 0.9, 14, 1.6); lz.position.set(0, 2.9, 0); G.add(lz);
+    } else if (key === 'arcade') {
+      [-3, 0, 3].forEach((x, i) => { const col = ['#5fd0e8', '#ffd166', '#7fe0a0'][i]; box(1.1, 2.0, 0.9, M('#1d1636'), x, 0, 1.2); const pn = new T.Mesh(new T.PlaneGeometry(0.8, 0.6), new T.MeshBasicMaterial({ color: col })); pn.position.set(x, 1.45, 1.66); G.add(pn); box(1.1, 0.25, 0.9, new T.MeshBasicMaterial({ color: col }), x, 1.95, 1.2); C(x - 0.6, x + 0.6, 0.7, 1.7); });
+      [-6, 0, 6].forEach(x => { const l = new T.PointLight('#ff3d7f', 0.8, 8, 2); l.position.set(x, 2.8, -1); G.add(l); });
     } else if (key === 'juegos') {
       mesa(-3, 0.2, 2.2, 1.6, '#8b6a46'); mesa(3, 0.2, 2.2, 1.6, '#8b6a46');
       const tab = new T.Mesh(new T.PlaneGeometry(1.2, 1.2), new T.MeshBasicMaterial({ map: this.tex(256, 256, (c, w, hh) => { for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) { c.fillStyle = (i + j) % 2 ? '#a77b52' : '#e9d7b4'; c.fillRect(i * 32, j * 32, 32, 32); } }) })); tab.rotation.x = -Math.PI / 2; tab.position.set(-3, 0.81, 0.2); G.add(tab);
@@ -1466,17 +1604,57 @@ class Component extends DCLogic {
       const an = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 4, 6), M('#ccc')); an.position.set(7.8, 2, 4.4); G.add(an);
     }
     const lz = new T.PointLight('#fff4dc', key === 'azotea' ? 0.4 : 1.2, 30, 1.3); lz.position.set(0, 3, 0); G.add(lz);
-    this.anilloTxt(G, 0, 5.2, key === 'taller' || key === 'comedor' ? 'SALIR AL PATIO' : key === 'casino' || key === 'cartas' ? 'VOLVER AL COMEDOR' : key === 'juegos' ? 'VOLVER AL 2.º PISO' : 'BAJAR AL 3.er PISO', '#66e0d2');
+    this.anilloTxt(G, 0, 5.2, key === 'taller' || key === 'comedor' ? 'SALIR AL PATIO' : key === 'casino' || key === 'cartas' ? 'VOLVER AL COMEDOR' : key === 'juegos' ? 'VOLVER AL 2.º PISO' : key === 'arcade' ? 'VOLVER A LA SALA DE JUEGOS' : key === 'arcade2' ? 'VOLVER A LA SALA ARCADE' : key === 'inventos' ? 'VOLVER A ARCADE 2' : 'BAJAR AL 3.er PISO', '#66e0d2');
+    if (key === 'juegos') this.anilloTxt(G, -7.0, 4.6, 'SALA ARCADE', '#ff3d7f');
+    if (key === 'arcade') this.anilloTxt(G, 7.0, 4.6, 'SALA ARCADE 2', '#5fd0e8');
+    if (key === 'arcade2') this.anilloTxt(G, 7.0, 4.6, 'LABORATORIO DE INVENTOS', '#9ae66e');
     if (key === 'comedor') { this.anilloTxt(G, -7.0, 4.6, 'CASINO DE LA CIENCIA', '#ffd166'); this.anilloTxt(G, 7.0, 4.6, 'SALA DE CARTAS', '#7fe0a0'); }
   }
+  redPaso(dt) {
+    const s = this.state, g = this.g, T = g.T, cfg = (window.MISION_CONFIG || {}).firebase;
+    if (!cfg || !window.ESC_RED || !s.ses || !this.enJuego()) return;
+    if (!this._red && !this._redCon) { this._redCon = true; const sala = window.ESC_RED.salaId(s.ses.curso, s.ses.paralelo), id = String(s.ses.id || (s.ses.a + '_' + s.ses.b)).replace(/[.#$\[\]\/\s]/g, '_') + '_' + String(s.ses.a || '').slice(0, 3);
+      this._yoId = id; window.ESC_RED.conectar(cfg, sala, { id, info: { n: s.ses.a + ' / ' + s.ses.b, esc: s.escena } }, {
+        jug: o => { this._otros = o; this.setState({ redN: Object.keys(o).length }); }, chat: m => this.setState({ chatM: m }), ctl: c => this.setState({ ctl: c }),
+        duelos: L => { this.setState({ duelos: L }); L.forEach(dd => { if (dd.est === 'fin' && !(this._prem || {})[dd.id]) { this._prem = Object.assign({}, this._prem, { [dd.id]: 1 }); const yoR = dd.a === id ? 'a' : 'b', gano = dd.gan === yoR, emp = dd.gan === 'e'; if (gano || emp) this.setState({ xd: (this.state.xd || 0) + (gano ? 3 : 1), toast: { t: gano ? '🏆 ¡Ganaron el duelo! +3 puntos extra' : 'Empate en el duelo · +1 punto extra', hasta: Date.now() + 4000 } }); } }); }
+      }).then(red => { this._red = red; this.setState({ redOn: true }); }).catch(() => { this._redCon = false; this._redErrT = Date.now(); }); return; }
+    if (!this._red) return;
+    const J = g.jug || []; this._red.mover({ esc: s.escena, x1: J[0] ? Math.round(J[0].x * 10) / 10 : 0, z1: J[0] ? Math.round(J[0].z * 10) / 10 : 0, x2: J[1] ? Math.round(J[1].x * 10) / 10 : 0, z2: J[1] ? Math.round(J[1].z * 10) / 10 : 0, h: this.nHechas(), n: s.ses.a + ' / ' + s.ses.b, nota: this.nota(), st: EST.reduce((a, e) => a + ((s.est[e.id] || {}).stars || 0), 0) });
+    const O = this._otros || {}, M = g.otrosM || (g.otrosM = {}), now = Date.now();
+    Object.keys(M).forEach(k => { if (!O[k] || now - (O[k].t || 0) > 30000) { g.sc.remove(M[k].grp); delete M[k]; } });
+    Object.keys(O).forEach(k => { const o = O[k]; if (now - (o.t || 0) > 30000) return; let m = M[k];
+      if (!m) { const grp = new T.Group(), hh = Array.from(k).reduce((a, c) => a * 31 + c.charCodeAt(0) >>> 0, 7), col = new T.Color().setHSL((hh % 360) / 360, 0.65, 0.58);
+        const av = () => { const a = new T.Group(), b = new T.Mesh(new T.CylinderGeometry(0.26, 0.3, 0.95, 12), new T.MeshLambertMaterial({ color: col })); b.position.y = 0.48; const c = new T.Mesh(new T.SphereGeometry(0.2, 12, 10), new T.MeshLambertMaterial({ color: '#d9b48f' })); c.position.y = 1.15; a.add(b, c); grp.add(a); return a; };
+        const a1 = av(), a2 = av(), lab = new T.Sprite(new T.SpriteMaterial({ map: this.cartel(String(o.n || '').slice(0, 28), 512, 72, 'rgba(5,9,14,.85)', '#' + col.getHexString(), 30), depthTest: false, transparent: true })); lab.scale.set(2.6, 0.37, 1); grp.add(lab); g.sc.add(grp); m = M[k] = { grp, a1, a2, lab }; }
+      const vis = o.esc === s.escena; m.grp.visible = vis; if (!vis) return; const f = Math.min(1, dt * 8);
+      m.a1.position.x += ((o.x1 || 0) - m.a1.position.x) * f; m.a1.position.z += ((o.z1 || 0) - m.a1.position.z) * f; m.a2.position.x += ((o.x2 || 0) - m.a2.position.x) * f; m.a2.position.z += ((o.z2 || 0) - m.a2.position.z) * f;
+      m.lab.position.set((m.a1.position.x + m.a2.position.x) / 2, 2.0, (m.a1.position.z + m.a2.position.z) / 2); });
+  }
+  enviarChat() { const s = this.state; if (!this._red) return; const mudo = !!(((s.ctl || {}).mute || {})[this._yoId]); const r = this._red.enviar(s.chatTxt, s.ses.a + ' / ' + s.ses.b, mudo); if (r.ok) this.setState({ chatTxt: '' }); if (r.msg) this.setState({ toast: { t: r.msg, hasta: Date.now() + 3000 } }); if (r.bad) this.setState({ toast: { t: 'Su mensaje tenía palabras no permitidas: se ocultaron y el docente fue avisado.', hasta: Date.now() + 4000 } }); }
+  gemasPaso(dt) {
+    const g = this.g, s = this.state; if (!g.gemas || s.fase !== 'mundo') return; const got = s.gemas || {};
+    g.gemas.forEach((q, i) => { q.m.visible = !got[i] && q.esc === s.escena; if (!q.m.visible) return; q.m.rotation.y += dt * 2; q.m.position.y = 1.1 + Math.sin(performance.now() / 400 + i) * 0.15;
+      if ((g.jug || []).some(j => Math.hypot(j.x - q.x, j.z - q.z) < 1.1)) { const ng = Object.assign({}, got, { [i]: 1 }), n = Object.keys(ng).length; this.snd('ok');
+        if (n >= GEMAS.length) { this.setState({ gemas: ng, xd: (s.xd || 0) + 5, toast: { t: '🗝 ¡Palabra secreta completa: ' + GEMAS.map(x => x[3]).join('') + '! La puerta final se abre: +5 puntos extra', hasta: Date.now() + 5000 } }); setTimeout(() => this.medalla('explorador', 'Explorador del campus'), 2000); }
+        else this.setState({ gemas: ng, toast: { t: '🔷 Pista ' + n + ' de ' + GEMAS.length + ': encontraron la letra «' + q.l + '». Sigan buscando por el colegio.', hasta: Date.now() + 3500 } }); } });
+  }
   construirGente() {
+    { const T = this.g.T; this.g.gemas = GEMAS.map(([esc, x, z, l]) => { const G = this.g[esc]; const m = new T.Mesh(new T.OctahedronGeometry(0.32), new T.MeshBasicMaterial({ color: '#5fd0e8' })); const a = new T.Mesh(new T.OctahedronGeometry(0.42), new T.MeshBasicMaterial({ color: '#5fd0e8', transparent: true, opacity: 0.25 })); m.add(a); m.position.set(x, 1.1, z); if (G) G.add(m); return { m, esc, x, z, l }; }); }
+    { const T = this.g.T, P2 = this.g.patio;
+      [-14, -8, -2, 4, 10, 16].forEach((x, i) => { const tr = new T.Mesh(new T.CylinderGeometry(0.18, 0.24, 1.6, 8), this.M('#6b4a2e')); tr.position.set(x, 0.8, 12.6); const co = new T.Mesh(new T.ConeGeometry(1.2 + (i % 2) * 0.3, 2.6, 10), this.M(i % 2 ? '#2f6b45' : '#3b8a55')); co.position.set(x, 2.8, 12.6); P2.add(tr, co); });
+      [[-70, -70, 30, 24, '#3d5a45'], [-25, -80, 36, 30, '#4a6b50'], [25, -78, 32, 26, '#3d5a45'], [70, -70, 30, 22, '#4a6b50']].forEach(([x, z, r, hh, c]) => { const ce = new T.Mesh(new T.ConeGeometry(r, hh, 16), this.M(c)); ce.position.set(x, hh / 2 - 2, z); P2.add(ce); });
+      for (let x = -19; x <= 19; x += 2.5) [3.5, 7.0].forEach(y => this.box(0.08, 1.0, 0.12, this.M('#e8f4f8'), x, y, -9.5, P2));
+      const lt = new T.Mesh(new T.PlaneGeometry(16, 1.8), new T.MeshBasicMaterial({ map: this.tex(1600, 180, (c, w, h) => { c.fillStyle = '#0d2a5c'; c.fillRect(0, 0, w, h); c.strokeStyle = '#ffd166'; c.lineWidth = 6; c.strokeRect(4, 4, w - 8, h - 8);
+          c.fillStyle = '#ffd166'; c.beginPath(); c.moveTo(70, 30); c.lineTo(150, 30); c.lineTo(150, 100); c.quadraticCurveTo(110, 160, 110, 160); c.quadraticCurveTo(70, 100, 70, 100); c.closePath(); c.fill(); c.fillStyle = '#0d2a5c'; c.font = '900 60px serif'; c.textAlign = 'center'; c.fillText('P', 110, 108);
+          c.fillStyle = '#fff'; c.font = '900 64px "Archivo Black", Arial Black, sans-serif'; c.textAlign = 'left'; c.fillText('U.E.P. «LA PROVIDENCIA»', 200, 112); }) })); lt.position.set(0, 11.6, -9.4); P2.add(lt); }
+  
     const T = this.g.T, G = this.g.patio, g = this.g, h0 = Hh(rng(4242)), piel = ['#d9b48f', '#c8996b', '#e6c3a0', '#a97c55'], ropa = ['#1f2f5c', '#24345f', '#f1f1f1', '#1f2f5c', '#8a1c2b'];
     const N = 46, cuerpo = new T.InstancedMesh(new T.BoxGeometry(0.42, 0.55, 0.36), new T.MeshLambertMaterial(), N), cab = new T.InstancedMesh(new T.SphereGeometry(0.15, 10, 8), new T.MeshLambertMaterial(), N), m4 = new T.Matrix4(), c = new T.Color();
     for (let i = 0; i < N; i++) { const z = -11.4 + i * 0.47 + h0.int(0, 10) / 100, x = -19.35 + h0.int(0, 20) / 100;
       m4.makeTranslation(x, 0.42, z); cuerpo.setMatrixAt(i, m4); cuerpo.setColorAt(i, c.set(h0.pick(ropa))); m4.makeTranslation(x, 0.86, z); cab.setMatrixAt(i, m4); cab.setColorAt(i, c.set(h0.pick(piel))); }
     cuerpo.castShadow = true; G.add(cuerpo); G.add(cab);
-    g.npc = [0, 1, 2, 3, 4].map(i => { const grp = new T.Group(), col = ropa[i % ropa.length]; const b = new T.Mesh(new T.BoxGeometry(0.44, 0.75, 0.32), this.M(col)); b.position.y = 1.0; const hd = new T.Mesh(new T.SphereGeometry(0.17, 10, 8), this.M(piel[i % 4])); hd.position.y = 1.55; const l1 = new T.Mesh(new T.BoxGeometry(0.16, 0.62, 0.16), this.M('#2a2f36')), l2 = l1.clone(); l1.position.set(-0.1, 0.31, 0); l2.position.set(0.1, 0.31, 0);
-      grp.add(b, hd, l1, l2); b.castShadow = true; grp.position.set(-14 + i * 6, 0, -9 + (i % 3) * 7); G.add(grp); return { grp, l1, l2, tx: grp.position.x, tz: grp.position.z, v: 1.1 + i * 0.12, ph: i }; });
+    g.npc = [0, 1, 2, 3, 4, 5, 6].map(i => { const grp = new T.Group(), col = ropa[i % ropa.length]; const b = new T.Mesh(new T.BoxGeometry(0.44, 0.75, 0.32), this.M(col)); b.position.y = 1.0; const hd = new T.Mesh(new T.SphereGeometry(0.17, 10, 8), this.M(piel[i % 4])); hd.position.y = 1.55; const l1 = new T.Mesh(new T.BoxGeometry(0.16, 0.62, 0.16), this.M('#2a2f36')), l2 = l1.clone(); l1.position.set(-0.1, 0.31, 0); l2.position.set(0.1, 0.31, 0);
+      grp.add(b, hd, l1, l2); b.castShadow = true; if (i >= 5) { grp.scale.setScalar(1.15); b.material = this.M(i === 5 ? '#2a2f36' : '#6b3f8a'); } grp.position.set(-14 + i * 6, 0, -9 + (i % 3) * 7); G.add(grp); return { grp, l1, l2, tx: grp.position.x, tz: grp.position.z, v: 1.1 + i * 0.12, ph: i }; });
   }
   ambiente(dt, t) {
     const g = this.g, T = g.T, esc = this.state.escena; if (!g.patio) return;
@@ -1496,7 +1674,7 @@ class Component extends DCLogic {
     this._mapT = (this._mapT || 0) + dt; if (this._mapT < 0.2) return; this._mapT = 0;
     const cv = this.mapRef && this.mapRef.current; if (!cv) return; const x = cv.getContext('2d'), W = cv.width, H = cv.height; x.clearRect(0, 0, W, H);
     const pat = esc === 'patio', bx = pat ? [-28, 28, -19, 13] : [-9.3, 9.3, -6.3, 6.3], sx = (W - 16) / (bx[1] - bx[0]), sz = (H - 30) / (bx[3] - bx[2]), s = Math.min(sx, sz), ox = 8 + ((W - 16) - (bx[1] - bx[0]) * s) / 2, oz = 22 + ((H - 30) - (bx[3] - bx[2]) * s) / 2, X = v => ox + (v - bx[0]) * s, Z = v => oz + (v - bx[2]) * s;
-    x.fillStyle = '#9fb6c0'; x.font = '600 10px monospace'; x.fillText((SCN[esc] || esc).toUpperCase() + ' · ' + (this._fase || ''), 8, 13);
+    x.fillStyle = '#9fb6c0'; x.font = '600 10px monospace'; x.fillText((SCN[esc] || esc).toUpperCase() + ' · ' + (this._fase || '') + ' · 🔷 ' + Object.keys(this.state.gemas || {}).length + '/' + GEMAS.length, 8, 13);
     if (pat) { x.fillStyle = '#2f8fc0'; x.fillRect(X(-27), Z(-18), 7.5 * s, 30 * s); x.fillStyle = '#d6c79e'; x.fillRect(X(20), Z(-10), 7 * s, 22 * s); x.fillStyle = '#6f6d69'; x.fillRect(X(-20), Z(-18), 40 * s, 5.9 * s); x.strokeStyle = '#5fd0e8'; x.strokeRect(X(-16), Z(-8.8), 32 * s, 17 * s); }
     else { x.strokeStyle = '#5fd0e8'; x.strokeRect(X(-9), Z(-6), 18 * s, 12 * s); }
     EST.forEach(e => { if ((e.esc || 'lab') !== esc || !this.activo(e.id)) return; x.fillStyle = this.hecha(e.id) ? '#7fe0a0' : e.color; x.fillRect(X(e.x) - 3, Z(e.z) - 3, 6, 6); });
@@ -1681,7 +1859,7 @@ class Component extends DCLogic {
   }
 
   // ---------- puzzles ----------
-  hnd(id, ronda, tier) { return Hh(rng(hashS(this.state.ses.seed + '|' + id + '|' + ronda + '|' + tier))); }
+  hnd(id, ronda, tier) { const e = this.state.est[id] || {}; return Hh(rng(hashS(this.state.ses.seed + '|' + id + '|' + ronda + '|' + tier + '|' + (e.intento || 0)))); }
   datos(pz) {
     if (!pz) return null;
     const k = pz.est + '|' + pz.ronda + '|' + pz.tier;
@@ -1724,14 +1902,18 @@ class Component extends DCLogic {
     this.fbErr('Su circuito falla en ' + malas + (malas === 1 ? ' fila' : ' filas') + ' de la tabla (marcadas en rojo). Les quedan ' + (4 - intentos) + ' pruebas.', -6, { ui });
   }
   abrirPuzzle(id) {
-    const s = this.state, e = s.est[id] || { rondas: [], tier: this.cfg().inicio };
+    const s = this.state; let e = s.est[id] || { rondas: [], tier: this.cfg().inicio };
+    if (e.rondas.length >= 3) e = Object.assign({}, e, { rondas: [], intento: (e.intento || 0) + 1, modo: null });
     const ronda = e.rondas.length, tier = e.tier || this.cfg().inicio;
     const gd = s.guard && s.guard[id]; if (gd && gd.ronda === ronda) { this.keys = {}; this.setState({ fase: 'puzzle', pz: gd, hold: {}, llave: {}, est: Object.assign({}, s.est, { [id]: e }) }); return; }
-    const pz = { est: id, ronda, tier, ui: this.uiInicial(id, tier), estado: 'jugando', fb: null };
+    const pz = { est: id, ronda, tier, ui: this.uiInicial(id, tier), estado: 'jugando', fb: null, elegir: ronda === 0 };
     Object.assign(pz.ui, this.prepUi(pz));
     this.keys = {};
     this.setState({ fase: 'puzzle', pz, introPend: (window.ESC_APRENDE || {})[id] && !(s.introV || {})[id] ? id : null, est: Object.assign({}, s.est, { [id]: e }) });
   }
+  elegirModo(m) { const s = this.state, pz = s.pz; if (!pz) return; const tier = { facil: 1, normal: 2, experto: 3 }[m], e = Object.assign({}, s.est[pz.est], { modo: m, tier });
+    const npz = { est: pz.est, ronda: 0, tier, ui: this.uiInicial(pz.est, tier), estado: 'jugando', fb: null, elegir: false, nonce: Date.now() }; Object.assign(npz.ui, this.prepUi(npz)); this.keys = {}; this.snd('click');
+    this.setState({ pz: npz, est: Object.assign({}, s.est, { [pz.est]: e }) }); }
   setUi(patch) { const pz = this.state.pz; this.setState({ pz: Object.assign({}, pz, { ui: Object.assign({}, pz.ui, patch) }) }); }
   bateria(delta, extra) {
     let bat = this.state.bat + delta, pen = this.state.pen, aviso = '';
@@ -1744,10 +1926,12 @@ class Component extends DCLogic {
     this.setState(Object.assign(st, { pz: Object.assign({}, this.state.pz, extraPz || {}, { fb: { tipo: 'err', titulo: 'Todavía no', txt: txt + (delta ? ' (' + delta + ' % de batería)' : '') + aviso } }) }));
   }
   resolver(ok, eff, txt, bd) {
-    const s = this.state, pz = s.pz, pts = ok ? Math.round(BASE[pz.tier] * eff * 10) / 10 : 0;
+    const s = this.state, pz = s.pz, md = (s.est[pz.est] || {}).modo || 'normal', mult = { facil: 0.8, normal: 1, experto: 1.3 }[md], racha = ok ? (s.racha || 0) + 1 : 0, extra = ok && racha >= 3 ? 1 : 0;
+    const pts = ok ? Math.round((BASE[pz.tier] * eff * mult + extra) * 10) / 10 : 0;
+    if (racha >= 5 && !(s.medallas || {}).racha) setTimeout(() => this.medalla('racha', 'Racha de 5'), 600);
     const st = this.bateria(bd != null ? bd : (ok ? 4 : -5)); const aviso = st._aviso; delete st._aviso;
     this.snd(ok ? 'ok' : 'err');
-    this.setState(Object.assign(st, { pts: s.pts + pts, pz: Object.assign({}, pz, { estado: ok ? 'ok' : 'fail', pts, fb: { tipo: ok ? 'ok' : 'fail', titulo: ok ? (eff === 1 ? '¡Perfecto!' : '¡Resuelto!') : 'Ronda perdida', txt: (ok ? '+' + pts + ' puntos. ' : '') + txt + aviso } }) }));
+    this.setState(Object.assign(st, { racha, pts: s.pts + pts, pz: Object.assign({}, pz, { estado: ok ? 'ok' : 'fail', pts, eff: ok ? eff : 0, fb: { tipo: ok ? 'ok' : 'fail', titulo: ok ? (eff === 1 ? '¡Perfecto!' : '¡Resuelto!') : 'Ronda perdida', txt: (ok ? '+' + pts + ' puntos' + (mult !== 1 ? ' (' + (md === 'experto' ? 'Experto ×1,3' : 'Fácil ×0,8') + ')' : '') + (extra ? ' · +1 por racha de ' + racha : '') + '. ' : '') + txt + aviso } }) }));
   }
   prepUi(pz) { const d = this.datos(pz); if (!d) return {}; if (pz.est === 'torre') return { st: d.start.slice() }; if (pz.est === 'estim') return { min: d.min0, max: d.max0 }; if (pz.est === 'rutas') return { p1: [d.ini], p2: [d.fin] }; if (pz.est === 'orden') return { ord: d.ord.slice() }; if (pz.est === 'decision' && d.libre) return { op: '<', k: d.p.v.min + Math.round((d.p.v.max - d.p.v.min) / 2 / d.p.v.paso) * d.p.v.paso }; if (pz.est === 'armar') return { sel: d.slots[0] }; return {}; }
   salirReto() {
@@ -1758,14 +1942,19 @@ class Component extends DCLogic {
   }
   siguiente(volver) {
     const s = this.state, pz = s.pz, e = s.est[pz.est], ok = pz.estado === 'ok';
-    const rondas = e.rondas.concat([{ tier: pz.tier, ok, pts: pz.pts || 0 }]);
+    const rondas = e.rondas.concat([{ tier: pz.tier, ok, pts: pz.pts || 0, eff: pz.eff || 0 }]);
     const tier = ok ? Math.min(3, pz.tier + 1) : Math.max(1, pz.tier - 1);
     const est = Object.assign({}, s.est, { [pz.est]: Object.assign({}, e, { rondas, tier }) });
-    if (rondas.length >= 3) { this.setState({ est, fase: 'estres', erId: pz.est, erEstr: null, pz: null }, () => this.ping('jugando')); return; }
+    if (rondas.length >= 3) { const E = est[pz.est], sum = rondas.reduce((a, r) => a + r.pts, 0), mx = maxEst(rondas[0].tier), q = sum / mx, perf = rondas.every(r => r.ok);
+      const stars = perf && q >= 0.9 ? 3 : q >= 0.55 ? 2 : 1, mejoro = E.best != null && sum > E.best; E.best = Math.max(E.best || 0, sum); E.stars = Math.max(E.stars || 0, stars);
+      const nuevas = []; if (rondas.every(r => r.ok && r.eff === 1)) nuevas.push(['perfecto', 'Perfecto']); if (E.modo === 'experto' && perf) nuevas.push(['experto', 'Experto']); if (perf) nuevas.push(['detective', 'Detective']); if (mejoro) nuevas.push(['supera', 'Superación']);
+      setTimeout(() => { this.setState({ toast: { t: '★'.repeat(stars) + '☆'.repeat(3 - stars) + '  ' + EST.find(x => x.id === pz.est).nombre + ' · ' + Math.round(sum * 10) / 10 + ' pts' + (mejoro ? ' · ¡nuevo récord!' : ''), hasta: Date.now() + 4500 } }); nuevas.forEach((m, i) => setTimeout(() => this.medalla(m[0], m[1]), 1800 + i * 1600)); }, 300);
+      this.setState({ est, fase: 'estres', erId: pz.est, erEstr: null, pz: null }, () => this.ping('jugando')); return; }
     if (volver) { this.keys = {}; this.setState({ est, pz: null, fase: 'mundo', guard: Object.assign({}, s.guard, { [pz.est]: null }) }, () => this.ping('jugando')); return; }
     const npz = { est: pz.est, ronda: rondas.length, tier, ui: this.uiInicial(pz.est, tier), estado: 'jugando', fb: null };
     Object.assign(npz.ui, this.prepUi(npz)); this.setState({ est, pz: npz, guard: Object.assign({}, s.guard, { [pz.est]: null }) }, () => this.ping('jugando'));
   }
+  medalla(k, n) { const s = this.state, m = Object.assign({}, s.medallas); m[k] = (m[k] || 0) + 1; const nueva = m[k] === 1; this.setState({ medallas: m, toast: nueva ? { t: '🏅 Medalla nueva: ' + n, hasta: Date.now() + 3500 } : s.toast }); if (nueva) this.snd('ok'); }
   eff(n, a, b) { return n <= a ? 1 : n <= b ? 0.75 : 0.5; }
   probarReglas() {
     const pz = this.state.pz, u = pz.ui, d = this.datos(pz);
@@ -2116,9 +2305,9 @@ class Component extends DCLogic {
     localStorage.setItem('mision_demo_filas', JSON.stringify(filas));
     return { ok: true };
   }
-  ptsEst(id) { const e = this.state.est[id]; return e && e.rondas ? e.rondas.reduce((a, r) => a + r.pts, 0) : 0; }
+  ptsEst(id, s) { const e = (s || this.state).est[id]; if (!e) return 0; const cur = e.rondas ? e.rondas.reduce((a, r) => a + r.pts, 0) : 0; return Math.max(e.best || 0, e.rondas && e.rondas.length >= 3 ? cur : 0, e.best == null ? cur : 0); }
   bonus(s) { s = s || this.state; return Math.round(s.bat / 20); }
-  nota(s) { s = s || this.state; const tot = REQ * this.maxE(), v = ((s.pts + s.pen) / tot) * 9.5 + (s.bat / 100) * 0.5; return Math.max(0, Math.min(10, Math.round(v * 100) / 100)); }
+  nota(s) { s = s || this.state; const tot = REQ * this.maxE(), P = EST.reduce((a, e) => a + this.ptsEst(e.id, s), 0), v = ((P + s.pen + (s.xd || 0)) / tot) * 9.5 + (s.bat / 100) * 0.5; return Math.max(0, Math.min(10, Math.round(v * 100) / 100)); }
   insignias(s) {
     s = s || this.state; const r = id => (s.est[id] && s.est[id].rondas) || [], completo = s.fase === 'final' && !s.cerrado && this.nHechas() >= REQ;
     const top = id => r(id).some(x => x.tier === 3 && x.ok);
@@ -2138,8 +2327,8 @@ class Component extends DCLogic {
   }
   payload(estado, s) {
     s = s || this.state;
-    const det = EST.map(e => { const r = (s.est[e.id] && s.est[e.id].rondas) || []; return e.corto + ' ' + r.map(x => 'N' + x.tier + (x.ok ? '✓' : '✗')).join(' ') + (s.est[e.id] && s.est[e.id].estr != null ? ' [' + ESTR[e.id][s.est[e.id].estr] + ']' : ''); }).join(' · ');
-    return { sesionId: s.ses.id, curso: s.ses.curso || '3BGU', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.a + ' / ' + s.ses.b, nivel: Math.min(EST.length, this.nHechas() + 1), niveles: EST.length, puntos: s.pts, bonus: this.bonus(s) + s.pen, nota: this.nota(s), salidas: s.salidas, avisos: s.avisos || 0, fueraSeg: Math.round(s.fueraSeg || 0), estado, duracionMin: Math.round(((s.tFin || Date.now()) - (s.t0 || Date.now())) / 6000) / 10, insignias: this.insignias(s).filter(b => b.ok).map(b => b.nombre).join(', '), detalle: 'Escape del Laboratorio · ' + det };
+    const det = EST.filter(e => s.est[e.id]).map(e => { const E = s.est[e.id], r = E.rondas || []; return e.corto + (E.stars ? ' ' + '★'.repeat(E.stars) : '') + (E.modo ? ' [' + E.modo + ']' : '') + ' ' + r.map(x => 'N' + x.tier + (x.ok ? '✓' : '✗')).join(' ') + (s.est[e.id] && s.est[e.id].estr != null ? ' [' + ESTR[e.id][s.est[e.id].estr] + ']' : ''); }).join(' · ');
+    return { sesionId: s.ses.id, curso: s.ses.curso || '3BGU', paralelo: s.ses.paralelo, a: s.ses.a, b: s.ses.b, pareja: s.ses.a + ' / ' + s.ses.b, nivel: Math.min(EST.length, this.nHechas() + 1), niveles: EST.length, puntos: s.pts, bonus: this.bonus(s) + s.pen, nota: this.nota(s), salidas: s.salidas, avisos: s.avisos || 0, fueraSeg: Math.round(s.fueraSeg || 0), estado, duracionMin: Math.round(((s.tFin || Date.now()) - (s.t0 || Date.now())) / 6000) / 10, insignias: this.insignias(s).filter(b => b.ok).map(b => b.nombre).concat(Object.keys(s.medallas || {}).map(k => ({ perfecto: 'Perfecto', experto: 'Experto', detective: 'Detective', supera: 'Superación', racha: 'Racha de 5' }[k] + (s.medallas[k] > 1 ? ' ×' + s.medallas[k] : '')))).join(', '), estrellas: EST.reduce((a, e) => a + ((s.est[e.id] || {}).stars || 0), 0), detalle: 'Escape del Laboratorio · ' + det };
   }
   ping(estado) { if (!this.state.ses) return; this.api('progreso', this.payload(estado)).catch(() => {}); }
   async entrar() {
@@ -2192,7 +2381,17 @@ class Component extends DCLogic {
     const out = {
       mountRef: this.mountRef, fadeOp: s.fade, vCarga3d: s.c3d && s.fase !== 'login', hayErr3d: !!s.err3d, err3d: s.err3d,
       vLogin: s.fase === 'login', vIntro: s.fase === 'intro', vHud: ['mundo', 'puzzle', 'estres'].includes(s.fase) && !!s.ses,
-      vPuzzle: s.fase === 'puzzle' && !!pz, vEstRes: s.fase === 'estres', vFinal: s.fase === 'final', vBloq: s.bloq, vPausa: !!s.pausa && !s.bloq && this.enJuego(), pausa: s.pausa ? { titulo: s.pausa.hid ? 'Se detectó otra pestaña' : '¿Salieron sin querer?', txt: s.pausa.hid ? 'Cambiaron de pestaña o de programa. Vuelvan ya: si se quedan fuera, se registra como salida.' : 'Salieron de la pantalla completa o de la ventana. Tienen 15 segundos para volver sin castigo.', seg: Math.max(0, 15 - Math.floor((s.ahora - s.pausa.t0) / 1000)) + ' s', color: s.ahora - s.pausa.t0 > 10000 ? '#ff7b72' : '#f0a726', volver: () => this.volverFS() } : { titulo: '', txt: '', seg: '', color: '#f0a726', volver: () => {} },
+      vPuzzle: s.fase === 'puzzle' && !!pz, vEstRes: s.fase === 'estres', vFinal: s.fase === 'final', vBloq: s.bloq, vRed: !!s.redOn && this.enJuego() && s.fase === 'mundo', red: (() => { const c = s.ctl || {}, chatOn = c.chat !== false, mudo = !!((c.mute || {})[this._yoId]), duOn = c.duelos !== false, listo = this.nHechas() >= REQ, O = this._otros || {}, act = (s.duelos || []).some(x => x.est === 'pend' || x.est === 'juego');
+  return { abierto: !!s.chatOpen, toggle: () => this.setState({ chatOpen: !s.chatOpen }), boton: (s.chatOpen ? '✕ Cerrar' : '💬 Chat y duelos') + ' · ' + (s.redN || 0) + ' parejas conectadas', titulo: chatOn ? 'CHAT DEL CURSO · el docente ve todos los mensajes' : 'El docente desactivó el chat',
+    msgs: (chatOn ? (s.chatM || []) : []).slice(-25).map(m => ({ de: m.de, txt: m.txt, col: m.id === this._yoId ? '#5fd0e8' : '#ffd166' })), txt: s.chatTxt || '', onTxt: e => this.setState({ chatTxt: e.target.value.slice(0, 140) }), enviar: () => this.enviarChat(), mudo: mudo || !chatOn, ph: mudo ? 'Silenciados por el docente' : chatOn ? 'Escriban y pulsen ENTER (Esc para volver al juego)' : 'Chat desactivado',
+    duInfo: !duOn ? 'Duelos desactivados por el docente.' : !listo ? 'Los duelos se abren cuando terminen los ' + REQ + ' retos obligatorios (llevan ' + this.nHechas() + ').' : 'Reten a otra pareja a tres en raya: ganar da +3 puntos extra; perder no quita nada.',
+    parejas: Object.keys(O).filter(k => Date.now() - (O[k].t || 0) < 30000).map(k => ({ n: O[k].n, lugar: SCN[O[k].esc] || O[k].esc || '', puede: duOn && listo && !act && (O[k].h || 0) >= REQ, retarNim: () => { this._red.retar(k, s.ses.a + ' / ' + s.ses.b, O[k].n, 'nim'); this.setState({ toast: { t: 'Reto de Nim enviado a ' + O[k].n, hasta: Date.now() + 3000 } }); }, retar: () => { this._red.retar(k, s.ses.a + ' / ' + s.ses.b, O[k].n, 'ttt'); this.setState({ toast: { t: 'Reto enviado a ' + O[k].n, hasta: Date.now() + 3000 } }); } })) }; })(),
+  vDuelo: (() => { const L = (s.duelos || []).filter(x => (x.est === 'pend' || x.est === 'juego' || x.est === 'fin') && !x['visto_' + this._yoId]); this._duelVis = !!L.length && s.fase === 'mundo'; return this._duelVis; })(),
+  du: (() => { const L = (s.duelos || []).filter(x => !x['visto_' + this._yoId] && ['pend', 'juego', 'fin'].includes(x.est)), D = L[0]; if (!D) return { titulo: '', txt: '', verTab: false, celdas: [], verAceptar: false, verCerrar: false, aceptar: () => {}, rechazar: () => {}, cerrar: () => {}, cerrarTxt: '' };
+    const rol = D.a === this._yoId ? 'a' : 'b', rival = rol === 'a' ? D.bn : D.an, mi = D.turno === rol, cerrar = () => this._red.cerrarDuelo(D.id);
+    return { titulo: D.juego === 'nim' ? 'DUELO · NIM (quien saca el último fósforo gana)' : 'DUELO · TRES EN RAYA', esNim: D.juego === 'nim' && D.est !== 'pend', montones: D.juego === 'nim' ? String(D.tab).split(',').map((v, hi) => ({ txt: 'Montón ' + (hi + 1) + ': ' + '▮'.repeat(+v) + ' (' + v + ')', b1: () => mi && +v >= 1 && this._red.jugarNim(D.id, hi, 1, rol), b2: () => mi && +v >= 2 && this._red.jugarNim(D.id, hi, 2, rol), b3: () => mi && +v >= 3 && this._red.jugarNim(D.id, hi, 3, rol) })) : [], txt: D.est === 'pend' ? (rol === 'b' ? D.an + ' los reta a un duelo. Ganar da +3 puntos extra; perder no quita nada.' : 'Esperando que ' + rival + ' acepte…') : D.est === 'juego' ? (mi ? 'Su turno (' + (rol === 'a' ? 'X' : 'O') + ') · Decidan juntos' : 'Turno de ' + rival + '…') : D.gan === 'e' ? 'Empate · +1 punto extra' : D.gan === rol ? '¡Ganaron! +3 puntos extra' : 'Ganó ' + rival + '. ¡Buen juego!',
+      verTab: D.est !== 'pend' && D.juego !== 'nim', celdas: D.tab.split('').map((v, i) => ({ v: v === '.' ? '' : v, col: v === 'X' ? '#5fd0e8' : '#f0a726', jugar: () => { if (D.est === 'juego' && mi) this._red.jugar(D.id, i, rol); } })), verAceptar: D.est === 'pend' && rol === 'b', aceptar: () => this._red.responder(D.id, true), rechazar: () => { this._red.responder(D.id, false); cerrar(); },
+      verCerrar: D.est === 'fin' || (D.est === 'pend' && rol === 'a'), cerrar, cerrarTxt: D.est === 'fin' ? 'Volver al juego' : 'Cancelar reto' }; })(), vPausa: !!s.pausa && !s.bloq && this.enJuego(), pausa: s.pausa ? { titulo: s.pausa.hid ? 'Se detectó otra pestaña' : '¿Salieron sin querer?', txt: s.pausa.hid ? 'Cambiaron de pestaña o de programa. Vuelvan ya: si se quedan fuera, se registra como salida.' : 'Salieron de la pantalla completa o de la ventana. Tienen 15 segundos para volver sin castigo.', seg: Math.max(0, 15 - Math.floor((s.ahora - s.pausa.t0) / 1000)) + ' s', color: s.ahora - s.pausa.t0 > 10000 ? '#ff7b72' : '#f0a726', volver: () => this.volverFS() } : { titulo: '', txt: '', seg: '', color: '#f0a726', volver: () => {} },
       demo: this.demo(), f: s.f, msg: s.msg, hayMsg: !!s.msg, bloqMsg: s.bloqMsg,
       loginLabel: s.cargando ? 'Verificando…' : 'Entrar', loginOpac: s.cargando ? 0.6 : 1,
       setA: e => this.setState({ f: Object.assign({}, s.f, { a: e.target.value.slice(0, 40) }) }),
@@ -2235,7 +2434,9 @@ class Component extends DCLogic {
       const opJ = (idx + pz.ronda) % 2, fb = pz.fb;
       out.pz = {
         esReglas: pz.est === 'reglas', esInterrog: pz.est === 'interrog', esMaster: pz.est === 'master', esTorre: pz.est === 'torre', esCompuertas: pz.est === 'compuertas', esRobot: pz.est === 'robot', esRaven: pz.est === 'raven', esWcst: pz.est === 'wcst', esEinstein: pz.est === 'einstein', esEstim: pz.est === 'estim', esRutas: pz.est === 'rutas', esFlujo: !!FLUJO[pz.est], esOrden: pz.est === 'orden',
-        verIntro: !!(s.introPend && s.introPend === pz.est), intro: (() => { const a = (window.ESC_APRENDE || {})[pz.est]; return a ? { t: a[0], l: a[1], e: a[2] } : { t: '', l: [], e: '' }; })(), cerrarIntro: () => this.setState({ introPend: null, introV: Object.assign({}, s.introV, { [pz.est]: true }) }), tec: PISTA_TEC[pz.est] || '', salir: () => this.salirReto(), salirTxt: fin ? '← VOLVER AL MAPA' : '← SALIR (SE GUARDA)',
+        ...(() => { const A = (window.ESC_APRENDE || {})[pz.est], H = A ? A[1].concat(['Ejemplo: ' + A[2]]) : ['Lean el enunciado con calma y repártanse el trabajo.', 'Prueben con un caso pequeño primero.'], k = pz.est + '|' + pz.ronda + '|' + ((s.est[pz.est] || {}).intento || 0), n = (s.pis || {})[k] || 0;
+      return { pistas: H.slice(0, n), verPistas: n > 0, pistaTxt: n >= H.length ? 'SIN MÁS PISTAS' : n === 0 ? '💡 PISTA GRATIS' : '💡 PISTA (−1 PTO)', pista: () => { if (n >= H.length) return; this.setState({ pis: Object.assign({}, s.pis, { [k]: n + 1 }), pen: n >= 1 ? s.pen - 1 : s.pen }); this.snd('click'); } }; })(),
+      verIntro: !!(s.introPend && s.introPend === pz.est && !pz.elegir), elegir: !!pz.elegir, mejor: (() => { const E = s.est[pz.est] || {}; return E.best != null ? 'Su mejor marca: ' + '★'.repeat(E.stars || 1) + ' · ' + Math.round(E.best * 10) / 10 + ' puntos. ¡Intenten superarla!' : 'Primera vez en este reto.'; })(), modoF: () => this.elegirModo('facil'), modoN: () => this.elegirModo('normal'), modoE: () => this.elegirModo('experto'), intro: (() => { const a = (window.ESC_APRENDE || {})[pz.est]; return a ? { t: a[0], l: a[1], e: a[2] } : { t: '', l: [], e: '' }; })(), cerrarIntro: () => this.setState({ introPend: null, introV: Object.assign({}, s.introV, { [pz.est]: true }) }), tec: PISTA_TEC[pz.est] || '', salir: () => this.salirReto(), salirTxt: fin ? '← VOLVER AL MAPA' : '← SALIR (SE GUARDA)',
         nombre: E.nombre, hab: E.hab, color: E.color, glow: E.glow, ronda: 'RONDA ' + (pz.ronda + 1) + ' DE 3',
         dots: [1, 2, 3].map(t => ({ c: t <= pz.tier ? E.color : 'rgba(232,244,248,.18)' })),
         operador: s.ses ? (opJ ? s.ses.b : s.ses.a).split(' ')[0].toUpperCase() : '', opColor: opJ ? '#f0a726' : '#5fd0e8',
@@ -2437,9 +2638,9 @@ class Component extends DCLogic {
       if (pz.est === 'wcst' && !fin) out.pz.btnOp = 0;
       if (MENTE[pz.est]) {
         out.pz.esMente = true; if (!fin) Object.assign(out.pz, { btn: 'Resuelvan el reto', btnOp: 0, accion: () => {}, info: '' });
-        const mk = pz.est + '|' + pz.ronda + '|' + pz.tier; if (this._mhk !== mk) { this._mhk = mk; this._mh = this.hnd(pz.est, pz.ronda, pz.tier); }
+        const mk = pz.est + '|' + pz.ronda + '|' + pz.tier + '|' + ((s.est[pz.est] || {}).intento || 0) + '|' + (pz.nonce || 0); if (this._mhk !== mk) { this._mhk = mk; this._mh = this.hnd(pz.est, pz.ronda, pz.tier); }
         const MC = window.ESC_MENTE && window.ESC_MENTE.make(React);
-        out.mente = MC ? React.createElement(MC, { key: mk, id: pz.est, tier: pz.tier, fin, h: this._mh, snd: t => this.snd(t), onFin: (ok, eff, txt) => this.resolver(ok, eff, txt), onErr: (txt, dl) => this.fbErr(txt, dl || 0) }) : null;
+        out.mente = MC && !pz.elegir && s.introPend !== pz.est ? React.createElement(MC, { key: mk, id: pz.est, tier: pz.tier, fin, h: this._mh, snd: t => this.snd(t), onFin: (ok, eff, txt) => this.resolver(ok, eff, txt), onErr: (txt, dl) => this.fbErr(txt, dl || 0) }) : null;
       }
     }
     if (s.erId) {
